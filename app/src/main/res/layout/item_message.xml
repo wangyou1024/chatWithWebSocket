@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="chat"
+            type="com.wangyou.chatwithwebsocket.entity.Chat" />
+        <import type="com.wangyou.chatwithwebsocket.R"/>
+        <import type="com.wangyou.chatwithwebsocket.util.DateTimeUtil"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/content_padding">
+
+        <ImageView
+            android:id="@+id/userImage"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:paddingVertical="@dimen/basic_padding"
+            app:image="@{chat.imageUrl}"
+            app:placeholder="@{R.mipmap.header}"
+            tools:src="@mipmap/header"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/basic_padding">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/basic_padding"
+                tools:ignore="NestedWeights">
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@{chat.name}"
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_title"
+                    tools:ignore="NestedWeights"
+                    tools:text="@string/name" />
+                <TextView
+                    android:id="@+id/updateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{DateTimeUtil.getStrByTime(chat.updateTime)}"
+                    tools:text="@string/time" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/basic_padding">
+                <TextView
+                    android:id="@+id/content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingBottom="@dimen/basic_padding"
+                    android:singleLine="true"
+                    android:text="@{chat.content}"
+                    android:textColor="@color/gray_500"
+                    tools:text="@string/test_str" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

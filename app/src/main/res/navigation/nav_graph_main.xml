@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/messageFragment">
+
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="com.wangyou.chatwithwebsocket.fragment.AddressFragment"
+        android:label="fragment_address"
+        tools:layout="@layout/fragment_address" >
+    </fragment>
+    <fragment
+        android:id="@+id/personalFragment"
+        android:name="com.wangyou.chatwithwebsocket.fragment.PersonalFragment"
+        android:label="fragment_personal"
+        tools:layout="@layout/fragment_personal" >
+    </fragment>
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.wangyou.chatwithwebsocket.fragment.MessageFragment"
+        android:label="fragment_message"
+        tools:layout="@layout/fragment_message" >
+    </fragment>
+</navigation>
