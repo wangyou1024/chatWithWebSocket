@@ -30,7 +30,7 @@ class ChatFragment : Fragment() {
         binding!!.talkViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(TalkViewModel::class.java)
         binding!!.personalViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(PersonalViewModel::class.java)
         binding!!.backChat.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.fragmentMain).popBackStack()
+            Navigation.findNavController(requireActivity(), R.id.fragmentAll).popBackStack()
         }
         return binding!!.root
     }

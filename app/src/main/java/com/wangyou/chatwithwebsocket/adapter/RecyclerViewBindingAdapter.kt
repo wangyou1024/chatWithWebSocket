@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.Group
@@ -33,7 +34,7 @@ object RecyclerViewBindingAdapter {
                         bundle.putSerializable("chat", chat)
                         Navigation.findNavController(
                             recyclerView.context as Activity,
-                            R.id.fragmentMain
+                            R.id.fragmentAll
                         ).navigate(R.id.to_chatFragment, bundle)
                     }
                 })
@@ -68,6 +69,8 @@ object RecyclerViewBindingAdapter {
         val users = if (userList != null) userList.value else mutableListOf<User>()
         recyclerView.adapter =
             RecyclerViewAdapterUserList(users!!)
+        // 停止动画，避免闪烁
+        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         userList!!.observe(recyclerView.context as LifecycleOwner, {
             recyclerView.adapter!!.notifyDataSetChanged()
         })
@@ -81,6 +84,7 @@ object RecyclerViewBindingAdapter {
         val groups = if (groupList != null) groupList.value else mutableListOf<Group>()
         recyclerView.adapter =
             RecyclerViewAdapterGroupList(groups!!)
+        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         groupList!!.observe(recyclerView.context as LifecycleOwner, {
             recyclerView.adapter!!.notifyDataSetChanged()
         })

@@ -9,7 +9,7 @@ class UserListViewModel: ViewModel() {
 
     init {
         userList = MutableLiveData(mutableListOf<User>())
-        for (i in 1L..20L) {
+        for (i in 1L..10L) {
             val str = "${i}something"
             userList!!.value!!.add(User(
                 i,

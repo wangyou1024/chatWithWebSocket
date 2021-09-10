@@ -9,7 +9,7 @@ class GroupListViewModel : ViewModel() {
 
     init {
         groupList = MutableLiveData(mutableListOf<Group>())
-        for (i in 1L..20L) {
+        for (i in 1L..10L) {
             val str = "${i}something"
             groupList!!.value!!.add(
                 Group(

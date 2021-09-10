@@ -1,14 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.SearchFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="userListViewModel"
+            type="com.wangyou.chatwithwebsocket.data.UserListViewModel" />
+
+        <variable
+            name="groupListViewModel"
+            type="com.wangyou.chatwithwebsocket.data.GroupListViewModel" />
+        <variable
+            name="searchContentViewModel"
+            type="com.wangyou.chatwithwebsocket.data.SearchContentViewModel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/gray_200"
+        android:orientation="vertical"
+        tools:context=".fragment.SearchFragment">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/gray_50"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginHorizontal="@dimen/content_padding"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/gray_200"
+                app:cardCornerRadius="18dp">
+
+                <EditText
+                    android:id="@+id/searchContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start|center_vertical"
+                    android:layout_marginHorizontal="@dimen/content_padding"
+                    android:background="@null"
+                    android:hint="@string/search"
+                    android:imeOptions="actionSearch"
+                    android:text="@={searchContentViewModel.searchContent}"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_title" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/backMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/content_padding"
+                android:text="@string/cancel"
+                android:textColor="@color/blue_500"
+                android:textSize="@dimen/font_title" />
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_50"
+                    android:paddingHorizontal="@dimen/content_padding"
+                    android:paddingVertical="@dimen/basic_padding"
+                    android:text="@string/friend"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_content" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/userList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_50"
+                    android:paddingHorizontal="@dimen/content_padding"
+                    app:userList="@{userListViewModel.userList}" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/content_padding" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_50"
+                    android:paddingHorizontal="@dimen/content_padding"
+                    android:paddingVertical="@dimen/basic_padding"
+                    android:text="@string/group"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_content" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/groupList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_50"
+                    android:paddingHorizontal="@dimen/content_padding"
+                    app:groupList="@{groupListViewModel.groupList}" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

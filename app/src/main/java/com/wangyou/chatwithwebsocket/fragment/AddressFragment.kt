@@ -1,6 +1,5 @@
 package com.wangyou.chatwithwebsocket.fragment
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
@@ -9,10 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
-import com.wangyou.chatwithwebsocket.data.SearchContentModel
 import com.wangyou.chatwithwebsocket.databinding.FragmentAddressBinding
 
 class AddressFragment : Fragment() {
@@ -41,6 +38,9 @@ class AddressFragment : Fragment() {
                 changeStatusSelected(binding!!.groupList, binding!!.friendList)
                 navController.navigate(R.id.groupListFragment)
             }
+        }
+        binding!!.searchButton.setOnClickListener {
+            Navigation.findNavController(requireActivity(), R.id.fragmentAll).navigate(R.id.searchFragment)
         }
         return binding!!.root
     }

@@ -11,7 +11,7 @@ class ChatViewModel(): ViewModel() {
     init {
         chatList = MutableLiveData()
         chatList!!.value = ArrayList<Chat>()
-        for (i in 1..20){
+        for (i in 1..10){
             chatList!!.value!!.add(Chat("第${i}个", "第${i}个消息", "https://images.shobserver.com/news/690_390/2021/9/6/a1a3070d696f4a69a4c039a79514c8ca.jpg", 1631026488))
         }
     }

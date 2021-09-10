@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 
-class SearchContentModel() : ViewModel() {
+class SearchContentViewModel() : ViewModel() {
     private var searchContent: ObservableField<String>? = null;
 
     init {

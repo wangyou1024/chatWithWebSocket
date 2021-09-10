@@ -36,11 +36,11 @@ class MainActivity : AppCompatActivity() {
         SetStatusBar.setStatusColor(ContextCompat.getColor(this,
                 R.color.blue_400), window)
 
-        val navController = Navigation.findNavController(this, R.id.fragmentMain)
+        val navController = Navigation.findNavController(this, R.id.fragmentAll)
         navController.popBackStack(R.id.mainFragment, true)
         navController.navigate(R.id.loginFragment)
     }
 
     override fun onSupportNavigateUp() =
-            Navigation.findNavController(this, R.id.fragmentMain).navigateUp()
+            Navigation.findNavController(this, R.id.fragmentAll).navigateUp()
 }

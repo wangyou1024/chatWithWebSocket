@@ -25,7 +25,7 @@ class LoginFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
         binding!!.lifecycleOwner = this
         val loginViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(LoginViewModel::class.java)
-        loginViewModel.setNavController(Navigation.findNavController(requireActivity(), R.id.fragmentMain))
+        loginViewModel.setNavController(Navigation.findNavController(requireActivity(), R.id.fragmentAll))
         binding!!.loginViewModel = loginViewModel
         return binding!!.root
     }

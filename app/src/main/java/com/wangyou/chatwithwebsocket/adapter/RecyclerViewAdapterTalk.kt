@@ -20,14 +20,14 @@ class RecyclerViewAdapterTalk(
 
     override fun getItemViewType(position: Int): Int {
         // 是否是本人/发送时间间隔是否超过1分钟
-        if(chats!![position].sender == personal!!.uid){
-            return if (position > 0 && chats!![position].updateTime!! - chats!![position-1].updateTime!! < 60L){
+        return if(chats!![position].sender == personal!!.uid){
+            if (position > 0 && chats!![position].updateTime!! - chats!![position-1].updateTime!! < 60L){
                 SELF_LAST
             } else {
                 SELF_NEW
             }
         } else {
-            return if (position > 0 && chats!![position].updateTime!! - chats!![position-1].updateTime!! < 60L){
+            if (position > 0 && chats!![position].updateTime!! - chats!![position-1].updateTime!! < 60L){
                 OTHER_LAST
             } else {
                 OTHER_NEW
@@ -37,7 +37,7 @@ class RecyclerViewAdapterTalk(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TalkHolder {
-        var binding = DataBindingUtil.inflate<ItemChatBinding>(
+        val binding = DataBindingUtil.inflate<ItemChatBinding>(
             LayoutInflater.from(parent.context),
             R.layout.item_chat,
             parent,
@@ -58,6 +58,7 @@ class RecyclerViewAdapterTalk(
             else -> {
                 binding.headerSelf.visibility = View.INVISIBLE
                 binding.nameChat.gravity = Gravity.START
+                // 重新设置子布局的属性，避免由于recyclerView缓存机制导致的样式未能根据内容刷新
                 val layoutParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     ActionBar.LayoutParams.WRAP_CONTENT

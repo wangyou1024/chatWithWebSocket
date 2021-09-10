@@ -14,7 +14,7 @@
 
 
         <fragment
-            android:id="@+id/fragmentMain"
+            android:id="@+id/fragmentAll"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

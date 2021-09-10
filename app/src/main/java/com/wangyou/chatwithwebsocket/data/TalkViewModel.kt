@@ -22,7 +22,7 @@ class TalkViewModel : ViewModel() {
 
     init {
         users = MutableLiveData(mutableMapOf())
-        for (i in 1L..20L) {
+        for (i in 1L..10L) {
             val str = "${i}something"
             users!!.value!![i.toLong()] = User(
                 i,
