@@ -8,8 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
+import com.wangyou.chatwithwebsocket.data.PersonalViewModel
+import com.wangyou.chatwithwebsocket.data.TalkViewModel
 import com.wangyou.chatwithwebsocket.databinding.FragmentChatBinding
 
 class ChatFragment : Fragment() {
@@ -23,6 +26,12 @@ class ChatFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_chat, container, false)
+        binding!!.lifecycleOwner = this
+        binding!!.talkViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(TalkViewModel::class.java)
+        binding!!.personalViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(PersonalViewModel::class.java)
+        binding!!.backChat.setOnClickListener {
+            Navigation.findNavController(requireActivity(), R.id.fragmentMain).popBackStack()
+        }
         return binding!!.root
     }
 

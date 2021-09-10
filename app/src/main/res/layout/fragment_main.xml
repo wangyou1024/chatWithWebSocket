@@ -13,26 +13,27 @@
         tools:context=".fragment.MainFragment">
 
         <fragment
-            android:id="@+id/fragment_main"
+            android:id="@+id/fragmentMain"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:defaultNavHost="false"
-            android:layout_above="@id/nav_main"
-            app:navGraph="@navigation/nav_graph_main" />
+            app:navGraph="@navigation/nav_graph_main"
+            tools:ignore="FragmentTagUsage" />
 
         <TableLayout
             android:id="@+id/nav_main"
             android:layout_width="match_parent"
             android:layout_height="@dimen/nav_main"
             android:layout_gravity="bottom"
-            android:background="#EEEEEEFF"
+            android:background="@color/nav_main"
             android:paddingHorizontal="@dimen/content_padding"
             android:stretchColumns="0,1,2">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                tools:ignore="UselessParent">
 
                 <ImageView
                     android:id="@+id/message"
@@ -40,7 +41,8 @@
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:padding="@dimen/icon_padding"
-                    android:src="@mipmap/message" />
+                    android:src="@mipmap/message"
+                    android:contentDescription="@string/message" />
 
                 <ImageView
                     android:id="@+id/address"
@@ -48,7 +50,8 @@
                     android:layout_height="wrap_content"
                     android:layout_column="1"
                     android:padding="@dimen/icon_padding"
-                    android:src="@mipmap/address" />
+                    android:src="@mipmap/address"
+                    android:contentDescription="@string/address_list" />
 
                 <ImageView
                     android:id="@+id/personal"
@@ -56,7 +59,8 @@
                     android:layout_height="wrap_content"
                     android:layout_column="2"
                     android:padding="@dimen/icon_padding"
-                    android:src="@mipmap/personal" />
+                    android:src="@mipmap/personal"
+                    android:contentDescription="@string/personal_info" />
             </TableRow>
         </TableLayout>
     </FrameLayout>

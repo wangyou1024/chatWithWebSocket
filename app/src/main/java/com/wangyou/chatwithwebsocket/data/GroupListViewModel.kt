@@ -1,0 +1,36 @@
+package com.wangyou.chatwithwebsocket.data
+
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.wangyou.chatwithwebsocket.entity.Group
+
+class GroupListViewModel : ViewModel() {
+    private var groupList: MutableLiveData<MutableList<Group>>? = null
+
+    init {
+        groupList = MutableLiveData(mutableListOf<Group>())
+        for (i in 1L..20L) {
+            val str = "${i}something"
+            groupList!!.value!!.add(
+                Group(
+                    i,
+                    str,
+                    str,
+                    str,
+                    str,
+                    i.toInt(),
+                    i.toInt(),
+                )
+            )
+        }
+    }
+
+    fun getGroupList(): MutableLiveData<MutableList<Group>> {
+        return groupList!!
+    }
+
+    fun addGroup(group: Group) {
+        groupList!!.value!!.add(group)
+        groupList!!.value = groupList!!.value
+    }
+}

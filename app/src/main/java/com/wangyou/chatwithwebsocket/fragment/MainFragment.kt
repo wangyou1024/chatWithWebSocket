@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.databinding.FragmentMainBinding
@@ -17,9 +18,6 @@ import com.wangyou.chatwithwebsocket.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
-    private var message: ImageView? = null
-    private var address: ImageView? = null
-    private var personal: ImageView? = null
     private var binding: FragmentMainBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,33 +26,31 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        var view = inflater.inflate(R.layout.fragment_main, container, false)
-        var fragmentContainer = view.findViewById<View>(R.id.fragment_main)
-        var navController = Navigation.findNavController(fragmentContainer)
-
-        message = view.findViewById(R.id.message)
-        message!!.setImageResource(R.mipmap.message_selected)
-        message!!.setOnClickListener {
+        binding = DataBindingUtil.inflate<FragmentMainBinding>(inflater, R.layout.fragment_main, container, false)
+        binding!!.lifecycleOwner = this
+        // 无法直接通过binding拿到fragment元素，只有使用原始的方法去获取
+        val fragmentContainer = binding!!.root.findViewById<View>(R.id.fragmentMain)
+        val navController = Navigation.findNavController(fragmentContainer)
+        binding!!.message.setImageResource(R.mipmap.message_selected)
+        binding!!.message.setOnClickListener {
             if(!navController.popBackStack(R.id.messageFragment, true)){
                 navController.navigate(R.id.messageFragment)
             }
-            getIconAnimator(message!!, R.mipmap.message, R.mipmap.message_selected).start();
+            getIconAnimator(binding!!.message, R.mipmap.message, R.mipmap.message_selected).start();
         }
-        address = view.findViewById(R.id.address)
-        address!!.setOnClickListener {
+        binding!!.address.setOnClickListener {
             if(!navController.popBackStack(R.id.addressFragment, false)){
                 navController.navigate(R.id.addressFragment)
             }
-            getIconAnimator(address!!, R.mipmap.address, R.mipmap.address_selected).start()
+            getIconAnimator(binding!!.address, R.mipmap.address, R.mipmap.address_selected).start()
         }
-        personal = view.findViewById(R.id.personal)
-        personal!!.setOnClickListener {
+        binding!!.personal.setOnClickListener {
             if(!navController.popBackStack(R.id.personalFragment, false)){
                 navController.navigate(R.id.personalFragment)
             }
-            getIconAnimator(personal!!, R.mipmap.personal, R.mipmap.personal_selected).start()
+            getIconAnimator(binding!!.personal, R.mipmap.personal, R.mipmap.personal_selected).start()
         }
-        return view
+        return binding!!.root
     }
 
 
@@ -79,8 +75,8 @@ class MainFragment : Fragment() {
     }
 
     private fun setClearIcon(){
-        message!!.setImageResource(R.mipmap.message)
-        address!!.setImageResource(R.mipmap.address)
-        personal!!.setImageResource(R.mipmap.personal)
+        binding!!.message.setImageResource(R.mipmap.message)
+        binding!!.address.setImageResource(R.mipmap.address)
+        binding!!.personal.setImageResource(R.mipmap.personal)
     }
 }

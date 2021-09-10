@@ -17,6 +17,5 @@ class SearchContentModel() : ViewModel() {
 
     fun setSearchContent(searchContent: String){
         this.searchContent?.set(searchContent)
-        Log.i("wangyou", this.getSearchContent()!!)
     }
 }

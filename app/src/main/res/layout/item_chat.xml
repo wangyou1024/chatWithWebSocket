@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="user"
+            type="com.wangyou.chatwithwebsocket.entity.User" />
+        <variable
+            name="chat"
+            type="com.wangyou.chatwithwebsocket.entity.Chat" />
+        <import type="com.wangyou.chatwithwebsocket.util.DateTimeUtil"/>
+        <import type="com.wangyou.chatwithwebsocket.R"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/content_padding"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/basic_padding"
+            android:gravity="center"
+            android:text="@{DateTimeUtil.getStrByTime(chat.updateTime)}"
+            android:textColor="@color/gray_600"
+            android:textSize="@dimen/font_note"
+            tools:text="09:09" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/content_padding">
+
+            <ImageView
+                android:id="@+id/headerOther"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:image="@{user.imageUrl}"
+                app:placeholder="@{R.mipmap.header}"
+                tools:src="@mipmap/header" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/content_padding">
+
+                <TextView
+                    android:id="@+id/nameChat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/basic_padding"
+                    android:ellipsize="end"
+                    android:gravity="left"
+                    android:singleLine="true"
+                    android:text="@{user.realName}"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_content"
+                    tools:ignore="RtlHardcoded"
+                    tools:text="@string/name" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewContentChat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_50"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="0dp">
+                    <TextView
+                        android:id="@+id/contentChat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="8dp"
+                        android:minWidth="36dp"
+                        android:text="@{chat.content}"
+                        android:textColor="@color/gray_800"
+                        android:textSize="@dimen/font_title"
+                        tools:text="@string/name" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/headerSelf"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:image="@{user.imageUrl}"
+                app:placeholder="@{R.mipmap.header}"
+                tools:src="@mipmap/header" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
+</layout>

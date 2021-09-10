@@ -24,11 +24,9 @@ class MessageFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false)
+        binding!!.lifecycleOwner = this
         val chatViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(ChatViewModel::class.java)
         binding!!.chatViewModel = chatViewModel
-        binding!!.start.setOnClickListener {
-            chatViewModel.getChatList().value!!.add(Chat("特殊","特殊","特殊",1631026488))
-            chatViewModel.getChatList().value=chatViewModel.getChatList().value }
         return binding!!.root
     }
 

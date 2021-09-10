@@ -15,17 +15,19 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".fragment.MessageFragment">
-
-        <Button
-            android:id="@+id/start"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="start"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/blue_400"
+            android:gravity="center"
+            android:text="@string/message"
+            android:textColor="@color/gray_50"
+            android:textSize="@dimen/font_navigation"/>
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">36
-            +
+            android:background="@color/gray_200"
+            android:layout_weight="1">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewMessage"
                 android:layout_width="match_parent"
@@ -34,7 +36,5 @@
                 app:bindChat="@{chatViewModel.chatList}"
                 />
         </androidx.core.widget.NestedScrollView>
-
-
     </LinearLayout>
 </layout>
