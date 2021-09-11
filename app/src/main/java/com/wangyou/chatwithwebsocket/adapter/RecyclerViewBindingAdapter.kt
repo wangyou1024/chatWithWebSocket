@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.data.FriendApplicationViewModel
+import com.wangyou.chatwithwebsocket.data.GroupApplicationViewModel
 import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
@@ -81,7 +82,10 @@ object RecyclerViewBindingAdapter {
     @JvmStatic
     @BindingAdapter(value = ["groupList"])
     @SuppressLint("NotifyDataSetChanged")
-    fun bindGroupList(recyclerView: RecyclerView?, groupList: MutableLiveData<MutableList<Group>>?) {
+    fun bindGroupList(
+        recyclerView: RecyclerView?,
+        groupList: MutableLiveData<MutableList<Group>>?
+    ) {
         recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
         val groups = if (groupList != null) groupList.value else mutableListOf<Group>()
         recyclerView.adapter =
@@ -94,19 +98,55 @@ object RecyclerViewBindingAdapter {
 
     @JvmStatic
     @SuppressLint("NotifyDataSetChanged")
-    @BindingAdapter(value = ["friendApplication", "oneself"])
-    fun bindFriendApplication(recyclerView: RecyclerView?, friendApplicationViewMode: FriendApplicationViewModel, oneself: User){
+    @BindingAdapter(value = ["friendApplication", "friendApplicationLogin"])
+    fun bindFriendApplication(
+        recyclerView: RecyclerView?,
+        friendApplicationViewMode: FriendApplicationViewModel,
+        friendApplicationLogin: User
+    ) {
         recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.adapter =
-            RecyclerViewAdapterFriendApplication(friendApplicationViewMode.getUserMap().value!!, friendApplicationViewMode.getUserRelationList().value!!, oneself, object : RecyclerViewAdapterFriendApplication.OnClickListener{
-                override fun agree(former: Long, latter: Long) {
-                    Log.i("agree", "${former}申请成为${latter}好友")
-                }
-            })
+            RecyclerViewAdapterFriendApplication(
+                friendApplicationViewMode.getUserMap().value!!,
+                friendApplicationViewMode.getUserRelationList().value!!,
+                friendApplicationLogin,
+                object : RecyclerViewAdapterFriendApplication.OnClickListener {
+                    override fun agree(former: Long, latter: Long) {
+                        Log.i("agree", "${former}申请成为${latter}好友")
+                    }
+                })
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        friendApplicationViewMode.getUserRelationList().observe(recyclerView.context as LifecycleOwner, {
-            recyclerView.adapter!!.notifyDataSetChanged()
-        })
+        friendApplicationViewMode.getUserRelationList()
+            .observe(recyclerView.context as LifecycleOwner, {
+                recyclerView.adapter!!.notifyDataSetChanged()
+            })
+    }
+
+    @JvmStatic
+    @SuppressLint("NotifyDataSetChanged")
+    @BindingAdapter(value = ["groupApplication", "groupApplicationLogin"])
+    fun bindGroupApplication(
+        recyclerView: RecyclerView?,
+        groupApplicationViewMode: GroupApplicationViewModel,
+        groupApplicationLogin: User
+    ) {
+        recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
+        recyclerView.adapter =
+            RecyclerViewAdapterGroupApplication(
+                groupApplicationViewMode.getUserMap().value!!,
+                groupApplicationViewMode.getGroupMap().value!!,
+                groupApplicationViewMode.getGroupRelationList().value!!,
+                groupApplicationLogin,
+                object : RecyclerViewAdapterGroupApplication.OnClickListener {
+                    override fun agree(former: Long, latter: Long) {
+                        Log.i("agree", "${former}申请成为${latter}好友")
+                    }
+                })
+        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        groupApplicationViewMode.getGroupRelationList()
+            .observe(recyclerView.context as LifecycleOwner, {
+                recyclerView.adapter!!.notifyDataSetChanged()
+            })
     }
 
 }

@@ -33,4 +33,5 @@
     <string name="cancel">取消</string>
     <string name="friend_application">好友申请</string>
     <string name="agree">同意</string>
+    <string name="group_application">群申请</string>
 </resources>

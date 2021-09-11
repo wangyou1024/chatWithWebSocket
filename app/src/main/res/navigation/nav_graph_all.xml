@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_mainFragment_to_friendApplicationFragment"
             app:destination="@id/friendApplicationFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_groupApplicationFragment"
+            app:destination="@id/groupApplicationFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -64,6 +67,14 @@
         tools:layout="@layout/fragment_friend_application" >
         <action
             android:id="@+id/action_friendApplicationFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupApplicationFragment"
+        android:name="com.wangyou.chatwithwebsocket.fragment.GroupApplicationFragment"
+        android:label="GroupApplicationFragment" >
+        <action
+            android:id="@+id/action_groupApplicationFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
 </navigation>

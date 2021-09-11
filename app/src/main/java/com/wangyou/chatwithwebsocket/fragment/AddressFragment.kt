@@ -45,6 +45,9 @@ class AddressFragment : Fragment() {
         binding!!.friendApplication.setOnClickListener {
             Navigation.findNavController(requireActivity(), R.id.fragmentAll).navigate(R.id.friendApplicationFragment)
         }
+        binding!!.groupApplication.setOnClickListener {
+            Navigation.findNavController(requireActivity(), R.id.fragmentAll).navigate(R.id.groupApplicationFragment)
+        }
         return binding!!.root
     }
 

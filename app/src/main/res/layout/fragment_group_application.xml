@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="friendApplicationViewModel"
-            type="com.wangyou.chatwithwebsocket.data.FriendApplicationViewModel" />
+            name="groupApplicationViewModel"
+            type="com.wangyou.chatwithwebsocket.data.GroupApplicationViewModel" />
         <variable
             name="oneself"
             type="com.wangyou.chatwithwebsocket.entity.User" />
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/gray_200"
-        tools:context=".fragment.FriendApplicationFragment">
+        tools:context=".fragment.GroupApplicationFragment">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/nav_main"
                 android:gravity="center"
-                android:text="@string/friend_application"
+                android:text="@string/group_application"
                 android:textColor="@color/gray_200"
                 android:textSize="@dimen/font_navigation"
                 tools:ignore="TextContrastCheck" />
@@ -47,8 +47,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:friendApplication="@{friendApplicationViewModel}"
-            app:friendApplicationLogin="@{oneself}"
+            app:groupApplication="@{groupApplicationViewModel}"
+            app:groupApplicationLogin="@{oneself}"
             android:paddingHorizontal="@dimen/content_padding" />
 
     </LinearLayout>
