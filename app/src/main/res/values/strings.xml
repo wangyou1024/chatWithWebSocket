@@ -31,4 +31,6 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="cancel">取消</string>
+    <string name="friend_application">好友申请</string>
+    <string name="agree">同意</string>
 </resources>

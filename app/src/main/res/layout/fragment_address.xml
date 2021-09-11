@@ -20,7 +20,7 @@
             android:background="@color/blue_400"
             android:gravity="center"
             android:text="@string/address_list"
-            android:textColor="@color/gray_300"
+            android:textColor="@color/gray_200"
             android:textSize="@dimen/font_navigation"
             tools:ignore="TextContrastCheck" />
 
@@ -60,6 +60,7 @@
                     android:padding="@dimen/content_padding">
 
                     <TextView
+                        android:id="@+id/friendApplication"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

@@ -2,6 +2,7 @@ package com.wangyou.chatwithwebsocket.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.databinding.Observable
 import androidx.lifecycle.LifecycleOwner
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.wangyou.chatwithwebsocket.R
+import com.wangyou.chatwithwebsocket.data.FriendApplicationViewModel
 import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
@@ -86,6 +88,23 @@ object RecyclerViewBindingAdapter {
             RecyclerViewAdapterGroupList(groups!!)
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         groupList!!.observe(recyclerView.context as LifecycleOwner, {
+            recyclerView.adapter!!.notifyDataSetChanged()
+        })
+    }
+
+    @JvmStatic
+    @SuppressLint("NotifyDataSetChanged")
+    @BindingAdapter(value = ["friendApplication", "oneself"])
+    fun bindFriendApplication(recyclerView: RecyclerView?, friendApplicationViewMode: FriendApplicationViewModel, oneself: User){
+        recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
+        recyclerView.adapter =
+            RecyclerViewAdapterFriendApplication(friendApplicationViewMode.getUserMap().value!!, friendApplicationViewMode.getUserRelationList().value!!, oneself, object : RecyclerViewAdapterFriendApplication.OnClickListener{
+                override fun agree(former: Long, latter: Long) {
+                    Log.i("agree", "${former}申请成为${latter}好友")
+                }
+            })
+        (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+        friendApplicationViewMode.getUserRelationList().observe(recyclerView.context as LifecycleOwner, {
             recyclerView.adapter!!.notifyDataSetChanged()
         })
     }

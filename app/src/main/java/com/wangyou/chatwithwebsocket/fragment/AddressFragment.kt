@@ -42,6 +42,9 @@ class AddressFragment : Fragment() {
         binding!!.searchButton.setOnClickListener {
             Navigation.findNavController(requireActivity(), R.id.fragmentAll).navigate(R.id.searchFragment)
         }
+        binding!!.friendApplication.setOnClickListener {
+            Navigation.findNavController(requireActivity(), R.id.fragmentAll).navigate(R.id.friendApplicationFragment)
+        }
         return binding!!.root
     }
 

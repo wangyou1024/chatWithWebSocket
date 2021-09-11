@@ -90,7 +90,6 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/blue_400"
                 app:cardCornerRadius="20dp">
                 <TextView
                     android:layout_width="72dp"
