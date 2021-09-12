@@ -13,8 +13,8 @@ import com.wangyou.chatwithwebsocket.R
 
 object ImageViewBindingAdapter {
 
-    @BindingAdapter(value = ["image", "placeholder"], requireAll = false)
     @JvmStatic
+    @BindingAdapter(value = ["image", "placeholder"], requireAll = false)
     fun setImage(imageView: ImageView?, url: String?, placeholder: Int) {
         Glide.with(imageView!!.context)
                 .load(url)

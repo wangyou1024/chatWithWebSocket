@@ -59,7 +59,7 @@
             android:paddingBottom="@dimen/content_padding"
             app:chats="@{talkViewModel.chats}"
             app:personal="@{personalViewModel.personal}"
-            app:users="@{talkViewModel.users}"/>
+            app:speakers="@{talkViewModel.users}"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

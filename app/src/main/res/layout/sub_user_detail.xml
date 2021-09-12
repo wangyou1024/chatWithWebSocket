@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="personalViewModel"
+            type="com.wangyou.chatwithwebsocket.data.PersonalViewModel" />
+
+        <import type="com.wangyou.chatwithwebsocket.R" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="118dp"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/content_padding">
+
+                <ImageView
+                    android:layout_width="98dp"
+                    android:layout_height="98dp"
+                    android:layout_marginHorizontal="@dimen/content_padding"
+                    android:clickable="@{personalViewModel.relation == 0}"
+                    app:image="@{personalViewModel.imageUrl}"
+                    app:placeholder="@{R.mipmap.header}"
+                    tools:src="@mipmap/header" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/content_padding"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:enabled="@{personalViewModel.relation == 0}"
+                        android:inputType="text"
+                        android:text="@={personalViewModel.realName}"
+                        android:textColor="@color/gray_800"
+                        android:textSize="@dimen/font_person_name"
+                        tools:text="@string/name" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text='@{"ID:"+personalViewModel.username}'
+                        android:textColor="@color/gray_800"
+                        android:textSize="@dimen/font_navigation"
+                        tools:text="ID:12345678901" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/basic_padding"
+                android:background="@color/gray_200" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/content_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:text="@string/phone"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_title" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:enabled="@{personalViewModel.relation == 0}"
+                    android:inputType="number"
+                    android:text="@={personalViewModel.phone}"
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_title"
+                    tools:text="123456667" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/content_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:text="@string/age"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_title" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:enabled="@{personalViewModel.relation == 0}"
+                    android:inputType="number"
+                    android:text="@={personalViewModel.age}"
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_title"
+                    tools:text="32" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/content_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="24dp"
+                    android:text="@string/gender"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_title" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:checkedButton="@{personalViewModel.gender==0?R.id.man:R.id.woman}"
+                    android:onCheckedChanged="@{(group, checkedId) -> personalViewModel.setGender(group.indexOfChild(group.findViewById(checkedId)))}"
+                    android:orientation="horizontal"
+                    android:textSize="@dimen/font_title">
+
+                    <RadioButton
+                        android:id="@+id/man"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{personalViewModel.relation == 0}"
+                        android:text="@string/man"
+                        android:textColor="@color/gray_800"
+                        android:value="0" />
+
+                    <RadioButton
+                        android:id="@+id/woman"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="@{personalViewModel.relation == 0}"
+                        android:text="@string/woman"
+                        android:textColor="@color/gray_800"
+                        android:value="1" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/content_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:text="@string/email"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_title" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:enabled="@{personalViewModel.relation == 0}"
+                    android:inputType="text"
+                    android:text="@={personalViewModel.email}"
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_title"
+                    tools:text="baiyou1024@qq.com" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/content_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="28dp"
+                    android:text="@string/location"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_title" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:enabled="@{personalViewModel.relation == 0}"
+                    android:inputType="text"
+                    android:text="@={personalViewModel.address}"
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_title"
+                    tools:text="重庆市 渝北区" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/content_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="28dp"
+                    android:gravity="top"
+                    android:text="@string/introduce"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_title" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:enabled="@{personalViewModel.relation == 0}"
+                    android:gravity="top"
+                    android:text="@={personalViewModel.introduce}"
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_title"
+                    tools:text="@string/test_str" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -11,7 +11,7 @@ class FriendApplicationViewModel(): ViewModel() {
 
     init {
         userMap = MutableLiveData(mutableMapOf())
-        for (i in 1L..6L) {
+        for (i in 1L..7L) {
             val str = "${i}something"
             userMap!!.value!![i.toLong()] = User(
                 i,

@@ -1,14 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.PersonalFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+        <variable
+            name="personalViewModel"
+            type="com.wangyou.chatwithwebsocket.data.PersonalViewModel" />
+        <import type="com.wangyou.chatwithwebsocket.R"/>
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="personal" />
+        android:orientation="vertical"
+        android:background="@color/gray_200"
+        tools:context=".fragment.PersonalFragment">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/blue_400"
+            android:gravity="center"
+            android:text="@string/personal"
+            android:textColor="@color/gray_50"
+            android:textSize="@dimen/font_navigation"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
+            android:orientation="horizontal"
+            android:background="@color/gray_50"
+            android:paddingVertical="@dimen/content_padding">
 
-</FrameLayout>
+            <ImageView
+                android:layout_width="98dp"
+                android:layout_height="98dp"
+                android:layout_marginHorizontal="@dimen/content_padding"
+                app:image="@{personalViewModel.imageUrl}"
+                app:placeholder="@{R.mipmap.header}"
+                tools:src="@mipmap/header" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/content_padding"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:text="@={personalViewModel.realName}"
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_person_name"
+                    tools:text="@string/name" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text='@{"ID:"+personalViewModel.username}'
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_navigation"
+                    tools:text="ID:12345678901" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/editPersonal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_padding"
+            android:padding="@dimen/content_padding"
+            android:background="@color/gray_50"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/font_title"
+                android:textColor="@color/gray_800"
+                android:text="资料"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/font_title"
+                android:textColor="@color/gray_800"
+                android:text=">"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/content_padding"
+            android:padding="@dimen/content_padding"
+            android:background="@color/gray_50"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/font_title"
+                android:textColor="@color/gray_800"
+                android:text="退出"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/font_title"
+                android:textColor="@color/gray_800"
+                android:text=">"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -9,28 +9,29 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
-import com.wangyou.chatwithwebsocket.databinding.FragmentPersonalBinding
-import com.wangyou.chatwithwebsocket.data.PersonalViewModel
+import com.wangyou.chatwithwebsocket.data.GroupDetailViewModel
+import com.wangyou.chatwithwebsocket.databinding.FragmentGroupEditBinding
 
+class GroupEditFragment : Fragment() {
 
-class PersonalFragment : Fragment() {
-
-    var binding: FragmentPersonalBinding? = null
+    private var binding: FragmentGroupEditBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_personal, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_group_edit, container, false)
         binding!!.lifecycleOwner = this
-        binding!!.personalViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(PersonalViewModel::class.java)
-        binding!!.editPersonal.setOnClickListener{
-            Navigation.findNavController(requireActivity(), R.id.fragmentAll).navigate(R.id.personalDetailFragment)
+        binding!!.groupDetailViewModel = ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        ).get(GroupDetailViewModel::class.java)
+        binding!!.popBack.setOnClickListener {
+            Navigation.findNavController(requireActivity(), R.id.fragmentAll).popBackStack()
         }
         return binding!!.root
     }

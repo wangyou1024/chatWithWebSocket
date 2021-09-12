@@ -34,4 +34,24 @@
     <string name="friend_application">好友申请</string>
     <string name="agree">同意</string>
     <string name="group_application">群申请</string>
+    <string name="phone">电话</string>
+    <string name="age">年龄</string>
+    <string name="location">地址</string>
+    <string name="email">邮箱</string>
+    <string name="introduce">介绍</string>
+    <string name="gender">性别</string>
+    <string name="man">男</string>
+    <string name="woman">女</string>
+    <string name="personal">个人中心</string>
+    <string name="group_leader">群主</string>
+    <string name="group_member">群成员</string>
+    <string name="save">保存</string>
+    <string name="edit">编辑</string>
+    <string name="dismiss_group">解散群聊</string>
+    <string name="send_message">发送消息</string>
+    <string name="quit_group">退出群聊</string>
+    <string name="join_group">加入群聊</string>
+    <string name="kick_out_group">踢出群聊</string>
+    <string name="make_friend">加好友</string>
+    <string name="delete_friend">删除好友</string>
 </resources>

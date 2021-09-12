@@ -43,7 +43,13 @@ class RecyclerViewAdapterGroupApplication(
                 0
             } else 1
         holder.binding.user = userMap[groupRelationList[position].uid]
+        holder.binding.root.setOnClickListener{
+            listener.viewPersonalDetail(holder.binding.user!!)
+        }
         holder.binding.group = groupMap[groupRelationList[position].gid]
+        holder.binding.groupApplication.setOnClickListener {
+            listener.viewGroupDetail(holder.binding.group!!)
+        }
         holder.binding.applicationStatus.text = when (groupRelationList[position].enable) {
             0 -> "响应中"
             1 -> "已拒绝"
@@ -61,6 +67,8 @@ class RecyclerViewAdapterGroupApplication(
 
     interface OnClickListener {
         fun agree(former: Long, latter: Long)
+        fun viewPersonalDetail(user: User)
+        fun viewGroupDetail(group: Group)
     }
 
 }

@@ -8,6 +8,7 @@ import androidx.databinding.Observable
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,8 @@ import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.fragment.ChatFragmentArgs
+import com.wangyou.chatwithwebsocket.fragment.GroupDetailFragmentArgs
+import com.wangyou.chatwithwebsocket.fragment.PersonalDetailFragmentArgs
 
 object RecyclerViewBindingAdapter {
 
@@ -38,7 +41,7 @@ object RecyclerViewBindingAdapter {
                         Navigation.findNavController(
                             recyclerView.context as Activity,
                             R.id.fragmentAll
-                        ).navigate(R.id.to_chatFragment, bundle)
+                        ).navigate(R.id.chatFragment, bundle)
                     }
                 })
         list.observe(recyclerView.context as LifecycleOwner, {
@@ -47,16 +50,16 @@ object RecyclerViewBindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter(value = ["chats", "users", "personal"], requireAll = false)
+    @BindingAdapter(value = ["chats", "speakers", "personal"], requireAll = false)
     fun bindTalk(
         recyclerView: RecyclerView?,
         chats: MutableLiveData<MutableList<Chat>>?,
-        users: MutableLiveData<MutableMap<Long, User>>?,
+        speakers: MutableLiveData<MutableMap<Long, User>>?,
         personal: MutableLiveData<User>?
     ) {
         recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.adapter =
-            RecyclerViewAdapterTalk(users!!.value, chats!!.value, personal!!.value)
+            RecyclerViewAdapterTalk(speakers!!.value, chats!!.value, personal!!.value)
         chats.observe(recyclerView.context as LifecycleOwner,
             Observer {
                 recyclerView.adapter!!.notifyItemInserted(recyclerView.adapter!!.itemCount - 1)
@@ -71,7 +74,16 @@ object RecyclerViewBindingAdapter {
         recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
         val users = if (userList != null) userList.value else mutableListOf<User>()
         recyclerView.adapter =
-            RecyclerViewAdapterUserList(users!!)
+            RecyclerViewAdapterUserList(users!!, object :
+                RecyclerViewAdapterUserList.OnClickListener {
+                override fun viewDetailPerson(user: User) {
+                    val bundle =
+                        PersonalDetailFragmentArgs.Builder().setUid(user.uid.toString()).build()
+                            .toBundle()
+                    Navigation.findNavController(recyclerView.context as Activity, R.id.fragmentAll)
+                        .navigate(R.id.personalDetailFragment, bundle)
+                }
+            })
         // 停止动画，避免闪烁
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         userList!!.observe(recyclerView.context as LifecycleOwner, {
@@ -89,7 +101,17 @@ object RecyclerViewBindingAdapter {
         recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
         val groups = if (groupList != null) groupList.value else mutableListOf<Group>()
         recyclerView.adapter =
-            RecyclerViewAdapterGroupList(groups!!)
+            RecyclerViewAdapterGroupList(
+                groups!!,
+                object : RecyclerViewAdapterGroupList.OnClickListener {
+                    override fun enterGroupDetail(group: Group) {
+                        Navigation.findNavController(
+                            recyclerView.context as Activity,
+                            R.id.fragmentAll
+                        ).navigate(R.id.groupDetailFragment)
+                    }
+
+                })
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         groupList!!.observe(recyclerView.context as LifecycleOwner, {
             recyclerView.adapter!!.notifyDataSetChanged()
@@ -113,6 +135,16 @@ object RecyclerViewBindingAdapter {
                 object : RecyclerViewAdapterFriendApplication.OnClickListener {
                     override fun agree(former: Long, latter: Long) {
                         Log.i("agree", "${former}申请成为${latter}好友")
+                    }
+
+                    override fun viewPersonalDetail(user: User) {
+                        val bundle =
+                            PersonalDetailFragmentArgs.Builder().setUid(user.uid.toString()).build()
+                                .toBundle()
+                        Navigation.findNavController(
+                            recyclerView.context as Activity,
+                            R.id.fragmentAll
+                        ).navigate(R.id.personalDetailFragment, bundle)
                     }
                 })
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
@@ -140,6 +172,26 @@ object RecyclerViewBindingAdapter {
                 object : RecyclerViewAdapterGroupApplication.OnClickListener {
                     override fun agree(former: Long, latter: Long) {
                         Log.i("agree", "${former}申请成为${latter}好友")
+                    }
+
+                    override fun viewPersonalDetail(user: User) {
+                        val bundle =
+                            PersonalDetailFragmentArgs.Builder().setUid(user.uid.toString()).build()
+                                .toBundle()
+                        Navigation.findNavController(
+                            recyclerView.context as Activity,
+                            R.id.fragmentAll
+                        ).navigate(R.id.personalDetailFragment, bundle)
+                    }
+
+                    override fun viewGroupDetail(group: Group) {
+                        val bundle =
+                            GroupDetailFragmentArgs.Builder().setGid(group.gid.toString()).build()
+                                .toBundle()
+                        Navigation.findNavController(
+                            recyclerView.context as Activity,
+                            R.id.fragmentAll
+                        ).navigate(R.id.groupDetailFragment, bundle)
                     }
                 })
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false

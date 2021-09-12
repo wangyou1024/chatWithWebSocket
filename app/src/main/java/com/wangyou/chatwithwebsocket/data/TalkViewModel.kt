@@ -7,11 +7,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.wangyou.chatwithwebsocket.entity.Chat
+import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.util.DateTimeUtil
 
 class TalkViewModel : ViewModel() {
-    // 群成员
+    // 聊天群
+    private var group: MutableLiveData<Group>? = null
+
+    // 聊天对象
     private var users: MutableLiveData<MutableMap<Long, User>>? = null
 
     // 聊天记录
@@ -21,6 +25,7 @@ class TalkViewModel : ViewModel() {
     var draft: MutableLiveData<String>? = null
 
     init {
+        group = MutableLiveData(Group(1,"123", "klo", "jlsdf", "jkls", 0, 0))
         users = MutableLiveData(mutableMapOf())
         for (i in 1L..10L) {
             val str = "${i}something"

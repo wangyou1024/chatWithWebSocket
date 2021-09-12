@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="personalViewModel"
+            type="com.wangyou.chatwithwebsocket.data.PersonalViewModel" />
+        <variable
+            name="groupDetailViewModel"
+            type="com.wangyou.chatwithwebsocket.data.GroupDetailViewModel" />
+        <import type="android.view.View"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_200"
+        android:orientation="vertical"
+        tools:context=".fragment.PersonalDetailFragment">
+
+        <FrameLayout
+            android:id="@+id/nav_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_400"
+            android:paddingHorizontal="@dimen/content_padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/blue_400"
+                android:gravity="center"
+                android:text="@string/personal"
+                android:textColor="@color/gray_50"
+                android:textSize="@dimen/font_navigation" />
+
+            <TextView
+                android:id="@+id/popBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/back"
+                android:textColor="@color/gray_200"
+                android:textSize="@dimen/font_navigation" />
+
+            <TextView
+                android:id="@+id/saveGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:text="@string/save"
+                android:textColor="@color/gray_200"
+                android:textSize="@dimen/font_navigation"
+                android:visibility="@{personalViewModel.relation == 0?View.VISIBLE:View.GONE}" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nav_header"
+            android:background="@color/gray_50"
+            android:orientation="vertical">
+            <include
+                layout="@layout/sub_user_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:personalViewModel="@{personalViewModel}" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nav_main"
+            android:layout_alignParentBottom="true"
+            android:background="@color/gray_50"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="@dimen/basic_padding"
+            android:visibility="@{personalViewModel.relation != 0?View.VISIBLE:View.GONE}">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="1"
+                android:text="@string/kick_out_group"
+                android:textColor="@color/blue_400"
+                android:textSize="@dimen/font_content"
+                android:visibility="@{groupDetailViewModel.role == 0?View.VISIBLE:View.GONE}"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="1"
+                android:text="@string/make_friend"
+                android:textColor="@color/blue_400"
+                android:textSize="@dimen/font_content"
+                android:visibility="@{personalViewModel.relation == 1?View.VISIBLE:View.GONE}"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="1"
+                android:text="@string/delete_friend"
+                android:textColor="@color/blue_400"
+                android:textSize="@dimen/font_content"
+                android:visibility="@{personalViewModel.relation == 2?View.VISIBLE:View.GONE}"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="1"
+                android:text="@string/send_message"
+                android:textColor="@color/blue_400"
+                android:textSize="@dimen/font_content"
+                android:visibility="@{personalViewModel.relation == 2?View.VISIBLE:View.GONE}"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

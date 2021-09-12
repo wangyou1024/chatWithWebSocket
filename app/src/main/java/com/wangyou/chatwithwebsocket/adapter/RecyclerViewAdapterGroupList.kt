@@ -8,7 +8,7 @@ import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.databinding.ItemGroupBinding
 import com.wangyou.chatwithwebsocket.entity.Group
 
-class RecyclerViewAdapterGroupList(var groupList: MutableList<Group>): RecyclerView.Adapter<RecyclerViewAdapterGroupList.GroupListHolder>() {
+class RecyclerViewAdapterGroupList(var groupList: MutableList<Group>, var listener: OnClickListener): RecyclerView.Adapter<RecyclerViewAdapterGroupList.GroupListHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupListHolder {
         val binding = DataBindingUtil.inflate<ItemGroupBinding>(
@@ -21,6 +21,9 @@ class RecyclerViewAdapterGroupList(var groupList: MutableList<Group>): RecyclerV
     }
 
     override fun onBindViewHolder(holder: GroupListHolder, position: Int) {
+        holder.binding.root.setOnClickListener{
+            listener.enterGroupDetail(groupList[position])
+        }
         holder.binding.group = groupList[position]
     }
 
@@ -30,5 +33,9 @@ class RecyclerViewAdapterGroupList(var groupList: MutableList<Group>): RecyclerV
 
     class GroupListHolder(var binding: ItemGroupBinding) : RecyclerView.ViewHolder(binding.root){
 
+    }
+
+    interface OnClickListener{
+        fun enterGroupDetail(group: Group)
     }
 }

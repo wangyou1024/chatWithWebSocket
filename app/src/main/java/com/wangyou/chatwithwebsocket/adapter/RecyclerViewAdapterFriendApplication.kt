@@ -39,8 +39,12 @@ class RecyclerViewAdapterFriendApplication(
         // 判断自己的角色
         if (userRelationList[position].uidLatter == oneself.uid){
             holder.binding.user = userMap[userRelationList[position].uidFormer]
+
         } else {
             holder.binding.user = userMap[userRelationList[position].uidLatter]
+        }
+        holder.binding.root.setOnClickListener{
+            listener.viewPersonalDetail(holder.binding.user!!)
         }
         holder.binding.applicationStatus.text = when (userRelationList[position].enable) {
             0 -> "响应中"
@@ -59,6 +63,7 @@ class RecyclerViewAdapterFriendApplication(
 
     interface OnClickListener{
         fun agree(former: Long, latter: Long)
+        fun viewPersonalDetail(user: User)
     }
 
 }

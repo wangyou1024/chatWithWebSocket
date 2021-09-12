@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="groupDetailViewModel"
+            type="com.wangyou.chatwithwebsocket.data.GroupDetailViewModel" />
+        <import type="com.wangyou.chatwithwebsocket.R" />
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_200"
+        android:orientation="vertical"
+        tools:context=".fragment.GroupEditFragment">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_400"
+            android:paddingHorizontal="@dimen/content_padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/blue_400"
+                android:gravity="center"
+                android:text="@string/edit"
+                android:textColor="@color/gray_50"
+                android:textSize="@dimen/font_navigation" />
+
+            <TextView
+                android:id="@+id/popBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/back"
+                android:textColor="@color/gray_200"
+                android:textSize="@dimen/font_navigation" />
+            <TextView
+                android:id="@+id/saveGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:text="@string/save"
+                android:visibility="@{groupDetailViewModel.role==0?View.VISIBLE:View.GONE}"
+                android:textColor="@color/gray_200"
+                android:textSize="@dimen/font_navigation" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
+            android:background="@color/gray_50"
+            android:orientation="horizontal"
+            android:paddingVertical="@dimen/content_padding">
+
+            <ImageView
+                android:layout_width="98dp"
+                android:layout_height="98dp"
+                android:layout_marginHorizontal="@dimen/content_padding"
+                app:image="@{groupDetailViewModel.group.groupImage}"
+                app:placeholder="@{R.mipmap.header}"
+                tools:src="@mipmap/header" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/content_padding"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:inputType="text"
+                    android:enabled="@{groupDetailViewModel.role == 0}"
+                    android:text="@={groupDetailViewModel.group.groupName}"
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_person_name"
+                    tools:text="@string/name" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text='@{"ID:"+groupDetailViewModel.group.groupNum}'
+                    android:textColor="@color/gray_800"
+                    android:textSize="@dimen/font_navigation"
+                    tools:text="ID:12345678901" />
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/basic_padding"
+            android:background="@color/gray_200" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_50"
+            android:orientation="horizontal"
+            android:padding="@dimen/content_padding">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                android:text="@string/introduce"
+                android:textColor="@color/gray_600"
+                android:textSize="@dimen/font_title"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:enabled="@{groupDetailViewModel.role==0}"
+                android:gravity="top"
+                android:text="@={groupDetailViewModel.group.introduce}"
+                android:textColor="@color/gray_800"
+                android:textSize="@dimen/font_title"
+                tools:text="@string/test_str"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

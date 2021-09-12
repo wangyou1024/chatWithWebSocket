@@ -10,41 +10,46 @@ import com.wangyou.chatwithwebsocket.databinding.ItemMessageBinding
 import com.wangyou.chatwithwebsocket.entity.Chat
 
 class RecyclerViewAdapterMessage(
-        data: MutableList<Chat>?, listener: MessageListener
+    var chats: MutableList<Chat>?,
+    var listener: MessageListener
 ) : RecyclerView.Adapter<RecyclerViewAdapterMessage.MessageHolder>() {
 
-    var data: MutableList<Chat>? = data
-    var listener: MessageListener? = listener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {
-        val binding = DataBindingUtil.inflate<ItemMessageBinding>(LayoutInflater.from(parent.context), R.layout.item_message, parent, false)
+        val binding = DataBindingUtil.inflate<ItemMessageBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_message,
+            parent,
+            false
+        )
         return MessageHolder(binding)
     }
 
-    fun getAll(): MutableList<Chat>{
-        return data!!
+    fun getAll(): MutableList<Chat> {
+        return chats!!
     }
 
     override fun onBindViewHolder(holder: MessageHolder, position: Int) {
-        val chat = data!![position]
+        val chat = chats!![position]
         holder.binding!!.chat = chat
         holder.binding!!.root.setOnClickListener {
-            listener!!.onClickListener(data!![position])
+            listener.onClickListener(chats!![position])
         }
     }
 
     override fun getItemCount(): Int {
-        return data!!.size
+        return chats!!.size
     }
 
-    class MessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class MessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var binding: ItemMessageBinding? = null
-        constructor(binding: ItemMessageBinding?) : this(binding!!.root){
+
+        constructor(binding: ItemMessageBinding?) : this(binding!!.root) {
             this.binding = binding
         }
     }
 
-    interface MessageListener{
+    interface MessageListener {
         fun onClickListener(chat: Chat)
     }
 }

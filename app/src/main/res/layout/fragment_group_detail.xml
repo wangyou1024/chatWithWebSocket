@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="groupDetailViewModel"
+            type="com.wangyou.chatwithwebsocket.data.GroupDetailViewModel" />
+        <import type="com.wangyou.chatwithwebsocket.R" />
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_200"
+        android:orientation="vertical"
+        tools:context=".fragment.GroupDetailFragment">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_400"
+            android:paddingHorizontal="@dimen/content_padding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/blue_400"
+                android:gravity="center"
+                android:text="@string/group"
+                android:textColor="@color/gray_50"
+                android:textSize="@dimen/font_navigation" />
+
+            <TextView
+                android:id="@+id/popBack"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/back"
+                android:textColor="@color/gray_200"
+                android:textSize="@dimen/font_navigation" />
+
+            <TextView
+                android:id="@+id/editGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:text="@string/more_action"
+                android:textColor="@color/gray_200"
+                android:textSize="@dimen/font_more"
+                android:visibility="@{groupDetailViewModel.role == 0?View.VISIBLE:View.GONE}" />
+        </FrameLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="118dp"
+                    android:background="@color/gray_50"
+                    android:orientation="horizontal"
+                    android:paddingVertical="@dimen/content_padding">
+
+                    <ImageView
+                        android:layout_width="98dp"
+                        android:layout_height="98dp"
+                        android:layout_marginHorizontal="@dimen/content_padding"
+                        app:image="@{groupDetailViewModel.group.groupImage}"
+                        app:placeholder="@{R.mipmap.header}"
+                        tools:src="@mipmap/header" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="@dimen/content_padding"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:text="@={groupDetailViewModel.group.groupName}"
+                            android:textColor="@color/gray_800"
+                            android:textSize="@dimen/font_person_name"
+                            tools:text="@string/name" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text='@{"ID:"+groupDetailViewModel.group.groupNum}'
+                            android:textColor="@color/gray_800"
+                            android:textSize="@dimen/font_navigation"
+                            tools:text="ID:12345678901" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_50"
+                    android:paddingHorizontal="@dimen/content_padding"
+                    android:paddingBottom="@dimen/content_padding"
+                    android:text="@{groupDetailViewModel.group.introduce}"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_note"
+                    tools:text="@string/test_str" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/content_padding"
+                    android:paddingVertical="@dimen/basic_padding"
+                    android:text="@string/group_leader"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_note" />
+
+                <LinearLayout
+                    android:id="@+id/groupLeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_50"
+                    android:paddingHorizontal="@dimen/content_padding">
+
+                    <include
+                        layout="@layout/item_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:user="@{groupDetailViewModel.groupLeader}" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/content_padding"
+                    android:paddingVertical="@dimen/basic_padding"
+                    android:text="@string/group_member"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_note" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray_50"
+                    android:paddingHorizontal="@dimen/content_padding"
+                    app:userList="@{groupDetailViewModel.groupMembers}" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/basic_padding"
+            android:background="@color/gray_200"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nav_main"
+            android:background="@color/gray_50"
+            android:gravity="clip_horizontal"
+            android:orientation="horizontal"
+            android:paddingVertical="@dimen/basic_padding">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/content_padding"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:text="@string/dismiss_group"
+                android:textColor="@color/blue_400"
+                android:textSize="@dimen/font_content"
+                android:visibility="@{groupDetailViewModel.role == 0?View.VISIBLE:View.GONE}" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/content_padding"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:text="@string/quit_group"
+                android:textColor="@color/blue_400"
+                android:textSize="@dimen/font_content"
+                android:visibility="@{groupDetailViewModel.role == 1?View.VISIBLE:View.GONE}" />
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="@dimen/content_padding"
+                android:layout_weight="1"
+                android:text="@string/send_message"
+                android:textColor="@color/blue_400"
+                android:textSize="@dimen/font_content"
+                android:visibility="@{groupDetailViewModel.role != 2?View.VISIBLE:View.GONE}"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/content_padding"
+                android:layout_weight="1"
+                android:text="@string/join_group"
+                android:textColor="@color/blue_400"
+                android:textSize="@dimen/font_content"
+                android:visibility="@{groupDetailViewModel.role == 2?View.VISIBLE:View.GONE}"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>
