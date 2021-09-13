@@ -47,7 +47,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:friendApplication="@{friendApplicationViewModel}"
+            app:friendApplicationUserMap="@{friendApplicationViewModel.userMap}"
+            app:userRelationList="@{friendApplicationViewModel.userRelationList}"
             app:friendApplicationLogin="@{oneself}"
             android:paddingHorizontal="@dimen/content_padding" />
 

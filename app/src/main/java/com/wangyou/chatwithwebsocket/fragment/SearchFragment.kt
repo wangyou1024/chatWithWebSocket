@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.data.GroupListViewModel
@@ -24,6 +25,8 @@ import com.wangyou.chatwithwebsocket.databinding.FragmentSearchBinding
 class SearchFragment : Fragment() {
 
     private var binding: FragmentSearchBinding? = null
+    private var navController: NavController? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +38,19 @@ class SearchFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
         binding!!.lifecycleOwner = this
-        binding!!.backMain.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.fragmentAll).popBackStack()
-        }
         binding!!.userListViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(UserListViewModel::class.java)
         binding!!.groupListViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(GroupListViewModel::class.java)
         binding!!.searchContentViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(SearchContentViewModel::class.java)
+        navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
+        return binding!!.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        binding!!.backMain.setOnClickListener {
+            navController!!.popBackStack()
+        }
+        // 关闭键盘
         binding!!.searchContent.setOnEditorActionListener(object :TextView.OnEditorActionListener{
             override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH){
@@ -56,9 +66,7 @@ class SearchFragment : Fragment() {
                 }
                 return false
             }
-
         })
-        return binding!!.root
     }
 
 }

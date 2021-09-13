@@ -34,6 +34,7 @@
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/searchButton"
                     android:layout_width="match_parent"
                     android:layout_height="36dp"
                     android:layout_marginHorizontal="@dimen/content_padding"
@@ -42,7 +43,6 @@
                     app:cardCornerRadius="18dp">
 
                     <TextView
-                        android:id="@+id/searchButton"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"

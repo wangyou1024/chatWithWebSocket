@@ -7,6 +7,12 @@
         <variable
             name="chat"
             type="com.wangyou.chatwithwebsocket.entity.Chat" />
+        <variable
+            name="user"
+            type="com.wangyou.chatwithwebsocket.entity.User" />
+        <variable
+            name="group"
+            type="com.wangyou.chatwithwebsocket.entity.Group" />
         <import type="com.wangyou.chatwithwebsocket.R"/>
         <import type="com.wangyou.chatwithwebsocket.util.DateTimeUtil"/>
     </data>
@@ -23,7 +29,7 @@
             android:layout_width="@dimen/message_header"
             android:layout_height="54dp"
             android:paddingVertical="@dimen/basic_padding"
-            app:image="@{chat.imageUrl}"
+            app:image="@{chat.gid != -1? group.groupImage: user.imageUrl}"
             app:placeholder="@{R.mipmap.header}"
             tools:src="@mipmap/header"/>
         <LinearLayout
@@ -45,7 +51,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{chat.name}"
+                    android:text="@{chat.gid != -1? group.groupName:user.username}"
                     android:textColor="@color/gray_800"
                     android:textSize="@dimen/font_title"
                     tools:ignore="NestedWeights"

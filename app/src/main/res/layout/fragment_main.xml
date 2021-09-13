@@ -36,12 +36,12 @@
                 tools:ignore="UselessParent">
 
                 <ImageView
-                    android:id="@+id/message"
+                    android:id="@+id/session"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
                     android:padding="@dimen/icon_padding"
-                    android:src="@mipmap/message"
+                    android:src="@mipmap/session"
                     android:contentDescription="@string/message" />
 
                 <ImageView

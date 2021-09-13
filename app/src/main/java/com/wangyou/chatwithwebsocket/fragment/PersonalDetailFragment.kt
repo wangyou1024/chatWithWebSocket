@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.data.GroupDetailViewModel
@@ -18,6 +19,7 @@ class PersonalDetailFragment : Fragment() {
 
     private var binding: FragmentPersonalDetailBinding? = null
     private var personalViewModel: PersonalViewModel? = null
+    private var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +43,7 @@ class PersonalDetailFragment : Fragment() {
             requireActivity(),
             ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
         ).get(GroupDetailViewModel::class.java)
-        binding!!.popBack.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.fragmentAll).popBackStack()
-        }
+        navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
         return binding!!.root
     }
 
@@ -51,5 +51,8 @@ class PersonalDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val bundle = PersonalDetailFragmentArgs.fromBundle(requireArguments())
         personalViewModel!!.username = MutableLiveData(bundle.uid)
+        binding!!.popBack.setOnClickListener {
+            navController!!.popBackStack()
+        }
     }
 }

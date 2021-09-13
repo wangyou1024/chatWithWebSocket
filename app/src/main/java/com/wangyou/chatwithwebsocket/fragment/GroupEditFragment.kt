@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.data.GroupDetailViewModel
@@ -15,6 +16,7 @@ import com.wangyou.chatwithwebsocket.databinding.FragmentGroupEditBinding
 class GroupEditFragment : Fragment() {
 
     private var binding: FragmentGroupEditBinding? = null
+    private var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +32,18 @@ class GroupEditFragment : Fragment() {
             requireActivity(),
             ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
         ).get(GroupDetailViewModel::class.java)
-        binding!!.popBack.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.fragmentAll).popBackStack()
-        }
+        navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
+
         return binding!!.root
     }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        binding!!.popBack.setOnClickListener {
+            navController!!.popBackStack()
+        }
+    }
+
+
 
 }

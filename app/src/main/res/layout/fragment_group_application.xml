@@ -47,7 +47,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:groupApplication="@{groupApplicationViewModel}"
+            app:groupApplicationUserMap="@{groupApplicationViewModel.userMap}"
+            app:groupApplicationGroupMap="@{groupApplicationViewModel.groupMap}"
+            app:groupRelationList="@{groupApplicationViewModel.groupRelationList}"
             app:groupApplicationLogin="@{oneself}"
             android:paddingHorizontal="@dimen/content_padding" />
 

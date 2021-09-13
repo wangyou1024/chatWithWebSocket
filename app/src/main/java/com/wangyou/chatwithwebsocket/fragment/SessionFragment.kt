@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.wangyou.chatwithwebsocket.R
-import com.wangyou.chatwithwebsocket.data.ChatViewModel
-import com.wangyou.chatwithwebsocket.databinding.FragmentMessageBinding
-import com.wangyou.chatwithwebsocket.entity.Chat
+import com.wangyou.chatwithwebsocket.data.SessionViewModel
+import com.wangyou.chatwithwebsocket.databinding.FragmentSessionBinding
 
-class MessageFragment : Fragment() {
+class SessionFragment : Fragment() {
 
-    private var binding: FragmentMessageBinding? = null
+    private var binding: FragmentSessionBinding? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,10 +22,10 @@ class MessageFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_session, container, false)
         binding!!.lifecycleOwner = this
-        val chatViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(ChatViewModel::class.java)
-        binding!!.chatViewModel = chatViewModel
+        val sessionViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(SessionViewModel::class.java)
+        binding!!.sessionViewModel = sessionViewModel
         return binding!!.root
     }
 

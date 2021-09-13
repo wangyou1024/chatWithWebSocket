@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.data.PersonalViewModel
@@ -18,6 +19,7 @@ import com.wangyou.chatwithwebsocket.databinding.FragmentChatBinding
 class ChatFragment : Fragment() {
 
     private var binding: FragmentChatBinding? = null
+    private var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,16 +31,17 @@ class ChatFragment : Fragment() {
         binding!!.lifecycleOwner = this
         binding!!.talkViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(TalkViewModel::class.java)
         binding!!.personalViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(PersonalViewModel::class.java)
-        binding!!.backChat.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.fragmentAll).popBackStack()
-        }
+        navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
         return binding!!.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        var args = ChatFragmentArgs.fromBundle(requireArguments())
-        binding!!.chatUser.text = args.userName
+        binding!!.backChat.setOnClickListener {
+            navController!!.popBackStack()
+        }
+        val args = ChatFragmentArgs.fromBundle(requireArguments())
+        binding!!.chatUser.text = args.cid
     }
 
 }

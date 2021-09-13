@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.data.FriendApplicationViewModel
@@ -17,6 +18,7 @@ import com.wangyou.chatwithwebsocket.databinding.FragmentFriendApplicationBindin
 class FriendApplicationFragment : Fragment() {
 
     private var binding: FragmentFriendApplicationBinding? = null
+    private var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +34,17 @@ class FriendApplicationFragment : Fragment() {
             container,
             false
         )
-        binding!!.backAddress.setOnClickListener {
-            Log.i("return", "address")
-            Navigation.findNavController(requireActivity(), R.id.fragmentAll).popBackStack()
-        }
         binding!!.friendApplicationViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(FriendApplicationViewModel::class.java)
         binding!!.oneself = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(PersonalViewModel::class.java).getPersonal().value
+        navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
         return binding!!.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        binding!!.backAddress.setOnClickListener {
+            Log.i("return", "address")
+            navController!!.popBackStack()
+        }
     }
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.data.GroupApplicationViewModel
@@ -17,6 +18,7 @@ import com.wangyou.chatwithwebsocket.databinding.FragmentGroupListBinding
 class GroupApplicationFragment : Fragment() {
 
     private var binding: FragmentGroupApplicationBinding? = null
+    private var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +36,15 @@ class GroupApplicationFragment : Fragment() {
         )
         binding!!.groupApplicationViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(GroupApplicationViewModel::class.java)
         binding!!.oneself = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(PersonalViewModel::class.java).getPersonal().value
-        binding!!.backAddress.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.fragmentAll).popBackStack()
-        }
+        navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
+
         return binding!!.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        binding!!.backAddress.setOnClickListener {
+            navController!!.popBackStack()
+        }
     }
 }
