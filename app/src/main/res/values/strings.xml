@@ -10,7 +10,7 @@
     <string name="password_label">密码</string>
     <string name="login_in">登录</string>
     <string name="sign_up">注册</string>
-    <string name="personal_info">个人信息</string>
+    <string name="personal_info">个人</string>
     <string name="group_message">群通知</string>
     <string name="friend_new">新朋友</string>
     <string name="back">&lt; 返回</string>
@@ -54,4 +54,8 @@
     <string name="kick_out_group">踢出群聊</string>
     <string name="make_friend">加好友</string>
     <string name="delete_friend">删除好友</string>
+    <string name="login_username">账号/手机号</string>
+    <string name="application">申请加入：</string>
+    <string name="information">资料</string>
+    <string name="out">退出</string>
 </resources>

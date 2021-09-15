@@ -22,7 +22,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/nav_main"
-            android:background="@color/blue_400"
+            android:background="?colorPrimary"
             android:paddingHorizontal="@dimen/content_padding">
 
             <TextView

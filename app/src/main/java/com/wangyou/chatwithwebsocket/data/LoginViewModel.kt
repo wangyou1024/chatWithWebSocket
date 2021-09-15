@@ -1,22 +1,35 @@
 package com.wangyou.chatwithwebsocket.data
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
+import com.wangyou.chatwithwebsocket.conf.Const
+import com.wangyou.chatwithwebsocket.net.api.LoginAPI
+import com.wangyou.chatwithwebsocket.net.exception.APIException
+import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
+import com.wangyou.chatwithwebsocket.net.response.ResponseTransformer
+import com.wangyou.chatwithwebsocket.util.DateTimeUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class LoginViewModel(): ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    var loginAPI: LoginAPI,
+): ViewModel() {
     private var username: ObservableField<String>? = null
     private var password: ObservableField<String>? = null
     private var navController: NavController? = null
+    private var logining: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    private var logined: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
 
     init {
-        username = ObservableField("13635347490")
-        password = ObservableField("123456")
+        username = ObservableField("admin1")
+        password = ObservableField("123")
     }
 
     fun setNavController(context: NavController){
@@ -39,10 +52,31 @@ class LoginViewModel(): ViewModel() {
         this.password!!.set(password)
     }
 
+    fun isLogining(): MutableLiveData<Boolean>{
+        return logining
+    }
+
     fun loginIn(){
-        Log.i("login", "${username!!.get()}, ${password!!.get()}")
-        navController!!.popBackStack(R.id.loginFragment, true)
-        navController!!.navigate(R.id.mainFragment)
+        if (logining.value!! || logined.value!!){
+            return
+        }else{
+            logining.value = true
+            logining.value = logining.value
+        }
+        loginAPI.login(userName= username!!.get()!!, password = password!!.get()!!)
+            .compose(ResponseTransformer.obtion())
+            .subscribe({
+                Log.i(Const.TAG, "${DateTimeUtil.getStrNow()}:登录成功")
+                navController!!.popBackStack(R.id.loginFragment, true)
+                navController!!.navigate(R.id.mainFragment)
+                logining.value = false
+                logined.value = true
+            },object : ErrorConsumer(){
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, "${DateTimeUtil.getStrNow()}:${ex.errorMsg}")
+                    logining.value = false
+                }
+            })
     }
 
     fun signUp(){

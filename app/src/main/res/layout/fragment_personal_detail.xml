@@ -24,13 +24,13 @@
             android:id="@+id/nav_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue_400"
+            android:background="?colorPrimary"
             android:paddingHorizontal="@dimen/content_padding">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/blue_400"
+                android:background="?colorPrimary"
                 android:gravity="center"
                 android:text="@string/personal"
                 android:textColor="@color/gray_50"
@@ -77,40 +77,40 @@
             android:paddingHorizontal="5dp"
             android:paddingVertical="@dimen/basic_padding"
             android:visibility="@{personalViewModel.relation != 0?View.VISIBLE:View.GONE}">
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp"
                 android:layout_weight="1"
                 android:text="@string/kick_out_group"
-                android:textColor="@color/blue_400"
+                android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
                 android:visibility="@{groupDetailViewModel.role == 0?View.VISIBLE:View.GONE}"/>
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp"
                 android:layout_weight="1"
                 android:text="@string/make_friend"
-                android:textColor="@color/blue_400"
+                android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
                 android:visibility="@{personalViewModel.relation == 1?View.VISIBLE:View.GONE}"/>
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp"
                 android:layout_weight="1"
                 android:text="@string/delete_friend"
-                android:textColor="@color/blue_400"
+                android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
                 android:visibility="@{personalViewModel.relation == 2?View.VISIBLE:View.GONE}"/>
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp"
                 android:layout_weight="1"
                 android:text="@string/send_message"
-                android:textColor="@color/blue_400"
+                android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
                 android:visibility="@{personalViewModel.relation == 2?View.VISIBLE:View.GONE}"/>
 

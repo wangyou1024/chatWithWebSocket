@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/blue_400"
+            android:background="?colorPrimary"
             android:gravity="center"
             android:text="@string/message"
             android:textColor="@color/gray_50"

@@ -4,121 +4,110 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="loginViewModel"
             type="com.wangyou.chatwithwebsocket.data.LoginViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragment.LoginFragment">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.4" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.25" />
+            android:paddingHorizontal="@dimen/nav_main">
 
-        <TextView
-            android:id="@+id/name_label"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/content_padding">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/nameLabel"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/login_username">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextTextPersonName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={loginViewModel.username}" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/content_padding">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/passwordLabel"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_label">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:text="@={loginViewModel.password}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/loginIn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:onClick="@{()->loginViewModel.loginIn()}"
+                    android:paddingVertical="@dimen/content_padding"
+                    android:text="@string/login_in"
+                    android:textColor="@color/gray_200"
+                    android:textSize="@dimen/font_navigation" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/signUp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    android:onClick="@{()->loginViewModel.signUp()}"
+                    android:paddingVertical="@dimen/content_padding"
+                    android:text="@string/sign_up"
+                    android:textColor="?colorPrimary"
+                    android:textSize="@dimen/font_navigation"
+                    app:strokeColor="?colorPrimary" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/avi"
+            style="@style/AVLoadingIndicatorView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/name"
-            android:textColor="@color/gray_900"
-            android:textSize="@dimen/font_navigation"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName"
-            android:layout_width="252dp"
-            android:layout_height="52dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@={loginViewModel.username}"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-        <TextView
-            android:id="@+id/password_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/password_label"
-            android:textColor="@color/gray_900"
-            android:textSize="@dimen/font_navigation"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline4"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
-        <EditText
-            android:id="@+id/password"
-            android:layout_width="252dp"
-            android:layout_height="52dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:text="@={loginViewModel.password}"
-            app:layout_constraintBottom_toBottomOf="@+id/guideline4"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-        <Button
-            android:id="@+id/loginIn"
-            android:layout_width="123dp"
-            android:layout_height="48dp"
-            android:background="@drawable/button_blue"
-            android:onClick="@{()->loginViewModel.loginIn()}"
-            android:text="@string/login_in"
-            android:textColor="@color/gray_200"
-            android:textSize="@dimen/font_navigation"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"
-            app:layout_constraintHorizontal_bias="0.662"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline4"
-            app:layout_constraintVertical_bias="0.093" />
-
-        <Button
-            android:id="@+id/signUp"
-            android:layout_width="123dp"
-            android:layout_height="48dp"
-            android:background="@drawable/button_blue"
-            android:onClick="@{()->loginViewModel.signUp()}"
-            android:text="@string/sign_up"
-            android:textColor="@color/gray_200"
-            android:textSize="@dimen/font_navigation"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.338"
-            app:layout_constraintStart_toStartOf="@+id/guideline5"
-            app:layout_constraintTop_toTopOf="@+id/guideline4"
-            app:layout_constraintVertical_bias="0.093" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.54" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_gravity="center"
+            android:visibility="visible"
+            app:indicatorColor="?colorPrimary"
+            app:indicatorName="BallPulseIndicator" />
+    </FrameLayout>
 </layout>

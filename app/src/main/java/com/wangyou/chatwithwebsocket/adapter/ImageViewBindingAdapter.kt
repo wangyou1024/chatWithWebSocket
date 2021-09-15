@@ -1,15 +1,10 @@
 package com.wangyou.chatwithwebsocket.adapter
 
-import android.graphics.Bitmap
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.BitmapImageViewTarget
-import com.bumptech.glide.request.target.SimpleTarget
-import com.wangyou.chatwithwebsocket.R
-
 
 object ImageViewBindingAdapter {
 

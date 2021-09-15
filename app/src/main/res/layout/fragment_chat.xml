@@ -22,7 +22,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/nav_main"
-            android:background="@color/blue_400"
+            android:background="?colorPrimary"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/content_padding">
 
@@ -30,7 +30,7 @@
                 android:id="@+id/chatUser"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/blue_400"
+                android:background="?colorPrimary"
                 android:gravity="center"
                 android:text="@string/name"
                 android:textColor="@color/gray_200"
@@ -74,7 +74,7 @@
                 android:layout_weight="1"
                 android:background="@color/gray_50"
                 app:cardCornerRadius="20dp">
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/sendThing"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                     android:minHeight="28dp"
                     android:text="@={talkViewModel.draft}"
                     android:textColor="@color/gray_900"
-                    android:textSize="@dimen/font_title"/>
+                    android:textAppearance="?attr/textAppearanceBody1"/>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
                 <TextView
                     android:layout_width="72dp"
                     android:layout_height="36dp"
-                    android:background="@color/blue_400"
+                    android:background="?colorPrimary"
                     android:gravity="center"
                     android:onClick="@{()->talkViewModel.send(personalViewModel.personal)}"
                     android:text="@string/send"

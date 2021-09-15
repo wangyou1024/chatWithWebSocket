@@ -54,17 +54,31 @@
                 android:textSize="@dimen/font_title"
                 tools:text="@string/name" />
 
-            <TextView
-                android:id="@+id/groupApplication"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:paddingBottom="@dimen/basic_padding"
-                android:singleLine="true"
-                android:text='@{"申请加入："+group.groupName}'
-                android:textColor="@color/blue_400"
-                android:textSize="@dimen/font_content"
-                tools:text="@string/test_str" />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingBottom="@dimen/basic_padding"
+                    android:singleLine="true"
+                    android:text="@string/application"
+                    android:textColor="@color/gray_600"
+                    android:textSize="@dimen/font_content"/>
+                <TextView
+                    android:id="@+id/groupApplication"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingBottom="@dimen/basic_padding"
+                    android:singleLine="true"
+                    android:text='@{group.groupName}'
+                    android:textColor="?colorPrimary"
+                    android:textSize="@dimen/font_content"
+                    tools:text="@string/test_str" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
@@ -89,7 +103,7 @@
                 android:id="@+id/agreeApplication"
                 android:layout_width="58dp"
                 android:layout_height="32dp"
-                android:background="@color/blue_400"
+                android:background="?colorPrimary"
                 android:gravity="center"
                 android:text="@string/agree"
                 android:textColor="@color/gray_200"

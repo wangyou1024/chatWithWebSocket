@@ -1,7 +1,8 @@
 package com.wangyou.chatwithwebsocket.util
 
+import android.annotation.SuppressLint
 import android.os.Build
-import androidx.annotation.RequiresApi
+import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -9,11 +10,18 @@ import java.util.*
 
 object DateTimeUtil {
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("SimpleDateFormat")
     @JvmStatic
-    fun getStrByTime(time: Long): String{
-        val time = LocalDateTime.ofInstant(Instant.ofEpochSecond(time), ZoneId.systemDefault())
-        return "${time.hour}:${time.minute}"
+    fun getStrByTime(now: Long): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val time =
+                LocalDateTime.ofInstant(Instant.ofEpochSecond(now), ZoneId.systemDefault())
+            "${time.hour}:${time.minute}"
+        } else {
+            val ft = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+            val time = Date(now * 1000)
+            ft.format(time)
+        }
     }
 
     @JvmStatic
@@ -23,5 +31,10 @@ object DateTimeUtil {
         } else {
             Date().time/1000
         }
+    }
+
+    @JvmStatic
+    fun getStrNow(): String{
+        return getStrByTime(getTimeNow())
     }
 }
