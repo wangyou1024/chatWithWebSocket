@@ -1,6 +1,8 @@
 package com.wangyou.chatwithwebsocket.net.exception
 
+import android.util.Log
 import com.google.gson.JsonParseException
+import com.wangyou.chatwithwebsocket.conf.Const
 import org.json.JSONException
 import java.lang.Exception
 import java.net.ConnectException
@@ -22,6 +24,7 @@ class APIException(
         @JvmStatic
         fun handleException(e: Throwable): APIException {
             var ex: APIException = APIException(UNKNOWN_ERROR.toString(), "未知异常")
+            Log.i(Const.TAG, e.message!!)
             if (e is JsonParseException || e is JSONException || e is ParseException) {
                 ex = APIException(PARSE_ERROR.toString(), "数据解析异常")
             } else if (e is ConnectException || e is UnknownHostException || e is SocketTimeoutException) {

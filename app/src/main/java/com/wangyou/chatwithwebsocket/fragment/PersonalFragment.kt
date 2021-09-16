@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -22,8 +23,8 @@ class PersonalFragment : BaseFragment() {
     var binding: FragmentPersonalBinding? = null
     private var navController: NavController? = null
 
-    private val personalViewModel by viewModels<PersonalViewModel>()
-    private val loginViewModel by viewModels<LoginViewModel>()
+    private val personalViewModel by activityViewModels<PersonalViewModel>()
+    private val loginViewModel by activityViewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

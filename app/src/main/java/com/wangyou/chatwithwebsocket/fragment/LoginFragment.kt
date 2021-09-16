@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
@@ -18,7 +19,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginFragment : BaseFragment() {
 
-    private val loginViewModel by viewModels<LoginViewModel>()
+    private val loginViewModel by activityViewModels<LoginViewModel>()
 
     private var binding: FragmentLoginBinding? = null
 

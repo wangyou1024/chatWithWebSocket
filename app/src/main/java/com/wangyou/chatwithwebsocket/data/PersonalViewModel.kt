@@ -12,15 +12,25 @@ import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
 import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
 import com.wangyou.chatwithwebsocket.net.response.ResponseTransformer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subscribers.DisposableSubscriber
+import ua.naiksoftware.stomp.StompClient
+import ua.naiksoftware.stomp.dto.StompMessage
 import javax.inject.Inject
 
 @HiltViewModel
 class PersonalViewModel @Inject constructor(
     var toast: Toast,
+    var stompClient: StompClient,
     var userServiceAPI: UserServiceAPI,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
-): ViewModel() {
+) : ViewModel() {
     private var personal: MutableLiveData<User>? = MutableLiveData(User())
+
     // 当前登录者与展示对象的关系：0：自己；1：陌生人；2：好友
     private var relation: MutableLiveData<Int>? = MutableLiveData(0)
 
@@ -35,14 +45,14 @@ class PersonalViewModel @Inject constructor(
     var introduce: MutableLiveData<String>? = MutableLiveData("")
     var loadSelfError: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    fun loadUser(username: String){
+    fun loadUser(username: String) {
         userServiceAPI.findUserByUsername(username)
             .compose(ResponseTransformer.obtion(compositeDisposableLifecycle.compositeDisposable))
-            .subscribe ({
+            .subscribe({
                 this.personal!!.value = it
                 synchronizedInfo()
                 Log.i(Const.TAG, it.username!!)
-            }, object : ErrorConsumer(){
+            }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
                     toast.setText(ex.errorMsg)
                     toast.show()
@@ -50,52 +60,68 @@ class PersonalViewModel @Inject constructor(
             })
     }
 
-    fun loadSelf(){
+    fun loadSelf() {
         userServiceAPI.findUserByPrincipal()
             .compose(ResponseTransformer.obtion(compositeDisposableLifecycle.compositeDisposable))
-            .subscribe ({
+            .subscribe({
                 this.personal!!.value = it
                 synchronizedInfo()
                 loadSelfError.value = false
-            }, object : ErrorConsumer(){
+                // 标记当前展示角色为自己
+                relation?.value = 0
+            }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
                     loadSelfError.value = true
                     toast.setText(ex.errorMsg)
                     toast.show()
                 }
             })
+            //  topic()
     }
 
-    private fun synchronizedInfo(){
-        username?.value = personal?.value?.username
-        realName?.value = personal?.value?.realName
-        imageUrl?.value = personal?.value?.imageUrl
-        phone?.value = personal?.value?.phone
-        age?.value = personal?.value?.age.toString()
-        address?.value = personal?.value?.address
-        email?.value = personal?.value?.email
-        gender?.value = personal?.value?.gender
-        introduce?.value = personal?.value?.introduce
+
+    fun topic() {
+        // 默认工作在Thread.currentThread().name -> okhttp: http://IP:PORT/...
+        val subscribe = stompClient.topic(Const.chatResponse)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Log.i(Const.TAG, "Stomp re==${Thread.currentThread().name}");
+            }, {
+                Log.e(Const.TAG, "Error on subscribe topic", it);
+            });
+        compositeDisposableLifecycle.addDisposable(subscribe)
+        stompClient.send(Const.chat, "nothing").subscribe()
     }
 
-    fun getPersonal(): MutableLiveData<User>{
+    private fun synchronizedInfo() {
+        username?.value = personal?.value?.username?:""
+        realName?.value = personal?.value?.realName?:""
+        imageUrl?.value = personal?.value?.imageUrl?:""
+        phone?.value = personal?.value?.phone?:""
+        age?.value = personal?.value?.age?.toString()?:"0"
+        address?.value = personal?.value?.address?:""
+        email?.value = personal?.value?.email?:""
+        gender?.value = personal?.value?.gender?:0
+        introduce?.value = personal?.value?.introduce?:""
+    }
+
+    fun getPersonal(): MutableLiveData<User> {
         return personal!!
     }
 
-    fun setPersonal(user: MutableLiveData<User>){
+    fun setPersonal(user: MutableLiveData<User>) {
         personal = user
     }
 
-    fun getGender(): MutableLiveData<Int>{
+    fun getGender(): MutableLiveData<Int> {
         return gender!!
     }
 
-    fun setGender(gender: Int){
-        Log.i("gender", gender.toString())
+    fun setGender(gender: Int) {
         this.gender!!.value = gender
     }
 
-    fun getRelation():MutableLiveData<Int>{
+    fun getRelation(): MutableLiveData<Int> {
         return relation!!
     }
 

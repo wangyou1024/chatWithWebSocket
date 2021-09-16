@@ -1,5 +1,6 @@
 package com.wangyou.chatwithwebsocket.net.di
 
+import android.app.Activity
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
@@ -24,6 +25,11 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 
 import com.franmontiel.persistentcookiejar.ClearableCookieJar
+import com.wangyou.chatwithwebsocket.net.api.StompClientLifecycle
+import ua.naiksoftware.stomp.Stomp
+import ua.naiksoftware.stomp.StompClient
+import ua.naiksoftware.stomp.dto.LifecycleEvent
+import ua.naiksoftware.stomp.dto.StompMessage
 
 
 @Module
@@ -67,6 +73,37 @@ object NetWorkModule {
 
     @Provides
     @Singleton
+    fun provideStompClient(okHttpClient: OkHttpClient): StompClient{
+        // okHttpClient中含有登录信息，无需再另外添加header
+        val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Const.webSocket, null, okHttpClient)
+        // stompClient.withClientHeartbeat(1000).withServerHeartbeat(1000)
+        return stompClient
+    }
+
+    @Provides
+    @Singleton
+    fun provideStompClientLifeCycle(stompClient: StompClient, compositeDisposableLifecycle: CompositeDisposableLifecycle): StompClientLifecycle{
+        val stompClientLifecycle = StompClientLifecycle(stompClient)
+        val subscribe = stompClient.lifecycle()?.subscribe { lifecycleEvent: LifecycleEvent ->
+            when (lifecycleEvent.type) {
+                LifecycleEvent.Type.OPENED -> Log.d(Const.TAG, "flan debug stomp connection opened")
+                LifecycleEvent.Type.ERROR -> {
+                    Log.e(Const.TAG, "flan debug stomp connection error is ", lifecycleEvent.exception)
+                    // 重连
+                    stompClientLifecycle.connect()
+                }
+                LifecycleEvent.Type.CLOSED -> Log.d(Const.TAG, "flan debug stomp connection closed")
+                else -> Log.d(Const.TAG, "nothing")
+            }
+        }
+        if (subscribe != null) {
+            compositeDisposableLifecycle.addDisposable(subscribe)
+        }
+        return stompClientLifecycle
+    }
+
+    @Provides
+    @Singleton
     fun provideCompositeDisposableLifecycle(): CompositeDisposableLifecycle {
         return CompositeDisposableLifecycle()
     }
@@ -74,6 +111,6 @@ object NetWorkModule {
     @Provides
     @Singleton
     fun provideCompositeToast(application: Application): Toast {
-        return Toast(application)
+        return Toast.makeText(application, "", Toast.LENGTH_LONG)
     }
 }

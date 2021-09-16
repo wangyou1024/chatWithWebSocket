@@ -4,11 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="personalViewModel"
             type="com.wangyou.chatwithwebsocket.data.PersonalViewModel" />
-
         <import type="com.wangyou.chatwithwebsocket.R" />
     </data>
 
@@ -56,9 +54,10 @@
                         tools:text="@string/name" />
 
                     <TextView
+
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text='@{"ID:"+personalViewModel.username}'
+                        android:text='@{"ID:"+personalViewModel.personal.username}'
                         android:textColor="@color/gray_800"
                         android:textSize="@dimen/font_navigation"
                         tools:text="ID:12345678901" />

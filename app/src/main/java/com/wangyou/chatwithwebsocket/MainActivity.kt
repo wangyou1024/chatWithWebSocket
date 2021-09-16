@@ -20,11 +20,13 @@ import com.wangyou.chatwithwebsocket.data.LoginViewModel
 import com.wangyou.chatwithwebsocket.data.MainUIViewModel
 import com.wangyou.chatwithwebsocket.data.PersonalViewModel
 import com.wangyou.chatwithwebsocket.databinding.ActivityMainBinding
+import com.wangyou.chatwithwebsocket.net.api.StompClientLifecycle
 import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
 import com.wangyou.chatwithwebsocket.util.SetStatusBar
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
+import ua.naiksoftware.stomp.StompClient
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -39,6 +41,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var toast: Toast
+
+    @Inject
+    lateinit var stompClientLifecycle: StompClientLifecycle
 
     private val personalViewModel by viewModels<PersonalViewModel>()
     private val loginViewModel by viewModels<LoginViewModel>()
@@ -57,13 +62,10 @@ class MainActivity : AppCompatActivity() {
         personalViewModel.loadSelfError.observe(this, {
             if (it) {
                 loginPage("登录状态异常")
-            } else if (personalViewModel.getPersonal().value?.username != null){
-                loginViewModel.setUsername(personalViewModel.getPersonal().value!!.username!!)
-                val ft = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-                val time = Date(cookieList[0].expiresAt())
-                Log.i(Const.TAG, "过期时间：${ft.format(time)}")
-                toast.setText(ft.format(time))
-                toast.show()
+            } else {
+                personalViewModel.getPersonal().value?.username?.let { username ->
+                    loginViewModel.setUsername(username)
+                }
             }
         })
         when {
@@ -71,6 +73,11 @@ class MainActivity : AppCompatActivity() {
                 loginPage("未登录")
             }
             cookieList[0].expiresAt() < System.currentTimeMillis() -> {
+                val ft = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+                val time = Date(cookieList[0].expiresAt())
+                Log.i(Const.TAG, "过期时间：${ft.format(time)}")
+                toast.setText(ft.format(time))
+                toast.show()
                 loginPage("登录过期")
             }
             else -> {
@@ -78,12 +85,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
         lifecycle.addObserver(compositeDisposableLifecycle)
+        lifecycle.addObserver(stompClientLifecycle)
     }
 
     /**
      * 个人中心的退出按钮
      */
-    fun exit(view: View){
+    fun exit(view: View) {
         loginViewModel.logout()
         SharedPrefsCookiePersistor(this).clear()
         loginPage("已退出")
@@ -98,6 +106,7 @@ class MainActivity : AppCompatActivity() {
     private fun loginPage(error: String) {
         navController!!.popBackStack(R.id.mainFragment, true)
         navController!!.navigate(R.id.loginFragment)
+        toast.duration = Toast.LENGTH_SHORT
         toast.setText(error)
         toast.show()
     }
