@@ -5,7 +5,7 @@ import com.wangyou.chatwithwebsocket.net.response.ResponseData
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.*
 
-interface LoginAPI {
+interface LoginServiceAPI {
 
     @POST("/login")
     @FormUrlEncoded
@@ -13,5 +13,15 @@ interface LoginAPI {
         @Field("username") userName: String,
         @Field("password") password: String
     ): Observable<ResponseData<User>>
+
+    @POST("/user/signUp")
+    @FormUrlEncoded
+    fun signUp(
+        @Field("username") userName: String,
+        @Field("password") password: String
+    ): Observable<ResponseData<User>>
+
+    @POST("/logout")
+    fun logout(): Observable<ResponseData<User>>
 
 }

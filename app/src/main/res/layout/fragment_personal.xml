@@ -36,7 +36,7 @@
                 android:layout_width="98dp"
                 android:layout_height="98dp"
                 android:layout_marginHorizontal="@dimen/content_padding"
-                app:image="@{personalViewModel.imageUrl}"
+                app:image="@{personalViewModel.personal.imageUrl}"
                 app:placeholder="@{R.mipmap.header}"
                 tools:src="@mipmap/header" />
 
@@ -52,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:text="@={personalViewModel.realName}"
+                    android:text="@={personalViewModel.personal.realName}"
                     android:textColor="@color/gray_800"
                     android:textSize="@dimen/font_person_name"
                     tools:text="@string/name" />
@@ -60,7 +60,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text='@{"ID:"+personalViewModel.username}'
+                    android:text='@{"ID:"+personalViewModel.personal.username}'
                     android:textColor="@color/gray_800"
                     android:textSize="@dimen/font_navigation"
                     tools:text="ID:12345678901" />
@@ -102,6 +102,7 @@
                 android:layout_height="match_parent"
                 android:textSize="@dimen/font_title"
                 android:textColor="@color/gray_800"
+                android:onClick="exit"
                 android:text="@string/out"/>
             <TextView
                 android:layout_width="wrap_content"

@@ -1,8 +1,11 @@
 package com.wangyou.chatwithwebsocket.net.di
 
+import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import com.wangyou.chatwithwebsocket.conf.Const
-import com.wangyou.chatwithwebsocket.net.api.LoginAPI
+import com.wangyou.chatwithwebsocket.net.api.LoginServiceAPI
+import com.wangyou.chatwithwebsocket.net.api.UserServiceAPI
 import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
 import dagger.Module
 import dagger.Provides
@@ -14,6 +17,14 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
+
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache
+
+import com.franmontiel.persistentcookiejar.PersistentCookieJar
+
+import com.franmontiel.persistentcookiejar.ClearableCookieJar
+
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -21,11 +32,15 @@ object NetWorkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
-        val interceptor = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger {
-            Log.i("wangyou", it)
-        }).setLevel(HttpLoggingInterceptor.Level.BODY)
-        return OkHttpClient.Builder().addInterceptor(interceptor).build()
+    fun provideOkHttpClient(application: Application): OkHttpClient {
+        // 请求日志
+        val interceptor = HttpLoggingInterceptor {
+            Log.i(Const.TAG, it)
+        }.setLevel(HttpLoggingInterceptor.Level.BODY)
+        // 持久化cookie
+        val cookieJar: ClearableCookieJar =
+            PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(application))
+        return OkHttpClient.Builder().cookieJar(cookieJar).addInterceptor(interceptor).build()
     }
 
     @Provides
@@ -40,13 +55,25 @@ object NetWorkModule {
 
     @Provides
     @Singleton
-    fun provideLoginAPI(retrofit: Retrofit):LoginAPI{
-        return retrofit.create(LoginAPI::class.java)
+    fun provideLoginServiceAPI(retrofit: Retrofit): LoginServiceAPI {
+        return retrofit.create(LoginServiceAPI::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideCompositeDisposableLifecycle(): CompositeDisposableLifecycle{
+    fun provideUserServiceAPI(retrofit: Retrofit): UserServiceAPI {
+        return retrofit.create(UserServiceAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCompositeDisposableLifecycle(): CompositeDisposableLifecycle {
         return CompositeDisposableLifecycle()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCompositeToast(application: Application): Toast {
+        return Toast(application)
     }
 }

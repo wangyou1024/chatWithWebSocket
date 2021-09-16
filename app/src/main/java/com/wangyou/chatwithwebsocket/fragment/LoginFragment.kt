@@ -6,22 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.data.LoginViewModel
-import com.wangyou.chatwithwebsocket.data.MainUIViewModel
 import com.wangyou.chatwithwebsocket.databinding.FragmentLoginBinding
-import com.wangyou.chatwithwebsocket.net.api.LoginAPI
+import com.wangyou.chatwithwebsocket.net.api.LoginServiceAPI
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : BaseFragment() {
-
-    @Inject
-    lateinit var loginAPI: LoginAPI
 
     private val loginViewModel by viewModels<LoginViewModel>()
 
