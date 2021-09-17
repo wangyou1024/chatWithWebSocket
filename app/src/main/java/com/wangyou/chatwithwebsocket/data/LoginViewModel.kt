@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
             logining.value = logining.value
         }
         loginServiceAPI.login(userName= username!!.get()!!, password = password!!.get()!!)
-            .compose(ResponseTransformer.obtion(compositeDisposableLifecycle.compositeDisposable))
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 navController!!.popBackStack(R.id.loginFragment, true)
                 navController!!.navigate(R.id.mainFragment)
@@ -72,7 +72,7 @@ class LoginViewModel @Inject constructor(
             logining.value = logining.value
         }
         loginServiceAPI.signUp(userName= username!!.get()!!, password = password!!.get()!!)
-            .compose(ResponseTransformer.obtion(compositeDisposableLifecycle.compositeDisposable))
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 logining.value = false
                 toast.setText(R.string.sign_success)
@@ -89,7 +89,7 @@ class LoginViewModel @Inject constructor(
 
     fun logout(){
         loginServiceAPI.logout()
-            .compose(ResponseTransformer.obtion(compositeDisposableLifecycle.compositeDisposable))
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 logined.value = false
             }, object : ErrorConsumer(){

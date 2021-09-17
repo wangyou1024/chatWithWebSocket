@@ -48,12 +48,8 @@ class ResponseTransformer<T>(private var compositeDisposable: CompositeDisposabl
     }
 
     companion object{
-        fun <U> obtion(compositeDisposable: CompositeDisposable?): ResponseTransformer<U>{
+        fun <U> option(compositeDisposable: CompositeDisposable?): ResponseTransformer<U>{
             return ResponseTransformer(compositeDisposable);
-        }
-
-        fun <U> obtion(): ResponseTransformer<U>{
-            return ResponseTransformer()
         }
     }
 }

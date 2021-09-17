@@ -9,15 +9,21 @@ import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.net.api.UserServiceAPI
 import com.wangyou.chatwithwebsocket.net.exception.APIException
 import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
+import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer2
 import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
 import com.wangyou.chatwithwebsocket.net.response.ResponseTransformer
+import com.wangyou.chatwithwebsocket.net.response.WebSocketTransformer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.Flowable
+import io.reactivex.FlowableTransformer
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.DisposableSubscriber
+import org.reactivestreams.Publisher
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.StompMessage
 import javax.inject.Inject
@@ -47,7 +53,7 @@ class PersonalViewModel @Inject constructor(
 
     fun loadUser(username: String) {
         userServiceAPI.findUserByUsername(username)
-            .compose(ResponseTransformer.obtion(compositeDisposableLifecycle.compositeDisposable))
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 this.personal!!.value = it
                 synchronizedInfo()
@@ -62,7 +68,7 @@ class PersonalViewModel @Inject constructor(
 
     fun loadSelf() {
         userServiceAPI.findUserByPrincipal()
-            .compose(ResponseTransformer.obtion(compositeDisposableLifecycle.compositeDisposable))
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 this.personal!!.value = it
                 synchronizedInfo()
@@ -76,18 +82,20 @@ class PersonalViewModel @Inject constructor(
                     toast.show()
                 }
             })
-            //  topic()
+              topic()
     }
 
 
     fun topic() {
-        // 默认工作在Thread.currentThread().name -> okhttp: http://IP:PORT/...
         val subscribe = stompClient.topic(Const.chatResponse)
-            .observeOn(AndroidSchedulers.mainThread())
+            .compose(WebSocketTransformer.option())
             .subscribe({
-                Log.i(Const.TAG, "Stomp re==${Thread.currentThread().name}");
-            }, {
-                Log.e(Const.TAG, "Error on subscribe topic", it);
+                Log.i(Const.TAG, "Stomp re==$it");
+            }, object : ErrorConsumer2() {
+                override fun error(ex: APIException) {
+                    toast.setText(ex.errorMsg)
+                    toast.show()
+                }
             });
         compositeDisposableLifecycle.addDisposable(subscribe)
         stompClient.send(Const.chat, "nothing").subscribe()

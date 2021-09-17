@@ -17,9 +17,9 @@ class APIException(
 
 
     companion object {
-        private const val UNKNOWN_ERROR = 1000
-        private const val PARSE_ERROR = 1001
-        private const val NETWORK_ERROR = 1002
+        const val UNKNOWN_ERROR = 1000
+        const val PARSE_ERROR = 1001
+        const val NETWORK_ERROR = 1002
 
         @JvmStatic
         fun handleException(e: Throwable): APIException {
