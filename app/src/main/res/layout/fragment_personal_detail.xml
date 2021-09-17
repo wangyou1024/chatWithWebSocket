@@ -85,7 +85,7 @@
                 android:text="@string/kick_out_group"
                 android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
-                android:visibility="@{groupDetailViewModel.role == 0?View.VISIBLE:View.GONE}"/>
+                android:visibility="@{personalViewModel.gid == 0?View.GONE:View.VISIBLE}"/>
             <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

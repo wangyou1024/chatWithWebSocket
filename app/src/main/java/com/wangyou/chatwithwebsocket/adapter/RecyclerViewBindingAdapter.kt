@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.wangyou.chatwithwebsocket.R
+import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.data.FriendApplicationViewModel
 import com.wangyou.chatwithwebsocket.data.GroupApplicationViewModel
 import com.wangyou.chatwithwebsocket.entity.*
@@ -72,32 +73,23 @@ object RecyclerViewBindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter(value = ["userList"])
-    @SuppressLint("NotifyDataSetChanged")
-    fun bindUserList(recyclerView: RecyclerView?, userList: MutableLiveData<MutableList<User>>?) {
-        recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
-        val users = if (userList != null) userList.value else mutableListOf<User>()
+    @BindingAdapter(value = ["userList", "userListOnClick"], requireAll = false)
+    fun bindUserList(recyclerView: RecyclerView, userList: MutableLiveData<MutableList<User>>, onClickListener: RecyclerViewAdapterUserList.OnClickListener?) {
+        recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
+        val users = userList.value
         recyclerView.adapter =
-            RecyclerViewAdapterUserList(users!!, object :
-                RecyclerViewAdapterUserList.OnClickListener {
+            RecyclerViewAdapterUserList(users!!, onClickListener?:object : RecyclerViewAdapterUserList.OnClickListener{
                 override fun viewDetailPerson(user: User) {
-                    val bundle =
-                        PersonalDetailFragmentArgs.Builder().setUid(user.uid.toString()).build()
-                            .toBundle()
-                    Navigation.findNavController(recyclerView.context as Activity, R.id.fragmentAll)
-                        .navigate(R.id.personalDetailFragment, bundle)
+                    Log.i(Const.TAG, "未实现")
                 }
+
             })
         // 停止动画，避免闪烁
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        userList!!.observe(recyclerView.context as LifecycleOwner, {
-            recyclerView.adapter!!.notifyDataSetChanged()
-        })
     }
 
     @JvmStatic
     @BindingAdapter(value = ["groupList"])
-    @SuppressLint("NotifyDataSetChanged")
     fun bindGroupList(
         recyclerView: RecyclerView?,
         groupList: MutableLiveData<MutableList<Group>>?
@@ -117,9 +109,6 @@ object RecyclerViewBindingAdapter {
 
                 })
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        groupList!!.observe(recyclerView.context as LifecycleOwner, {
-            recyclerView.adapter!!.notifyDataSetChanged()
-        })
     }
 
     @JvmStatic

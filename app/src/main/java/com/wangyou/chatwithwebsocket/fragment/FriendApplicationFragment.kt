@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.data.FriendApplicationViewModel
 import com.wangyou.chatwithwebsocket.data.PersonalViewModel
+import com.wangyou.chatwithwebsocket.data.UserListViewModel
 import com.wangyou.chatwithwebsocket.databinding.FragmentFriendApplicationBinding
 
 class FriendApplicationFragment : Fragment() {
@@ -35,6 +36,7 @@ class FriendApplicationFragment : Fragment() {
             false
         )
         binding!!.friendApplicationViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(FriendApplicationViewModel::class.java)
+        binding!!.userListViewModel = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(UserListViewModel::class.java)
         binding!!.oneself = ViewModelProvider(requireActivity(), ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(PersonalViewModel::class.java).getPersonal().value
         navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
         return binding!!.root

@@ -47,7 +47,7 @@
                 android:ellipsize="end"
                 android:paddingBottom="@dimen/basic_padding"
                 android:singleLine="true"
-                android:text="@{user.introduce}"
+                android:text='@{user.introduce == null || user.introduce == ""?"无介绍":user.introduce}'
                 android:textColor="@color/gray_600"
                 android:textSize="@dimen/font_content"
                 tools:text="@string/test_str" />

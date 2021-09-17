@@ -37,6 +37,8 @@ class ResponseTransformer<T>(private var compositeDisposable: CompositeDisposabl
                     if (responseData.code == "200") {
                         if (responseData.data != null) {
                             return Observable.just(responseData.data)
+                        }else{
+                            return Observable.just(null)
                         }
                     }
                     return Observable.error(APIException(responseData.code!!, responseData.msg!!))

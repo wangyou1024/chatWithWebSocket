@@ -126,6 +126,10 @@
         <argument
             android:name="uid"
             app:argType="string"
-            android:defaultValue='"unknown"'/>
+            android:defaultValue='unknown'/>
+        <argument
+            android:name="gid"
+            app:argType="string"
+            android:defaultValue="unknown"/>
     </fragment>
 </navigation>

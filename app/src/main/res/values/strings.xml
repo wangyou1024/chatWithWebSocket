@@ -62,5 +62,7 @@
     <string name="sign_success">注册成功</string>
     <string name="sign_failed">注册失败</string>
     <string name="invalid_phone">请使用手机号</string>
+    <string name="find_person">查找人</string>
+    <string name="find_group">查找群</string>
 
 </resources>

@@ -21,6 +21,9 @@ interface LoginServiceAPI {
         @Field("password") password: String
     ): Observable<ResponseData<User>>
 
+    @GET("/user/findUserById")
+    fun findUserById(@Field("uid") uid: Long): Observable<ResponseData<User>>
+
     @POST("/logout")
     fun logout(): Observable<ResponseData<User>>
 

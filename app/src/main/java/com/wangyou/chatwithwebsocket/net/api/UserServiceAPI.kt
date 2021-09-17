@@ -16,4 +16,7 @@ interface UserServiceAPI {
 
     @GET("/user/findUserByPrincipal")
     fun findUserByPrincipal(): Observable<ResponseData<User>>
+
+    @GET("/user/searchUser")
+    fun findUserListBySearchKey(@Query("searchKey") searchKey: String): Observable<ResponseData<MutableList<User>>>
 }

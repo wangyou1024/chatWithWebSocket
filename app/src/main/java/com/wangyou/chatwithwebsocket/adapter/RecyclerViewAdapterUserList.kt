@@ -8,7 +8,12 @@ import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.databinding.ItemUserBinding
 import com.wangyou.chatwithwebsocket.entity.User
 
-class RecyclerViewAdapterUserList(var userList: MutableList<User>, var onClickListener: OnClickListener): RecyclerView.Adapter<RecyclerViewAdapterUserList.UserListHolder>() {
+class RecyclerViewAdapterUserList(
+    var userList: MutableList<User>,
+    var onClickListener: OnClickListener
+) :
+    RecyclerView.Adapter<RecyclerViewAdapterUserList.UserListHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserListHolder {
         val binding = DataBindingUtil.inflate<ItemUserBinding>(
@@ -22,7 +27,7 @@ class RecyclerViewAdapterUserList(var userList: MutableList<User>, var onClickLi
 
     override fun onBindViewHolder(holder: UserListHolder, position: Int) {
         holder.binding.user = userList[position]
-        holder.binding.root.setOnClickListener{
+        holder.binding.root.setOnClickListener {
             onClickListener.viewDetailPerson(userList[position])
         }
     }
@@ -31,11 +36,11 @@ class RecyclerViewAdapterUserList(var userList: MutableList<User>, var onClickLi
         return userList.size
     }
 
-    class UserListHolder(var binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root){
+    class UserListHolder(var binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
 
     }
 
-    interface OnClickListener{
+    interface OnClickListener {
         fun viewDetailPerson(user: User)
     }
 }

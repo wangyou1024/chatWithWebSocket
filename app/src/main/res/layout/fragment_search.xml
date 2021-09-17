@@ -15,6 +15,9 @@
         <variable
             name="searchContentViewModel"
             type="com.wangyou.chatwithwebsocket.data.SearchContentViewModel" />
+        <variable
+            name="onClickListener"
+            type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterUserList.OnClickListener" />
     </data>
 
     <LinearLayout
@@ -80,7 +83,7 @@
                     android:background="@color/gray_50"
                     android:paddingHorizontal="@dimen/content_padding"
                     android:paddingVertical="@dimen/basic_padding"
-                    android:text="@string/friend"
+                    android:text="@string/find_person"
                     android:textColor="@color/gray_600"
                     android:textSize="@dimen/font_content" />
 
@@ -90,6 +93,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/gray_50"
                     android:paddingHorizontal="@dimen/content_padding"
+                    app:userListOnClick="@{onClickListener}"
                     app:userList="@{userListViewModel.userList}" />
 
                 <View
@@ -102,7 +106,7 @@
                     android:background="@color/gray_50"
                     android:paddingHorizontal="@dimen/content_padding"
                     android:paddingVertical="@dimen/basic_padding"
-                    android:text="@string/group"
+                    android:text="@string/find_group"
                     android:textColor="@color/gray_600"
                     android:textSize="@dimen/font_content" />
 

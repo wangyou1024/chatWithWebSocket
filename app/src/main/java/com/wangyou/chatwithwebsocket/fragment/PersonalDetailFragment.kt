@@ -52,9 +52,16 @@ class PersonalDetailFragment : BaseFragment() {
     override fun onCreated() {
         super.onCreated()
         val bundle = PersonalDetailFragmentArgs.fromBundle(requireArguments())
-        // personalViewModel.username!!.value = bundle.uid
-        toast.setText(personalViewModel.username?.value)
-        toast.show()
+        if (bundle.uid != "unknown") {
+            personalViewModel.loadUserById(bundle.uid.toLong())
+        } else {
+            personalViewModel.loadSelf()
+        }
+        if (bundle.gid != "unknown") {
+            personalViewModel.setGid(bundle.uid.toLong())
+        } else {
+            personalViewModel.setGid(0)
+        }
         binding!!.popBack.setOnClickListener {
             navController!!.popBackStack()
         }

@@ -1,6 +1,5 @@
 package com.wangyou.chatwithwebsocket.net.di
 
-import android.app.Activity
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
@@ -25,11 +24,11 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 
 import com.franmontiel.persistentcookiejar.ClearableCookieJar
-import com.wangyou.chatwithwebsocket.net.api.StompClientLifecycle
+import com.wangyou.chatwithwebsocket.net.api.UserRelationServiceAPI
+import com.wangyou.chatwithwebsocket.net.client.StompClientLifecycle
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 import ua.naiksoftware.stomp.dto.LifecycleEvent
-import ua.naiksoftware.stomp.dto.StompMessage
 
 
 @Module
@@ -61,18 +60,6 @@ object NetWorkModule {
 
     @Provides
     @Singleton
-    fun provideLoginServiceAPI(retrofit: Retrofit): LoginServiceAPI {
-        return retrofit.create(LoginServiceAPI::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideUserServiceAPI(retrofit: Retrofit): UserServiceAPI {
-        return retrofit.create(UserServiceAPI::class.java)
-    }
-
-    @Provides
-    @Singleton
     fun provideStompClient(okHttpClient: OkHttpClient): StompClient{
         // okHttpClient中含有登录信息，无需再另外添加header
         val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Const.webSocket, null, okHttpClient)
@@ -80,20 +67,23 @@ object NetWorkModule {
         return stompClient
     }
 
+    /**
+     * 控制stompClient生命周期
+     */
     @Provides
     @Singleton
-    fun provideStompClientLifeCycle(stompClient: StompClient, compositeDisposableLifecycle: CompositeDisposableLifecycle): StompClientLifecycle{
-        val stompClientLifecycle = StompClientLifecycle(stompClient)
+    fun provideStompClientLifeCycle(stompClient: StompClient, compositeDisposableLifecycle: CompositeDisposableLifecycle): StompClientLifecycle {
+        val stompClientLifecycle = StompClientLifecycle(stompClient, compositeDisposableLifecycle)
         val subscribe = stompClient.lifecycle()?.subscribe { lifecycleEvent: LifecycleEvent ->
             when (lifecycleEvent.type) {
-                LifecycleEvent.Type.OPENED -> Log.d(Const.TAG, "flan debug stomp connection opened")
+                LifecycleEvent.Type.OPENED -> Log.d(Const.TAG, "Stomp 连接开启")
                 LifecycleEvent.Type.ERROR -> {
-                    Log.e(Const.TAG, "flan debug stomp connection error is ", lifecycleEvent.exception)
+                    Log.e(Const.TAG, "Stomp 连接异常", lifecycleEvent.exception)
                     // 重连
                     stompClientLifecycle.connect()
                 }
-                LifecycleEvent.Type.CLOSED -> Log.d(Const.TAG, "flan debug stomp connection closed")
-                else -> Log.d(Const.TAG, "nothing")
+                LifecycleEvent.Type.CLOSED -> Log.d(Const.TAG, "Stomp 连接断开")
+                else -> Log.d(Const.TAG, "Stomp 未知异常")
             }
         }
         if (subscribe != null) {
@@ -107,6 +97,25 @@ object NetWorkModule {
     fun provideCompositeDisposableLifecycle(): CompositeDisposableLifecycle {
         return CompositeDisposableLifecycle()
     }
+
+    @Provides
+    @Singleton
+    fun provideLoginServiceAPI(retrofit: Retrofit): LoginServiceAPI {
+        return retrofit.create(LoginServiceAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserServiceAPI(retrofit: Retrofit): UserServiceAPI {
+        return retrofit.create(UserServiceAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserRelationServiceAPI(retrofit: Retrofit): UserRelationServiceAPI{
+        return retrofit.create(UserRelationServiceAPI::class.java)
+    }
+
 
     @Provides
     @Singleton

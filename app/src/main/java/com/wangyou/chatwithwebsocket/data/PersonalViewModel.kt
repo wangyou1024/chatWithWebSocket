@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.User
+import com.wangyou.chatwithwebsocket.net.api.UserRelationServiceAPI
 import com.wangyou.chatwithwebsocket.net.api.UserServiceAPI
 import com.wangyou.chatwithwebsocket.net.exception.APIException
 import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
@@ -33,12 +34,16 @@ class PersonalViewModel @Inject constructor(
     var toast: Toast,
     var stompClient: StompClient,
     var userServiceAPI: UserServiceAPI,
+    var userRelationServiceAPI: UserRelationServiceAPI,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
 ) : ViewModel() {
     private var personal: MutableLiveData<User>? = MutableLiveData(User())
+    private var self: MutableLiveData<User>? = MutableLiveData(User())
 
     // 当前登录者与展示对象的关系：0：自己；1：陌生人；2：好友
     private var relation: MutableLiveData<Int>? = MutableLiveData(0)
+    // 当前页面是否从群聊内进入
+    private var gid: MutableLiveData<Long>? = MutableLiveData(0)
 
     var username: MutableLiveData<String>? = MutableLiveData("")
     var realName: MutableLiveData<String>? = MutableLiveData("")
@@ -55,7 +60,7 @@ class PersonalViewModel @Inject constructor(
         userServiceAPI.findUserByUsername(username)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                this.personal!!.value = it
+                this.personal?.value = it
                 synchronizedInfo()
                 Log.i(Const.TAG, it.username!!)
             }, object : ErrorConsumer() {
@@ -66,11 +71,50 @@ class PersonalViewModel @Inject constructor(
             })
     }
 
+    fun loadUserById(uid: Long) {
+        userServiceAPI.findUserById(uid)
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                this.personal?.value =  it
+                synchronizedInfo()
+            }, object : ErrorConsumer(){
+                override fun error(ex: APIException) {
+                    toast.setText(ex.errorMsg)
+                    toast.show()
+                }
+            })
+        loadUserRelation(uid)
+    }
+
+    private fun loadUserRelation(uid: Long){
+        // 当前进入的是登录者
+        if (uid == self?.value?.uid){
+            relation?.value = 0
+            return
+        }
+        userRelationServiceAPI.findUserRelation(uid)
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                if (it.enable == null){
+                    relation?.value = 1
+                } else {
+                    relation?.value = 2
+                }
+            }, object : ErrorConsumer(){
+                override fun error(ex: APIException) {
+                    toast.setText(ex.errorMsg)
+                    toast.show()
+                }
+
+            })
+    }
+
     fun loadSelf() {
         userServiceAPI.findUserByPrincipal()
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 this.personal!!.value = it
+                this.self!!.value = it
                 synchronizedInfo()
                 loadSelfError.value = false
                 // 标记当前展示角色为自己
@@ -82,22 +126,10 @@ class PersonalViewModel @Inject constructor(
                     toast.show()
                 }
             })
-              topic()
     }
 
 
     fun topic() {
-        val subscribe = stompClient.topic(Const.chatResponse)
-            .compose(WebSocketTransformer.option())
-            .subscribe({
-                Log.i(Const.TAG, "Stomp re==$it");
-            }, object : ErrorConsumer2() {
-                override fun error(ex: APIException) {
-                    toast.setText(ex.errorMsg)
-                    toast.show()
-                }
-            });
-        compositeDisposableLifecycle.addDisposable(subscribe)
         stompClient.send(Const.chat, "nothing").subscribe()
     }
 
@@ -131,6 +163,14 @@ class PersonalViewModel @Inject constructor(
 
     fun getRelation(): MutableLiveData<Int> {
         return relation!!
+    }
+
+    fun setGid(gid: Long){
+        this.gid?.value = gid
+    }
+
+    fun getGid(): MutableLiveData<Long>{
+        return this.gid!!
     }
 
 }
