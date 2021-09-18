@@ -1,49 +1,69 @@
 package com.wangyou.chatwithwebsocket.data
 
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
+import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.entity.UserRelation
+import com.wangyou.chatwithwebsocket.net.api.UserRelationServiceAPI
+import com.wangyou.chatwithwebsocket.net.client.StompClientLifecycle
+import com.wangyou.chatwithwebsocket.net.exception.APIException
+import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
+import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
+import com.wangyou.chatwithwebsocket.net.response.ResponseData
+import com.wangyou.chatwithwebsocket.net.response.ResponseTransformer
+import com.wangyou.chatwithwebsocket.util.DateTimeUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
+import ua.naiksoftware.stomp.StompClient
+import javax.inject.Inject
 
-class FriendApplicationViewModel(): ViewModel() {
-    private var userMap: MutableLiveData<MutableMap<Long, User>>? = null
+@HiltViewModel
+class FriendApplicationViewModel @Inject constructor(
+    var toast: Toast,
+    var stompClient: StompClient,
+    var stompClientLifecycle: StompClientLifecycle,
+    var userRelationServiceAPI: UserRelationServiceAPI,
+    var compositeDisposableLifecycle: CompositeDisposableLifecycle
+) : ViewModel() {
     private var userRelationList: MutableLiveData<MutableList<UserRelation>>? = null
 
     init {
-        userMap = MutableLiveData(mutableMapOf())
-        for (i in 1L..7L) {
-            val str = "${i}something"
-            userMap!!.value!![i.toLong()] = User(
-                i,
-                str,
-                str,
-                str,
-                str,
-                str,
-                i.toInt(),
-                str,
-                str,
-                i.toInt(),
-                str,
-                i.toInt(),
-                i.toInt(),
-                i.toInt()
-            )
-        }
         userRelationList = MutableLiveData(mutableListOf())
-        userRelationList!!.value!!.add(UserRelation(1, 1, 2, 1, 1, 0))
-        userRelationList!!.value!!.add(UserRelation(2, 1, 3, 1, 1, 1))
-        userRelationList!!.value!!.add(UserRelation(3, 1, 4, 1, 1, 2))
-        userRelationList!!.value!!.add(UserRelation(4, 5, 1, 1, 1, 0))
-        userRelationList!!.value!!.add(UserRelation(5, 6, 1, 1, 1, 1))
-        userRelationList!!.value!!.add(UserRelation(6, 7, 1, 1, 1, 2))
     }
 
-    fun getUserMap(): MutableLiveData<MutableMap<Long, User>> {
-        return userMap!!
+    fun loadUserRelationList() {
+        userRelationServiceAPI.findUserRelationList()
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                userRelationList?.value = it as MutableList<UserRelation>?
+            }, object : ErrorConsumer() {
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, ex.errorMsg)
+                }
+
+            })
     }
 
-    fun getUserRelationList(): MutableLiveData<MutableList<UserRelation>>{
+    fun agreeApplication(former: Long, latter: Long) {
+        if (!stompClient.isConnected) {
+            stompClientLifecycle.connect()
+        }
+        val userRelation = UserRelation(
+            0,
+            former,
+            latter,
+            DateTimeUtil.getTimeNow().toInt(),
+            DateTimeUtil.getTimeNow().toInt(),
+            2
+        )
+        stompClient.send(Const.friendApplication, Gson().toJson(userRelation)).subscribe()
+    }
+
+
+    fun getUserRelationList(): MutableLiveData<MutableList<UserRelation>> {
         return userRelationList!!
     }
 }

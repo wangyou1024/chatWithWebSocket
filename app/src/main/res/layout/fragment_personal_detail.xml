@@ -91,6 +91,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp"
                 android:layout_weight="1"
+                android:onClick="@{()-> personalViewModel.sendFriendApplication()}"
                 android:text="@string/make_friend"
                 android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
@@ -101,6 +102,7 @@
                 android:layout_marginHorizontal="5dp"
                 android:layout_weight="1"
                 android:text="@string/delete_friend"
+                android:onClick="@{()->personalViewModel.deleteFriend()}"
                 android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
                 android:visibility="@{personalViewModel.relation == 2?View.VISIBLE:View.GONE}"/>

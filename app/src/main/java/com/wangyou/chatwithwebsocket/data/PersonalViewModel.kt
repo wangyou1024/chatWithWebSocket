@@ -4,16 +4,20 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
 import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.User
+import com.wangyou.chatwithwebsocket.entity.UserRelation
 import com.wangyou.chatwithwebsocket.net.api.UserRelationServiceAPI
 import com.wangyou.chatwithwebsocket.net.api.UserServiceAPI
+import com.wangyou.chatwithwebsocket.net.client.StompClientLifecycle
 import com.wangyou.chatwithwebsocket.net.exception.APIException
 import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
 import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer2
 import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
 import com.wangyou.chatwithwebsocket.net.response.ResponseTransformer
 import com.wangyou.chatwithwebsocket.net.response.WebSocketTransformer
+import com.wangyou.chatwithwebsocket.util.DateTimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.Flowable
 import io.reactivex.FlowableTransformer
@@ -34,6 +38,7 @@ class PersonalViewModel @Inject constructor(
     var toast: Toast,
     var stompClient: StompClient,
     var userServiceAPI: UserServiceAPI,
+    var stompClientLifecycle: StompClientLifecycle,
     var userRelationServiceAPI: UserRelationServiceAPI,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
 ) : ViewModel() {
@@ -95,7 +100,7 @@ class PersonalViewModel @Inject constructor(
         userRelationServiceAPI.findUserRelation(uid)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                if (it.enable == null){
+                if (it.enable == null || it.enable == 0 || it.enable == 1 || it.enable == 3){
                     relation?.value = 1
                 } else {
                     relation?.value = 2
@@ -116,6 +121,8 @@ class PersonalViewModel @Inject constructor(
                 this.personal!!.value = it
                 this.self!!.value = it
                 synchronizedInfo()
+                // 将登录者信息加载到stompClient中，订阅信息才能正确响应
+                stompClientLifecycle.setSelf(self!!)
                 loadSelfError.value = false
                 // 标记当前展示角色为自己
                 relation?.value = 0
@@ -129,9 +136,36 @@ class PersonalViewModel @Inject constructor(
     }
 
 
-    fun topic() {
-        stompClient.send(Const.chat, "nothing").subscribe()
+    fun sendFriendApplication() {
+        if (!stompClient.isConnected){
+            stompClientLifecycle.connect()
+        }
+        val userRelation = UserRelation(
+            0,
+            self?.value?.uid,
+            personal?.value?.uid,
+            DateTimeUtil.getTimeNow().toInt(),
+            DateTimeUtil.getTimeNow().toInt(),
+            0
+        )
+        stompClient.send(Const.friendApplication, Gson().toJson(userRelation)).subscribe()
     }
+
+    fun deleteFriend() {
+        if (!stompClient.isConnected){
+            stompClientLifecycle.connect()
+        }
+        val userRelation = UserRelation(
+            0,
+            self?.value?.uid,
+            personal?.value?.uid,
+            DateTimeUtil.getTimeNow().toInt(),
+            DateTimeUtil.getTimeNow().toInt(),
+            3
+        )
+        stompClient.send(Const.friendApplication, Gson().toJson(userRelation)).subscribe()
+    }
+
 
     private fun synchronizedInfo() {
         username?.value = personal?.value?.username?:""
@@ -171,6 +205,10 @@ class PersonalViewModel @Inject constructor(
 
     fun getGid(): MutableLiveData<Long>{
         return this.gid!!
+    }
+
+    fun getSelf(): MutableLiveData<User>{
+        return self!!
     }
 
 }

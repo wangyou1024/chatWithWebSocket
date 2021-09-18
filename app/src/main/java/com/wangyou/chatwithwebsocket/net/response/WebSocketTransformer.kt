@@ -21,12 +21,13 @@ class WebSocketTransformer : FlowableTransformer<StompMessage, String> {
                 override fun apply(t: StompMessage): Publisher<String> {
                     Log.i(Const.TAG, "Stomp re==${t}")
                     if (t.payload != null){
+                        Log.i(Const.TAG, "Stomp payload==${t.payload}")
                         return Flowable.just(t.payload)
                     }
                     return Flowable.error(APIException(APIException.UNKNOWN_ERROR.toString(), "空值异常"))
                 }
             })
-            .observeOn(AndroidSchedulers.mainThread())
+//             .observeOn(AndroidSchedulers.mainThread())
     }
 
     companion object{

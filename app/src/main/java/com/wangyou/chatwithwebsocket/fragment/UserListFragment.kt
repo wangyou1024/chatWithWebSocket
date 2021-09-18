@@ -11,7 +11,7 @@ import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.data.UserListViewModel
 import com.wangyou.chatwithwebsocket.databinding.FragmentUserListBinding
 
-class UserListFragment : Fragment() {
+class UserListFragment : BaseFragment() {
 
     private var binding: FragmentUserListBinding? = null
 

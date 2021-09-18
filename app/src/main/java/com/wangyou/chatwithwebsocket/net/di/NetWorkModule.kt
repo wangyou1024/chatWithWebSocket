@@ -24,6 +24,7 @@ import com.franmontiel.persistentcookiejar.cache.SetCookieCache
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 
 import com.franmontiel.persistentcookiejar.ClearableCookieJar
+import com.wangyou.chatwithwebsocket.data.PersonalViewModel
 import com.wangyou.chatwithwebsocket.net.api.UserRelationServiceAPI
 import com.wangyou.chatwithwebsocket.net.client.StompClientLifecycle
 import ua.naiksoftware.stomp.Stomp
@@ -60,9 +61,10 @@ object NetWorkModule {
 
     @Provides
     @Singleton
-    fun provideStompClient(okHttpClient: OkHttpClient): StompClient{
+    fun provideStompClient(okHttpClient: OkHttpClient): StompClient {
         // okHttpClient中含有登录信息，无需再另外添加header
-        val stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, Const.webSocket, null, okHttpClient)
+        val stompClient =
+            Stomp.over(Stomp.ConnectionProvider.OKHTTP, Const.webSocket, null, okHttpClient)
         // stompClient.withClientHeartbeat(1000).withServerHeartbeat(1000)
         return stompClient
     }
@@ -72,8 +74,12 @@ object NetWorkModule {
      */
     @Provides
     @Singleton
-    fun provideStompClientLifeCycle(stompClient: StompClient, compositeDisposableLifecycle: CompositeDisposableLifecycle): StompClientLifecycle {
-        val stompClientLifecycle = StompClientLifecycle(stompClient, compositeDisposableLifecycle)
+    fun provideStompClientLifeCycle(
+        stompClient: StompClient,
+        compositeDisposableLifecycle: CompositeDisposableLifecycle,
+        toast: Toast
+    ): StompClientLifecycle {
+        val stompClientLifecycle = StompClientLifecycle(stompClient, compositeDisposableLifecycle, toast)
         val subscribe = stompClient.lifecycle()?.subscribe { lifecycleEvent: LifecycleEvent ->
             when (lifecycleEvent.type) {
                 LifecycleEvent.Type.OPENED -> Log.d(Const.TAG, "Stomp 连接开启")
@@ -112,7 +118,7 @@ object NetWorkModule {
 
     @Provides
     @Singleton
-    fun provideUserRelationServiceAPI(retrofit: Retrofit): UserRelationServiceAPI{
+    fun provideUserRelationServiceAPI(retrofit: Retrofit): UserRelationServiceAPI {
         return retrofit.create(UserRelationServiceAPI::class.java)
     }
 

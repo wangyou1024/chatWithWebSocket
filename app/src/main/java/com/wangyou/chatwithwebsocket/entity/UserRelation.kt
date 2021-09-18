@@ -26,4 +26,8 @@ class UserRelation: Serializable {
         this.readTime = readTime
         this.enable = enable
     }
+
+    override fun toString(): String {
+        return super.toString()
+    }
 }

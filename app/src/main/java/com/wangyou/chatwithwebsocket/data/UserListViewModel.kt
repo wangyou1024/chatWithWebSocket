@@ -1,8 +1,10 @@
 package com.wangyou.chatwithwebsocket.data
 
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.net.api.UserServiceAPI
 import com.wangyou.chatwithwebsocket.net.exception.APIException
@@ -23,29 +25,7 @@ class UserListViewModel @Inject constructor(
 
     init {
         userList = MutableLiveData(mutableListOf<User>())
-        for (i in 1L..10L) {
-            val str = "${i}something"
-            userList!!.value!!.add(
-                User(
-                    i,
-                    str,
-                    str,
-                    str,
-                    str,
-                    str,
-                    i.toInt(),
-                    str,
-                    str,
-                    i.toInt(),
-                    str,
-                    i.toInt(),
-                    i.toInt(),
-                    i.toInt()
-                )
-            )
-        }
         userMap = MutableLiveData(mutableMapOf())
-        userList!!.value?.let { it -> userMap!!.value?.putAll(it.associateBy { it.uid!! }) }
     }
 
     fun searchUserList(searchKey: String) {
@@ -58,6 +38,22 @@ class UserListViewModel @Inject constructor(
                 override fun error(ex: APIException) {
                     toast.setText(ex.errorMsg)
                     toast.show()
+                }
+
+            })
+    }
+
+    fun loadUserByIds(ids: MutableSet<Long>){
+        val list = mutableListOf<Long>(-1)
+        list.addAll(ids)
+        userServiceAPI.findUserListByIds(list)
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                this.userList?.value = it
+                associate()
+            }, object : ErrorConsumer(){
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, ex.errorMsg)
                 }
 
             })

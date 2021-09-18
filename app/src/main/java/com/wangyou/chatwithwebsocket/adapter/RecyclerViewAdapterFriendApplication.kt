@@ -39,7 +39,6 @@ class RecyclerViewAdapterFriendApplication(
         // 判断自己的角色
         if (userRelationList[position].uidLatter == oneself.uid){
             holder.binding.user = userMap[userRelationList[position].uidFormer]
-
         } else {
             holder.binding.user = userMap[userRelationList[position].uidLatter]
         }

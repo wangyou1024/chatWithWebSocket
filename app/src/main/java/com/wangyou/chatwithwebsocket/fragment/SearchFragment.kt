@@ -37,7 +37,6 @@ class SearchFragment : BaseFragment() {
     private val searchContentViewModel by activityViewModels<SearchContentViewModel>()
     private val userClick: RecyclerViewAdapterUserList.OnClickListener = object : RecyclerViewAdapterUserList.OnClickListener{
         override fun viewDetailPerson(user: User) {
-            Log.i(Const.TAG, "点击……")
             val bundle =
                 PersonalDetailFragmentArgs.Builder().setUid(user.uid.toString()).build()
                     .toBundle()

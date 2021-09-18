@@ -10,4 +10,7 @@ interface UserRelationServiceAPI {
 
     @GET("/userRelation/findUserRelation")
     fun findUserRelation(@Query("uid") uid: Long): Observable<ResponseData<UserRelation>>
+
+    @GET("/userRelation/findUserRelationList")
+    fun findUserRelationList(): Observable<ResponseData<List<UserRelation>>>
 }

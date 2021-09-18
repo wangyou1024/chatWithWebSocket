@@ -13,6 +13,9 @@
         <variable
             name="oneself"
             type="com.wangyou.chatwithwebsocket.entity.User" />
+        <variable
+            name="listener"
+            type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterFriendApplication.OnClickListener" />
     </data>
 
     <LinearLayout
@@ -48,12 +51,13 @@
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRelation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:friendApplicationUserMap="@{userListViewModel.userMap}"
             app:userRelationList="@{friendApplicationViewModel.userRelationList}"
             app:friendApplicationLogin="@{oneself}"
+            app:friendApplicationListener="@{listener}"
             android:paddingHorizontal="@dimen/content_padding" />
-
     </LinearLayout>
 </layout>

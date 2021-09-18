@@ -61,16 +61,22 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+        loginViewModel.getLogined().observe(this, {
+            Log.i(Const.TAG, "登录状态更新$it")
+            if (it){
+                personalViewModel.loadSelf()
+            }
+        })
         when {
             cookieList.isEmpty() -> {
                 loginPage("未登录")
             }
             cookieList[0].expiresAt() < System.currentTimeMillis() -> {
-                val ft = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-                val time = Date(cookieList[0].expiresAt())
-                Log.i(Const.TAG, "过期时间：${ft.format(time)}")
-                toast.setText(ft.format(time))
-                toast.show()
+//                val ft = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+//                val time = Date(cookieList[0].expiresAt())
+//                Log.i(Const.TAG, "过期时间：${ft.format(time)}")
+//                toast.setText(ft.format(time))
+//                toast.show()
                 loginPage("登录过期")
             }
             else -> {

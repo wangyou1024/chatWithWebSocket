@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.net.api.LoginServiceAPI
+import com.wangyou.chatwithwebsocket.net.client.StompClientLifecycle
 import com.wangyou.chatwithwebsocket.net.exception.APIException
 import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
 import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     var toast: Toast,
     var loginServiceAPI: LoginServiceAPI,
+    var stompClientLifecycle: StompClientLifecycle,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
 ): ViewModel() {
     private var username: ObservableField<String>? = null
@@ -51,6 +53,7 @@ class LoginViewModel @Inject constructor(
                 logined.value = true
                 toast.setText(R.string.login_success)
                 toast.show()
+                stompClientLifecycle.connect()
             },object : ErrorConsumer(){
                 override fun error(ex: APIException) {
                     logining.value = false
@@ -126,5 +129,9 @@ class LoginViewModel @Inject constructor(
 
     fun setLogined(logined: Boolean){
         this.logined.value = logined
+    }
+
+    fun getLogined(): MutableLiveData<Boolean>{
+        return logined
     }
 }

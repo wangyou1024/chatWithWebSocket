@@ -113,12 +113,14 @@ object RecyclerViewBindingAdapter {
 
     @JvmStatic
     @SuppressLint("NotifyDataSetChanged")
-    @BindingAdapter(value = ["friendApplicationUserMap", "userRelationList", "friendApplicationLogin"])
+    @BindingAdapter(value = ["friendApplicationUserMap", "userRelationList", "friendApplicationLogin", "friendApplicationListener"])
     fun bindFriendApplication(
         recyclerView: RecyclerView?,
         userMap: MutableLiveData<MutableMap<Long, User>>,
         userRelationList: MutableLiveData<MutableList<UserRelation>>,
-        friendApplicationLogin: User
+        friendApplicationLogin: User,
+        listener: RecyclerViewAdapterFriendApplication.OnClickListener
+
     ) {
         recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.adapter =
@@ -126,25 +128,8 @@ object RecyclerViewBindingAdapter {
                 userMap.value!!,
                 userRelationList.value!!,
                 friendApplicationLogin,
-                object : RecyclerViewAdapterFriendApplication.OnClickListener {
-                    override fun agree(former: Long, latter: Long) {
-                        Log.i("agree", "${former}申请成为${latter}好友")
-                    }
-
-                    override fun viewPersonalDetail(user: User) {
-                        val bundle =
-                            PersonalDetailFragmentArgs.Builder().setUid(user.uid.toString()).build()
-                                .toBundle()
-                        Navigation.findNavController(
-                            recyclerView.context as Activity,
-                            R.id.fragmentAll
-                        ).navigate(R.id.personalDetailFragment, bundle)
-                    }
-                })
+                listener)
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-        userRelationList.observe(recyclerView.context as LifecycleOwner, {
-                recyclerView.adapter!!.notifyDataSetChanged()
-            })
     }
 
     @JvmStatic
