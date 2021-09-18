@@ -2,7 +2,7 @@ package com.wangyou.chatwithwebsocket.entity
 
 import java.io.Serializable
 
-class GroupRelation : Serializable{
+class GroupRelation : Serializable {
     var grid: Long? = null
     var gid: Long? = null
     var uid: Long? = null
@@ -24,5 +24,13 @@ class GroupRelation : Serializable{
         this.updateTime = updateTime
         this.readTime = readTime
         this.enable = enable
+    }
+
+    companion object {
+        const val NO_DEAL = 0
+        const val REFUSE = 1
+        const val AGREE = 2
+        const val DISMISS = 3
+        const val LEADER = 4
     }
 }

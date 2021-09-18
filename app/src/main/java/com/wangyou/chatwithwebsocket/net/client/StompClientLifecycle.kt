@@ -27,38 +27,47 @@ class StompClientLifecycle constructor(
 ) : LifecycleObserver {
 
     private var tryTime = 0
+    private var maxTime = 0
+    private var timer: Timer? = null
+
 
     private var self: MutableLiveData<User>? = MutableLiveData(User())
-    private var userRelationList: MutableLiveData<MutableList<UserRelation>>? = MutableLiveData(mutableListOf())
+    private var userRelationList: MutableLiveData<MutableList<UserRelation>>? =
+        MutableLiveData(mutableListOf())
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun connect() {
-        val timer = Timer()
+        disConnect()
+        stompClient.connect()
+        timer = Timer()
         val task: TimerTask = object : TimerTask() {
             override fun run() {
                 if (stompClient.isConnected) {
                     Log.i(Const.TAG, "Stomp 连接成功")
+                    maxTime += tryTime
                     tryTime = 0
                     topicFriendApplication()
-                    timer.cancel()
-                } else if (tryTime < 10) {
+                    timer?.cancel()
+                } else if (maxTime < 300 && tryTime < 10) {
                     Log.i(Const.TAG, "Stomp 尝试第${tryTime}次连接")
-                    stompClient.connect()
+                    stompClient.reconnect()
                     tryTime++
                 } else {
                     Log.i(Const.TAG, "Stomp 重连次数过多")
-                    tryTime = 10
-                    timer.cancel()
+                    maxTime += tryTime
+                    tryTime = 0
+                    timer?.cancel()
                 }
             }
         }
-        timer.schedule(task, 0, 3000)
+        timer?.schedule(task, 0, 5000)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun disConnect() {
         Log.i(Const.TAG, "Stomp 断开连接")
         stompClient.disconnect()
+        timer?.cancel()
     }
 
     fun topicFriendApplication() {
@@ -68,10 +77,10 @@ class StompClientLifecycle constructor(
                 val userRelation = Gson().fromJson(it, UserRelation::class.java)
                 self?.value = self?.value
                 val newList = mutableListOf<UserRelation>()
-                for (i in userRelationList?.value!!){
-                    if (i.urid?.equals(userRelation.urid) == true){
+                for (i in userRelationList?.value!!) {
+                    if (i.urid?.equals(userRelation.urid) == true) {
                         newList.add(userRelation)
-                    }else {
+                    } else {
                         newList.add(i)
                     }
                 }
@@ -103,9 +112,11 @@ class StompClientLifecycle constructor(
             }, object : ErrorConsumer2() {
                 override fun error(ex: APIException) {
                     Log.i(Const.TAG, "Stomp 好友申请失败${ex.errorMsg}")
-                    toast.setText("好友申请失败")
+                    toast.setText("操作失败")
                     toast.show()
-                    topicFriendApplication()
+                    // 在退出后登录时，由于登录成功后登录者信息发生改变可能导致原有的订阅异常，
+                    // 同时刚登录会进行重连操作，所以这里直接取消连接
+                    disConnect()
                 }
             });
         compositeDisposableLifecycle.addDisposable(subscribe)
@@ -115,7 +126,7 @@ class StompClientLifecycle constructor(
         this.self = user
     }
 
-    fun setUserRelationList(userRelationList: MutableLiveData<MutableList<UserRelation>>){
+    fun setUserRelationList(userRelationList: MutableLiveData<MutableList<UserRelation>>) {
         this.userRelationList = userRelationList
     }
 

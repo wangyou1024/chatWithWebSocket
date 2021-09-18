@@ -20,6 +20,7 @@ import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
+import ua.naiksoftware.stomp.StompClient
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -34,6 +35,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var toast: Toast
+
+    @Inject
+    lateinit var stompClient: StompClient
 
     @Inject
     lateinit var stompClientLifecycle: StompClientLifecycle
@@ -65,6 +69,12 @@ class MainActivity : AppCompatActivity() {
             Log.i(Const.TAG, "登录状态更新$it")
             if (it){
                 personalViewModel.loadSelf()
+                if(!stompClient.isConnected){
+                    Log.i(Const.TAG, "重新连接stompClient")
+                    stompClientLifecycle.connect()
+                }
+            }else{
+                stompClientLifecycle.disConnect()
             }
         })
         when {

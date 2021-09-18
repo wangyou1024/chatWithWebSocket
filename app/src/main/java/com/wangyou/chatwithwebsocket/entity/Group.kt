@@ -2,7 +2,7 @@ package com.wangyou.chatwithwebsocket.entity
 
 import java.io.Serializable
 
-class Group: Serializable {
+class Group constructor(): Serializable {
     var gid: Long? = null
     var groupNum: String? = null
     var groupName: String? = null
@@ -19,7 +19,7 @@ class Group: Serializable {
         introduce: String?,
         updateTime: Int?,
         enable: Int?
-    ) {
+    ) : this() {
         this.gid = gid
         this.groupNum = groupNum
         this.groupName = groupName

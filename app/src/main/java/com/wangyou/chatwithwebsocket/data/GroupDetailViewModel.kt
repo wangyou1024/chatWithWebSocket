@@ -1,18 +1,28 @@
 package com.wangyou.chatwithwebsocket.data
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
+import com.wangyou.chatwithwebsocket.net.api.GroupServiceAPI
+import com.wangyou.chatwithwebsocket.net.exception.APIException
+import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
+import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
+import com.wangyou.chatwithwebsocket.net.response.ResponseTransformer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class GroupDetailViewModel @Inject constructor(): ViewModel() {
+class GroupDetailViewModel @Inject constructor(
+    var toast: Toast,
+    var groupServiceAPI: GroupServiceAPI,
+    var compositeDisposableLifecycle: CompositeDisposableLifecycle
+): ViewModel() {
 
-    private var group: MutableLiveData<Group>? = null
+    private var group: MutableLiveData<Group>? = MutableLiveData(Group())
     private var groupLeader: MutableLiveData<User>? = null
     private var groupMembers: MutableLiveData<MutableList<User>>? = null
     // 登录者相对于当前群的角色：0：群主；1：群成员；2：陌生人
@@ -51,7 +61,20 @@ class GroupDetailViewModel @Inject constructor(): ViewModel() {
     }
 
     fun saveGroup(){
-        Log.i(Const.TAG, "保存：${group?.value?.groupName}+${group?.value?.introduce}")
+        if (group?.value?.gid == -1L){
+            groupServiceAPI.createGroup(group?.value!!)
+                .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+                .subscribe({
+                    group?.value = it
+                    toast.setText("创建成功")
+                    toast.show()
+                }, object : ErrorConsumer(){
+                    override fun error(ex: APIException) {
+                        toast.setText(ex.errorMsg)
+                        toast.show()
+                    }
+                })
+        }
     }
 
     fun getGroup(): MutableLiveData<Group>{

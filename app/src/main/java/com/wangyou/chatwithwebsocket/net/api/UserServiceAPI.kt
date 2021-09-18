@@ -27,4 +27,10 @@ interface UserServiceAPI {
 
     @GET("/user/findFriends")
     fun findFriends(): Observable<ResponseData<MutableList<User>>>
+
+    @GET("/user/findLeader")
+    fun findLeader(): Observable<ResponseData<User>>
+
+    @GET("/user/findMembers")
+    fun findMembers(): Observable<ResponseData<MutableList<User>>>
 }

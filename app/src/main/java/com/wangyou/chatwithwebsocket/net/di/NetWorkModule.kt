@@ -4,8 +4,6 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import com.wangyou.chatwithwebsocket.conf.Const
-import com.wangyou.chatwithwebsocket.net.api.LoginServiceAPI
-import com.wangyou.chatwithwebsocket.net.api.UserServiceAPI
 import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
 import dagger.Module
 import dagger.Provides
@@ -25,7 +23,7 @@ import com.franmontiel.persistentcookiejar.PersistentCookieJar
 
 import com.franmontiel.persistentcookiejar.ClearableCookieJar
 import com.wangyou.chatwithwebsocket.data.PersonalViewModel
-import com.wangyou.chatwithwebsocket.net.api.UserRelationServiceAPI
+import com.wangyou.chatwithwebsocket.net.api.*
 import com.wangyou.chatwithwebsocket.net.client.StompClientLifecycle
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
@@ -79,14 +77,13 @@ object NetWorkModule {
         compositeDisposableLifecycle: CompositeDisposableLifecycle,
         toast: Toast
     ): StompClientLifecycle {
-        val stompClientLifecycle = StompClientLifecycle(stompClient, compositeDisposableLifecycle, toast)
+        val stompClientLifecycle =
+            StompClientLifecycle(stompClient, compositeDisposableLifecycle, toast)
         val subscribe = stompClient.lifecycle()?.subscribe { lifecycleEvent: LifecycleEvent ->
             when (lifecycleEvent.type) {
                 LifecycleEvent.Type.OPENED -> Log.d(Const.TAG, "Stomp 连接开启")
                 LifecycleEvent.Type.ERROR -> {
                     Log.e(Const.TAG, "Stomp 连接异常", lifecycleEvent.exception)
-                    // 重连
-                    stompClientLifecycle.connect()
                 }
                 LifecycleEvent.Type.CLOSED -> Log.d(Const.TAG, "Stomp 连接断开")
                 else -> Log.d(Const.TAG, "Stomp 未知异常")
@@ -120,6 +117,18 @@ object NetWorkModule {
     @Singleton
     fun provideUserRelationServiceAPI(retrofit: Retrofit): UserRelationServiceAPI {
         return retrofit.create(UserRelationServiceAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGroupServiceAPI(retrofit: Retrofit): GroupServiceAPI {
+        return retrofit.create(GroupServiceAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGroupRelationServiceAPI(retrofit: Retrofit): GroupRelationServiceAPI {
+        return retrofit.create(GroupRelationServiceAPI::class.java)
     }
 
 

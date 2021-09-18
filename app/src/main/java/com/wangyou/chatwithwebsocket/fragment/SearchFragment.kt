@@ -35,15 +35,16 @@ class SearchFragment : BaseFragment() {
     private val userListViewModel by activityViewModels<UserListViewModel>()
     private val groupListViewModel by activityViewModels<GroupListViewModel>()
     private val searchContentViewModel by activityViewModels<SearchContentViewModel>()
-    private val userClick: RecyclerViewAdapterUserList.OnClickListener = object : RecyclerViewAdapterUserList.OnClickListener{
-        override fun viewDetailPerson(user: User) {
-            val bundle =
-                PersonalDetailFragmentArgs.Builder().setUid(user.uid.toString()).build()
-                    .toBundle()
-            navController?.navigate(R.id.personalDetailFragment, bundle)
-        }
+    private val userClick: RecyclerViewAdapterUserList.OnClickListener =
+        object : RecyclerViewAdapterUserList.OnClickListener {
+            override fun viewDetailPerson(user: User) {
+                val bundle =
+                    PersonalDetailFragmentArgs.Builder().setUid(user.uid.toString()).build()
+                        .toBundle()
+                navController?.navigate(R.id.personalDetailFragment, bundle)
+            }
 
-    }
+        }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +77,7 @@ class SearchFragment : BaseFragment() {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     Log.i("search", binding!!.searchContentViewModel?.getSearchContent()!!)
                     userListViewModel.searchUserList(searchContentViewModel.getSearchContent())
+                    groupListViewModel.searchGroupList(searchContentViewModel.getSearchContent())
                     val manager: InputMethodManager =
                         context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     manager.hideSoftInputFromWindow(
@@ -89,17 +91,6 @@ class SearchFragment : BaseFragment() {
             }
         })
         userListViewModel.getUserList().observe(requireActivity(), {
-//            (binding?.userList?.adapter as RecyclerViewAdapterUserList).onClickListener = object :
-//                RecyclerViewAdapterUserList.OnClickListener {
-//                override fun viewDetailPerson(user: User) {
-//                    Log.i(Const.TAG, "点击……")
-//                    val bundle =
-//                        PersonalDetailFragmentArgs.Builder().setUid(user.uid.toString()).build()
-//                            .toBundle()
-//                    navController?.navigate(R.id.personalDetailFragment, bundle)
-//                }
-//            }
-//            Log.i(Const.TAG, "更新了点击事件${(binding?.userList?.adapter as RecyclerViewAdapterUserList).onClickListener.toString()}")
             binding?.userList?.adapter?.notifyDataSetChanged()
         })
         groupListViewModel.getGroupList().observe(requireActivity(), {

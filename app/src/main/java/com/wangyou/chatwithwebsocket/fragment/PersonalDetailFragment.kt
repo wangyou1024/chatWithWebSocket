@@ -27,6 +27,7 @@ class PersonalDetailFragment : BaseFragment() {
     lateinit var toast: Toast
     private var binding: FragmentPersonalDetailBinding? = null
     private val personalViewModel: PersonalViewModel by activityViewModels<PersonalViewModel>()
+    private val groupDetailViewModel: GroupDetailViewModel by activityViewModels<GroupDetailViewModel>()
     private var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,10 +42,7 @@ class PersonalDetailFragment : BaseFragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_personal_detail, container, false)
         binding!!.lifecycleOwner = this
         binding!!.personalViewModel = personalViewModel
-        binding!!.groupDetailViewModel = ViewModelProvider(
-            requireActivity(),
-            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        ).get(GroupDetailViewModel::class.java)
+        binding!!.groupDetailViewModel = groupDetailViewModel
         navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
         return binding!!.root
     }

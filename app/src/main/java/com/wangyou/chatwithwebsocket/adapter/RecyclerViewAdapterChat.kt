@@ -13,10 +13,10 @@ import com.wangyou.chatwithwebsocket.databinding.ItemChatBinding
 import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.User
 
-class RecyclerViewAdapterTalk(
+class RecyclerViewAdapterChat(
     var users: MutableMap<Long, User>?, var chats: MutableList<Chat>?,
     var personal: User?
-) : RecyclerView.Adapter<RecyclerViewAdapterTalk.TalkHolder>() {
+) : RecyclerView.Adapter<RecyclerViewAdapterChat.TalkHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         // 是否是本人/发送时间间隔是否超过1分钟

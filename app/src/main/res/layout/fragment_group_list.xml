@@ -15,6 +15,7 @@
         tools:context=".fragment.GroupListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvJoinedGroupList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/content_padding"

@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
 import androidx.databinding.BindingAdapter
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +12,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.*
-import com.wangyou.chatwithwebsocket.fragment.ChatFragmentArgs
 
 object RecyclerViewBindingAdapter {
 
@@ -46,7 +43,7 @@ object RecyclerViewBindingAdapter {
     ) {
         recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.adapter =
-            RecyclerViewAdapterTalk(speakers!!.value, chats!!.value, personal!!.value)
+            RecyclerViewAdapterChat(speakers!!.value, chats!!.value, personal!!.value)
     }
 
     @JvmStatic
