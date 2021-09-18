@@ -28,8 +28,8 @@ class StompClientLifecycle constructor(
 
     private var tryTime = 0
 
-    private var self: MutableLiveData<User>? = null
-    private var userRelationList: MutableLiveData<MutableList<UserRelation>>? = null
+    private var self: MutableLiveData<User>? = MutableLiveData(User())
+    private var userRelationList: MutableLiveData<MutableList<UserRelation>>? = MutableLiveData(mutableListOf())
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun connect() {

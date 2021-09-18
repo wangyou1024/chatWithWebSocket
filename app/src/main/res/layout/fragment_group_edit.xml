@@ -47,10 +47,11 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:gravity="center"
+                android:onClick="@{()->groupDetailViewModel.saveGroup()}"
                 android:text="@string/save"
-                android:visibility="@{groupDetailViewModel.role==0?View.VISIBLE:View.GONE}"
                 android:textColor="@color/gray_200"
-                android:textSize="@dimen/font_navigation" />
+                android:textSize="@dimen/font_navigation"
+                android:visibility="@{groupDetailViewModel.role==0?View.VISIBLE:View.GONE}" />
         </FrameLayout>
 
         <LinearLayout
@@ -80,8 +81,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:inputType="text"
                     android:enabled="@{groupDetailViewModel.role == 0}"
+                    android:hint="@string/name"
+                    android:inputType="text"
                     android:text="@={groupDetailViewModel.group.groupName}"
                     android:textColor="@color/gray_800"
                     android:textSize="@dimen/font_person_name"
@@ -90,7 +92,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text='@{"ID:"+groupDetailViewModel.group.groupNum}'
+                    android:text='@{"ID:"+(groupDetailViewModel.group.groupNum == null || groupDetailViewModel.group.groupNum == ""? "待定":groupDetailViewModel.group.groupNum)}'
                     android:textColor="@color/gray_800"
                     android:textSize="@dimen/font_navigation"
                     tools:text="ID:12345678901" />
@@ -119,6 +121,7 @@
                 android:background="@null"
                 android:enabled="@{groupDetailViewModel.role==0}"
                 android:gravity="top"
+                android:hint="@string/introduce"
                 android:text="@={groupDetailViewModel.group.introduce}"
                 android:textColor="@color/gray_800"
                 android:textSize="@dimen/font_title"

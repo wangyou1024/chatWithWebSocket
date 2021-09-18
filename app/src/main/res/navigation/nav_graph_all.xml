@@ -107,7 +107,7 @@
         <argument
             android:name="gid"
             app:argType="string"
-            android:defaultValue='"unknown"'/>
+            android:defaultValue='unknown'/>
         <action
             android:id="@+id/action_groupDetailFragment_to_groupEditFragment"
             app:destination="@id/groupEditFragment" />
@@ -118,7 +118,12 @@
     <fragment
         android:id="@+id/groupEditFragment"
         android:name="com.wangyou.chatwithwebsocket.fragment.GroupEditFragment"
-        android:label="GroupEditFragment" />
+        android:label="GroupEditFragment">
+        <argument
+            android:name="gid"
+            app:argType="string"
+            android:defaultValue="unknown"/>
+    </fragment>
     <fragment
         android:id="@+id/personalDetailFragment"
         android:name="com.wangyou.chatwithwebsocket.fragment.PersonalDetailFragment"

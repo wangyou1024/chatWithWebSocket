@@ -58,7 +58,7 @@ class MainFragment : BaseFragment(), LifecycleObserver {
         return binding!!.root
     }
 
-    override fun onCreated(){
+    override fun onActivityResume(){
         Log.i(Const.TAG, "onCreated")
         binding!!.session.setOnClickListener { sessionPage() }
         binding!!.sessionLabel.setOnClickListener { sessionPage() }

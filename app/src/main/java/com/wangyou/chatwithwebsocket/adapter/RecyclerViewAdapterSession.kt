@@ -11,29 +11,29 @@ import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
 
-class RecyclerViewAdapterMessage(
+class RecyclerViewAdapterSession(
     var chats: MutableList<Chat>?,
     var userMap: MutableMap<Long, User>,
     var groupMap: MutableMap<Long, Group>,
-    var listener: MessageListener
-) : RecyclerView.Adapter<RecyclerViewAdapterMessage.MessageHolder>() {
+    var listener: SessionListener
+) : RecyclerView.Adapter<RecyclerViewAdapterSession.SessionHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionHolder {
         val binding = DataBindingUtil.inflate<ItemMessageBinding>(
             LayoutInflater.from(parent.context),
             R.layout.item_message,
             parent,
             false
         )
-        return MessageHolder(binding)
+        return SessionHolder(binding)
     }
 
     fun getAll(): MutableList<Chat> {
         return chats!!
     }
 
-    override fun onBindViewHolder(holder: MessageHolder, position: Int) {
+    override fun onBindViewHolder(holder: SessionHolder, position: Int) {
         val chat = chats!![position]
         holder.binding!!.chat = chat
         holder.binding!!.group = groupMap[chat.gid]
@@ -52,7 +52,7 @@ class RecyclerViewAdapterMessage(
         return chats!!.size
     }
 
-    class MessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class SessionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var binding: ItemMessageBinding? = null
 
         constructor(binding: ItemMessageBinding?) : this(binding!!.root) {
@@ -60,7 +60,7 @@ class RecyclerViewAdapterMessage(
         }
     }
 
-    interface MessageListener {
+    interface SessionListener {
         fun onClickListener(chat: Chat)
     }
 }

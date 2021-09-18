@@ -12,7 +12,7 @@ open class BaseFragment: Fragment(), LifecycleObserver {
      * activity生命周期监听
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    open fun onCreated(){
+    open fun onActivityResume(){
     }
 
     override fun onAttach(context: Context) {

@@ -58,7 +58,7 @@ class FriendApplicationViewModel @Inject constructor(
             latter,
             DateTimeUtil.getTimeNow().toInt(),
             DateTimeUtil.getTimeNow().toInt(),
-            2
+            UserRelation.AGREE
         )
         stompClient.send(Const.friendApplication, Gson().toJson(userRelation)).subscribe()
     }

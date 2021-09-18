@@ -10,8 +10,11 @@ import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.util.DateTimeUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class TalkViewModel : ViewModel() {
+@HiltViewModel
+class ChatViewModel @Inject constructor() : ViewModel() {
     // 聊天群
     private var group: MutableLiveData<Group>? = null
 

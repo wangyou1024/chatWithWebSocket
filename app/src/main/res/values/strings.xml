@@ -64,5 +64,6 @@
     <string name="invalid_phone">请使用手机号</string>
     <string name="find_person">查找人</string>
     <string name="find_group">查找群</string>
+    <string name="create">创建</string>
 
 </resources>

@@ -27,7 +27,7 @@ object DateTimeUtil {
     @JvmStatic
     fun getTimeNow(): Long{
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            Instant.now().toEpochMilli()/1000
+            Instant.now().epochSecond
         } else {
             Date().time/1000
         }

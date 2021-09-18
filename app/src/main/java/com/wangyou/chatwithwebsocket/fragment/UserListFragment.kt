@@ -55,8 +55,8 @@ class UserListFragment : BaseFragment() {
         return binding!!.root
     }
 
-    override fun onCreated() {
-        super.onCreated()
+    override fun onActivityResume() {
+        super.onActivityResume()
         userListViewModel.findFriends()
     }
 

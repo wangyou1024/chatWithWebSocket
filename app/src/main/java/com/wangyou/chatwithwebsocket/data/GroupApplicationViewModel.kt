@@ -6,8 +6,11 @@ import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.GroupRelation
 import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.entity.UserRelation
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class GroupApplicationViewModel(): ViewModel() {
+@HiltViewModel
+class GroupApplicationViewModel @Inject constructor(): ViewModel() {
     private var userMap: MutableLiveData<MutableMap<Long, User>>? = null
     private var groupMap: MutableLiveData<MutableMap<Long, Group>>? = null
     private var groupRelationList: MutableLiveData<MutableList<GroupRelation>>? = null

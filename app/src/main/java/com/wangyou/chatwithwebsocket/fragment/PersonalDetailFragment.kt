@@ -49,8 +49,8 @@ class PersonalDetailFragment : BaseFragment() {
         return binding!!.root
     }
 
-    override fun onCreated() {
-        super.onCreated()
+    override fun onActivityResume() {
+        super.onActivityResume()
         val bundle = PersonalDetailFragmentArgs.fromBundle(requireArguments())
         if (bundle.uid != "unknown") {
             personalViewModel.loadUserById(bundle.uid.toLong())

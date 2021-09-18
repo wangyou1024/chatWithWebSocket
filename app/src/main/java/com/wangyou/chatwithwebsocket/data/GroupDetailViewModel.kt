@@ -1,11 +1,16 @@
 package com.wangyou.chatwithwebsocket.data
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class GroupDetailViewModel: ViewModel() {
+@HiltViewModel
+class GroupDetailViewModel @Inject constructor(): ViewModel() {
 
     private var group: MutableLiveData<Group>? = null
     private var groupLeader: MutableLiveData<User>? = null
@@ -37,6 +42,16 @@ class GroupDetailViewModel: ViewModel() {
             ))
         }
         role = MutableLiveData(0)
+    }
+
+    fun createGroup(){
+        val newGroup = Group(-1, "", "", "", "", 0, 1)
+        group?.value = newGroup
+        role?.value = 0
+    }
+
+    fun saveGroup(){
+        Log.i(Const.TAG, "保存：${group?.value?.groupName}+${group?.value?.introduce}")
     }
 
     fun getGroup(): MutableLiveData<Group>{

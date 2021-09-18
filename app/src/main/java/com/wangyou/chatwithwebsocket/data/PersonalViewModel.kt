@@ -100,7 +100,7 @@ class PersonalViewModel @Inject constructor(
         userRelationServiceAPI.findUserRelation(uid)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                if (it.enable == null || it.enable == 0 || it.enable == 1 || it.enable == 3){
+                if (it.enable == null || it.enable == UserRelation.NO_DEAL || it.enable == UserRelation.REFUSE || it.enable == UserRelation.DELETE){
                     relation?.value = 1
                 } else {
                     relation?.value = 2
@@ -146,7 +146,7 @@ class PersonalViewModel @Inject constructor(
             personal?.value?.uid,
             DateTimeUtil.getTimeNow().toInt(),
             DateTimeUtil.getTimeNow().toInt(),
-            0
+            UserRelation.NO_DEAL
         )
         stompClient.send(Const.friendApplication, Gson().toJson(userRelation)).subscribe()
     }
@@ -161,7 +161,7 @@ class PersonalViewModel @Inject constructor(
             personal?.value?.uid,
             DateTimeUtil.getTimeNow().toInt(),
             DateTimeUtil.getTimeNow().toInt(),
-            3
+            UserRelation.DELETE
         )
         stompClient.send(Const.friendApplication, Gson().toJson(userRelation)).subscribe()
     }

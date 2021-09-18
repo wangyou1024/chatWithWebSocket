@@ -43,8 +43,8 @@ class PersonalFragment : BaseFragment() {
         return binding!!.root
     }
 
-    override fun onCreated() {
-        super.onCreated()
+    override fun onActivityResume() {
+        super.onActivityResume()
         binding!!.editPersonal.setOnClickListener{
             navController!!.navigate(R.id.personalDetailFragment)
         }

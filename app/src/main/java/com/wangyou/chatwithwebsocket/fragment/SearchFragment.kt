@@ -65,8 +65,8 @@ class SearchFragment : BaseFragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onCreated() {
-        super.onCreated()
+    override fun onActivityResume() {
+        super.onActivityResume()
         binding?.backMain?.setOnClickListener {
             navController?.popBackStack()
         }

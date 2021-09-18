@@ -7,6 +7,9 @@
         <variable
             name="sessionViewModel"
             type="com.wangyou.chatwithwebsocket.data.SessionViewModel" />
+        <variable
+            name="listener"
+            type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterSession.SessionListener" />
     </data>
 
 
@@ -33,13 +36,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewMessage"
+                    android:id="@+id/rvSession"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/gray_50"
                     app:bindSession="@{sessionViewModel.chatList}"
                     app:talkerMap="@{sessionViewModel.userMap}"
                     app:groupMap="@{sessionViewModel.groupMap}"
+                    app:sessionListener="@{listener}"
                     />
                 <View
                     android:layout_width="match_parent"

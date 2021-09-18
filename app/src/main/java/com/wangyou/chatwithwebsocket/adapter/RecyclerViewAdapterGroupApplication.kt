@@ -66,7 +66,7 @@ class RecyclerViewAdapterGroupApplication(
     }
 
     interface OnClickListener {
-        fun agree(former: Long, latter: Long)
+        fun agree(gid: Long, uid: Long)
         fun viewPersonalDetail(user: User)
         fun viewGroupDetail(group: Group)
     }

@@ -10,6 +10,9 @@
         <variable
             name="oneself"
             type="com.wangyou.chatwithwebsocket.entity.User" />
+        <variable
+            name="listener"
+            type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterGroupApplication.OnClickListener" />
     </data>
 
     <LinearLayout
@@ -42,15 +45,26 @@
                 android:text="@string/back"
                 android:textColor="@color/gray_200"
                 android:textSize="@dimen/font_navigation" />
+            <TextView
+                android:id="@+id/create"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="end"
+                android:text="@string/create"
+                android:textColor="@color/gray_200"
+                android:textSize="@dimen/font_navigation" />
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGroupApplications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:groupApplicationUserMap="@{groupApplicationViewModel.userMap}"
             app:groupApplicationGroupMap="@{groupApplicationViewModel.groupMap}"
             app:groupRelationList="@{groupApplicationViewModel.groupRelationList}"
             app:groupApplicationLogin="@{oneself}"
+            app:groupApplicationListener="@{listener}"
             android:paddingHorizontal="@dimen/content_padding" />
 
     </LinearLayout>

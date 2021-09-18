@@ -30,7 +30,7 @@ class RecyclerViewAdapterFriendApplication(
 
     override fun onBindViewHolder(holder: FriendApplicationHolder, position: Int) {
         // 如果当前申请未操作，且被申请人是自己才能进行同意操作
-        holder.binding.role = if (userRelationList[position].enable == 0 && userRelationList[position].uidLatter == oneself.uid) {
+        holder.binding.role = if (userRelationList[position].enable == UserRelation.NO_DEAL && userRelationList[position].uidLatter == oneself.uid) {
             holder.binding.agreeApplication.setOnClickListener{
                 listener.agree(userRelationList[position].uidFormer!!, userRelationList[position].uidLatter!!)
             }
@@ -46,9 +46,11 @@ class RecyclerViewAdapterFriendApplication(
             listener.viewPersonalDetail(holder.binding.user!!)
         }
         holder.binding.applicationStatus.text = when (userRelationList[position].enable) {
-            0 -> "响应中"
-            1 -> "已拒绝"
-            else -> "已同意"
+            UserRelation.NO_DEAL -> "响应中"
+            UserRelation.REFUSE -> "已拒绝"
+            UserRelation.AGREE -> "已同意"
+            UserRelation.DELETE -> "已删除"
+            else -> "状态异常"
         }
     }
 

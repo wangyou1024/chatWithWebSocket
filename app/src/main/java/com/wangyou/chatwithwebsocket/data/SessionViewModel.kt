@@ -5,8 +5,11 @@ import androidx.lifecycle.ViewModel
 import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SessionViewModel() : ViewModel() {
+@HiltViewModel
+class SessionViewModel @Inject constructor() : ViewModel() {
 
     private var chatList: MutableLiveData<MutableList<Chat>>? = null
     private var userMap: MutableLiveData<MutableMap<Long, User>>? = null

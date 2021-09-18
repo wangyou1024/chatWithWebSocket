@@ -72,8 +72,8 @@ class FriendApplicationFragment : BaseFragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onCreated() {
-        super.onCreated()
+    override fun onActivityResume() {
+        super.onActivityResume()
         friendApplicationViewModel.getUserRelationList().observe(requireActivity(), { list ->
             Log.i(Const.TAG, "userRelation更新")
             binding?.rvRelation?.adapter?.notifyDataSetChanged()
