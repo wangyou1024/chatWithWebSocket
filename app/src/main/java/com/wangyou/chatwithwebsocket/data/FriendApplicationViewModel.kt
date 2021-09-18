@@ -39,6 +39,7 @@ class FriendApplicationViewModel @Inject constructor(
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 userRelationList?.value = it as MutableList<UserRelation>?
+                stompClientLifecycle.setUserRelationList(userRelationList!!)
             }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
                     Log.i(Const.TAG, ex.errorMsg)

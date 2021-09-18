@@ -27,7 +27,7 @@ class WebSocketTransformer : FlowableTransformer<StompMessage, String> {
                     return Flowable.error(APIException(APIException.UNKNOWN_ERROR.toString(), "空值异常"))
                 }
             })
-//             .observeOn(AndroidSchedulers.mainThread())
+             .observeOn(AndroidSchedulers.mainThread())
     }
 
     companion object{

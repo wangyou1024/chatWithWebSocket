@@ -51,10 +51,7 @@ class UserListFragment : BaseFragment() {
         binding!!.lifecycleOwner = this
         navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
         binding!!.listener = listener
-        binding!!.userListViewModel = ViewModelProvider(
-            requireActivity(),
-            ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        ).get(UserListViewModel::class.java)
+        binding!!.userListViewModel = userListViewModel
         return binding!!.root
     }
 

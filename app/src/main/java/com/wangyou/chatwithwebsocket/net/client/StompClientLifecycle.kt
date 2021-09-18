@@ -28,8 +28,8 @@ class StompClientLifecycle constructor(
 
     private var tryTime = 0
 
-    // 由viewModel传过来的值只适合读，不适合在订阅过程中修改?
     private var self: MutableLiveData<User>? = null
+    private var userRelationList: MutableLiveData<MutableList<UserRelation>>? = null
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun connect() {
@@ -66,6 +66,16 @@ class StompClientLifecycle constructor(
             .compose(WebSocketTransformer.option())
             .subscribe({
                 val userRelation = Gson().fromJson(it, UserRelation::class.java)
+                self?.value = self?.value
+                val newList = mutableListOf<UserRelation>()
+                for (i in userRelationList?.value!!){
+                    if (i.urid?.equals(userRelation.urid) == true){
+                        newList.add(userRelation)
+                    }else {
+                        newList.add(i)
+                    }
+                }
+                userRelationList?.value = newList
                 if (self?.value?.uid != null) {
                     if (self?.value?.uid == userRelation.uidFormer) {
                         // 申请者
@@ -103,6 +113,10 @@ class StompClientLifecycle constructor(
 
     fun setSelf(user: MutableLiveData<User>) {
         this.self = user
+    }
+
+    fun setUserRelationList(userRelationList: MutableLiveData<MutableList<UserRelation>>){
+        this.userRelationList = userRelationList
     }
 
 }
