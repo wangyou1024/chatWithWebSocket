@@ -43,7 +43,7 @@ class UserListViewModel @Inject constructor(
             })
     }
 
-    fun loadUserByIds(ids: MutableSet<Long>){
+    fun loadUserByIds(ids: MutableSet<Long>) {
         val list = mutableListOf<Long>(-1)
         list.addAll(ids)
         userServiceAPI.findUserListByIds(list)
@@ -51,9 +51,22 @@ class UserListViewModel @Inject constructor(
             .subscribe({
                 this.userList?.value = it
                 associate()
-            }, object : ErrorConsumer(){
+            }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
                     Log.i(Const.TAG, ex.errorMsg)
+                }
+            })
+    }
+
+    fun findFriends() {
+        userServiceAPI.findFriends()
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                this.userList?.value = it
+                associate()
+            }, object : ErrorConsumer() {
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, "加载好友数据错误 -> ${ex.errorMsg}")
                 }
 
             })
@@ -72,7 +85,7 @@ class UserListViewModel @Inject constructor(
         userList!!.value = userList!!.value
     }
 
-    fun associate(){
-        userList!!.value?.let { it -> userMap!!.value?.putAll(it.associateBy { it.uid!!}) }
+    fun associate() {
+        userList!!.value?.let { it -> userMap!!.value?.putAll(it.associateBy { it.uid!! }) }
     }
 }

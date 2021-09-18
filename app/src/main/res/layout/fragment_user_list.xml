@@ -7,6 +7,9 @@
         <variable
             name="userListViewModel"
             type="com.wangyou.chatwithwebsocket.data.UserListViewModel" />
+        <variable
+            name="listener"
+            type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterUserList.OnClickListener" />
     </data>
 
     <FrameLayout
@@ -15,9 +18,11 @@
         tools:context=".fragment.UserListFragment">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFriends"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/content_padding"
+            app:userListOnClick="@{listener}"
             app:userList="@{userListViewModel.userList}"
             android:background="@color/gray_50" />
 
