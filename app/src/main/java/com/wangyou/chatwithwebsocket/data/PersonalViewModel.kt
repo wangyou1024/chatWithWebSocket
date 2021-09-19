@@ -204,11 +204,11 @@ class PersonalViewModel @Inject constructor(
     }
 
     fun getGender(): MutableLiveData<Int> {
-        return gender!!
+        return gender
     }
 
     fun setGender(gender: Int) {
-        this.gender!!.value = gender
+        this.gender.value = gender
     }
 
     fun getRelation(): MutableLiveData<Int> {

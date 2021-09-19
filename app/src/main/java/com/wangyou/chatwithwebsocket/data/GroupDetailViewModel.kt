@@ -114,12 +114,14 @@ class GroupDetailViewModel @Inject constructor(
             })
     }
 
-    fun loadMember(gid: Long) {
+    private fun loadMember(gid: Long) {
         userServiceAPI.findMembers(gid)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 Log.i(Const.TAG, "获取群成员 -> ${it.size}")
-                groupMembers.value = it
+                groupMembers.value?.clear()
+                groupMembers.value?.addAll(it)
+                groupMembers.value = groupMembers.value
             }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
                     Log.i(Const.TAG, "获取群成员 -> ${ex.errorMsg}")
@@ -127,7 +129,7 @@ class GroupDetailViewModel @Inject constructor(
             })
     }
 
-    fun loadRelation(gid: Long) {
+    private fun loadRelation(gid: Long) {
         groupRelationServiceAPI.findRelation(gid)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({

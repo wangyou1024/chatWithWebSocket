@@ -27,7 +27,9 @@ class GroupListViewModel @Inject constructor(
         groupServiceAPI.searchGroups(searchKey)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                groupList.value = it
+                groupList.value?.clear()
+                groupList.value?.addAll(it)
+                groupList.value = groupList.value
                 Log.i(Const.TAG, "搜索群聊成功${it.size}")
             }, object : ErrorConsumer(){
                 override fun error(ex: APIException) {
@@ -42,7 +44,9 @@ class GroupListViewModel @Inject constructor(
         groupServiceAPI.findJoinedGroups()
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                groupList.value = it
+                groupList.value?.clear()
+                groupList.value?.addAll(it)
+                groupList.value = groupList.value
                 Log.i(Const.TAG, "加载已加入群聊成功")
             }, object : ErrorConsumer(){
                 override fun error(ex: APIException) {
@@ -59,7 +63,9 @@ class GroupListViewModel @Inject constructor(
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 Log.i(Const.TAG, "加载群列表 -> ${it.size}")
-                this.groupList.value = it
+                groupList.value?.clear()
+                groupList.value?.addAll(it)
+                groupList.value = groupList.value
                 associate()
             }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {

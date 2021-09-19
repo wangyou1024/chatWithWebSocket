@@ -28,18 +28,17 @@ class FriendApplicationViewModel @Inject constructor(
     var userRelationServiceAPI: UserRelationServiceAPI,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
 ) : ViewModel() {
-    private var userRelationList: MutableLiveData<MutableList<UserRelation>>? = null
-
-    init {
-        userRelationList = MutableLiveData(mutableListOf())
-    }
+    private var userRelationList: MutableLiveData<MutableList<UserRelation>> =
+        MutableLiveData(mutableListOf())
 
     fun loadUserRelationList() {
         userRelationServiceAPI.findUserRelationList()
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                userRelationList?.value = it as MutableList<UserRelation>?
-                stompClientLifecycle.setUserRelationList(userRelationList!!)
+                userRelationList.value?.clear()
+                userRelationList.value?.addAll(it)
+                userRelationList.value = userRelationList.value
+                stompClientLifecycle.setUserRelationList(userRelationList)
             }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
                     Log.i(Const.TAG, ex.errorMsg)
@@ -64,6 +63,6 @@ class FriendApplicationViewModel @Inject constructor(
 
 
     fun getUserRelationList(): MutableLiveData<MutableList<UserRelation>> {
-        return userRelationList!!
+        return userRelationList
     }
 }

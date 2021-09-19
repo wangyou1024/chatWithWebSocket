@@ -26,8 +26,8 @@ class LoginViewModel @Inject constructor(
     var stompClientLifecycle: StompClientLifecycle,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
 ): ViewModel() {
-    private var username: ObservableField<String>? = null
-    private var password: ObservableField<String>? = null
+    private var username: ObservableField<String> = ObservableField("")
+    private var password: ObservableField<String> = ObservableField("")
     private var navController: NavController? = null
     private var logining: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     private var logined: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
@@ -44,7 +44,7 @@ class LoginViewModel @Inject constructor(
             logining.value = true
             logining.value = logining.value
         }
-        loginServiceAPI.login(userName= username!!.get()!!, password = password!!.get()!!)
+        loginServiceAPI.login(userName= username.get()!!, password = password.get()!!)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 navController!!.popBackStack(R.id.loginFragment, true)
@@ -66,7 +66,7 @@ class LoginViewModel @Inject constructor(
     fun signUp(){
         if (logining.value!! || logined.value!!){
             return
-        }else if (!Regex("""$[0-9]{11}^""").matches(username!!.get()!!)){
+        }else if (!Regex("""$[0-9]{11}^""").matches(username.get()!!)){
             toast.setText(R.string.invalid_phone)
             toast.show()
             return
@@ -74,7 +74,7 @@ class LoginViewModel @Inject constructor(
             logining.value = true
             logining.value = logining.value
         }
-        loginServiceAPI.signUp(userName= username!!.get()!!, password = password!!.get()!!)
+        loginServiceAPI.signUp(userName= username.get()!!, password = password.get()!!)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 logining.value = false
@@ -108,19 +108,19 @@ class LoginViewModel @Inject constructor(
     }
 
     fun getUsername(): String{
-        return username!!.get()!!
+        return username.get()!!
     }
 
     fun setUsername(username: String){
-        this.username!!.set(username)
+        this.username.set(username)
     }
 
     fun getPassword(): String{
-        return password!!.get()!!
+        return password.get()!!
     }
 
     fun setPassword(password: String){
-        this.password!!.set(password)
+        this.password.set(password)
     }
 
     fun isLogining(): MutableLiveData<Boolean>{

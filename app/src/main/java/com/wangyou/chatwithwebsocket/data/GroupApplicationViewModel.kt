@@ -51,7 +51,7 @@ class GroupApplicationViewModel @Inject constructor(
         if (!stompClient.isConnected){
             stompClientLifecycle.connect()
         }
-        var groupRelation = GroupRelation(
+        val groupRelation = GroupRelation(
             0,
             gid,
             uid,
