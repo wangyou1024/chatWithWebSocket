@@ -16,7 +16,10 @@ import ua.naiksoftware.stomp.dto.StompMessage
 class WebSocketTransformer : FlowableTransformer<StompMessage, String> {
     override fun apply(upstream: Flowable<StompMessage>): Publisher<String> {
         return upstream
-            .onErrorResumeNext { throwable: Throwable ->  Flowable.error<StompMessage>(APIException.handleException(throwable)) }
+            .onErrorResumeNext { throwable: Throwable ->
+                Log.i(Const.TAG, "订阅异常")
+                Flowable.error<StompMessage>(APIException.handleException(throwable))
+            }
             .flatMap(object : Function<StompMessage, Publisher<String>> {
                 override fun apply(t: StompMessage): Publisher<String> {
                     Log.i(Const.TAG, "Stomp re==${t}")

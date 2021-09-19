@@ -44,7 +44,6 @@ class FriendApplicationViewModel @Inject constructor(
                 override fun error(ex: APIException) {
                     Log.i(Const.TAG, ex.errorMsg)
                 }
-
             })
     }
 

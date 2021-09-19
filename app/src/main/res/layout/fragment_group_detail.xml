@@ -211,6 +211,7 @@
                 android:layout_weight="1"
                 android:text="@string/join_group"
                 android:textColor="@color/gray_50"
+                android:onClick="@{()->groupDetailViewModel.sendGroupApplication()}"
                 android:textSize="@dimen/font_content"
                 android:visibility="@{groupDetailViewModel.role == 2?View.VISIBLE:View.GONE}"/>
         </LinearLayout>

@@ -73,8 +73,6 @@ class MainActivity : AppCompatActivity() {
                     Log.i(Const.TAG, "重新连接stompClient")
                     stompClientLifecycle.connect()
                 }
-            }else{
-                stompClientLifecycle.disConnect()
             }
         })
         when {
@@ -82,11 +80,6 @@ class MainActivity : AppCompatActivity() {
                 loginPage("未登录")
             }
             cookieList[0].expiresAt() < System.currentTimeMillis() -> {
-//                val ft = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-//                val time = Date(cookieList[0].expiresAt())
-//                Log.i(Const.TAG, "过期时间：${ft.format(time)}")
-//                toast.setText(ft.format(time))
-//                toast.show()
                 loginPage("登录过期")
             }
             else -> {

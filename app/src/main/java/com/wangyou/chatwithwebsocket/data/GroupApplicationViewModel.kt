@@ -9,6 +9,7 @@ import com.wangyou.chatwithwebsocket.entity.GroupRelation
 import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.entity.UserRelation
 import com.wangyou.chatwithwebsocket.net.api.GroupRelationServiceAPI
+import com.wangyou.chatwithwebsocket.net.client.StompClientLifecycle
 import com.wangyou.chatwithwebsocket.net.exception.APIException
 import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
 import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
@@ -18,19 +19,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GroupApplicationViewModel @Inject constructor(
+    var stompClientLifecycle: StompClientLifecycle,
     val groupRelationServiceAPI: GroupRelationServiceAPI,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
-): ViewModel() {
+) : ViewModel() {
     private var groupRelationList: MutableLiveData<MutableList<GroupRelation>> =
         MutableLiveData(mutableListOf())
 
-    fun loadGroupRelationList(){
+    fun loadGroupRelationList() {
         groupRelationServiceAPI.findRelationList()
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 Log.i(Const.TAG, "获取关系 -> ${it.size}")
-                groupRelationList.value = it
-            }, object : ErrorConsumer(){
+                groupRelationList.value?.clear()
+                groupRelationList.value?.addAll(it)
+                groupRelationList.value = groupRelationList.value
+                stompClientLifecycle.setGroupRelationList(groupRelationList)
+            }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
                     Log.i(Const.TAG, "获取关系 -> ${ex.errorMsg}")
                 }
@@ -38,7 +43,7 @@ class GroupApplicationViewModel @Inject constructor(
             })
     }
 
-    fun getGroupRelationList(): MutableLiveData<MutableList<GroupRelation>>{
+    fun getGroupRelationList(): MutableLiveData<MutableList<GroupRelation>> {
         return groupRelationList
     }
 }

@@ -54,6 +54,8 @@ class RecyclerViewAdapterGroupApplication(
             GroupRelation.NO_DEAL -> "响应中"
             GroupRelation.REFUSE -> "已拒绝"
             GroupRelation.AGREE -> "已同意"
+            GroupRelation.DELETE -> "已删除"
+            GroupRelation.DISMISS -> "已解散"
             else -> "状态异常"
         }
     }

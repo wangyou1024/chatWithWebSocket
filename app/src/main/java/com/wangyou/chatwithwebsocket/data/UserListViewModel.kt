@@ -27,7 +27,9 @@ class UserListViewModel @Inject constructor(
         userServiceAPI.findUserListBySearchKey(searchKey)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                userList.value = it
+                userList.value?.clear()
+                userList.value?.addAll(it)
+                userList.value = userList.value
                 associate()
             }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {

@@ -14,7 +14,10 @@ object Const {
     const val chat = "/app/chat"
     const val chatResponse = "/user/queue/chat"
 
-    // 好友申请通过
+    // 好友申请
     const val friendApplication = "/app/friendApplication"
     const val friendApplicationResponse = "/user/queue/friendApplication"
+
+    const val groupApplication = "/app/groupApplication"
+    const val groupApplicationResponse = "/user/queue/groupApplication"
 }
