@@ -31,29 +31,30 @@ class RecyclerViewAdapterGroupApplication(
     }
 
     override fun onBindViewHolder(holder: GroupApplicationHolder, position: Int) {
+        val groupRelation = groupRelationList[position]
+        val user = userMap[groupRelation.uid]
+        val group = groupMap[groupRelation.gid]
         // 如果当前申请未操作，且被申请人是自己才能进行同意操作
         holder.binding.role =
-            if (groupRelationList[position].enable == 0 && groupRelationList[position].uid != oneself.uid) {
+            if (groupRelation.enable == GroupRelation.NO_DEAL && groupRelation.uid != oneself.uid) {
                 holder.binding.agreeApplication.setOnClickListener {
-                    listener.agree(
-                        groupRelationList[position].gid!!,
-                        groupRelationList[position].uid!!
-                    )
+                    listener.agree(groupRelation.gid!!, groupRelation.uid!!)
                 }
                 0
             } else 1
-        holder.binding.user = userMap[groupRelationList[position].uid]
+        holder.binding.user = user
         holder.binding.root.setOnClickListener{
-            listener.viewPersonalDetail(holder.binding.user!!)
+            listener.viewPersonalDetail(user?.uid!!, group?.gid!!)
         }
-        holder.binding.group = groupMap[groupRelationList[position].gid]
+        holder.binding.group = group
         holder.binding.groupApplication.setOnClickListener {
-            listener.viewGroupDetail(holder.binding.group!!)
+            listener.viewGroupDetail(group!!)
         }
-        holder.binding.applicationStatus.text = when (groupRelationList[position].enable) {
-            0 -> "响应中"
-            1 -> "已拒绝"
-            else -> "已同意"
+        holder.binding.applicationStatus.text = when (groupRelation.enable) {
+            GroupRelation.NO_DEAL -> "响应中"
+            GroupRelation.REFUSE -> "已拒绝"
+            GroupRelation.AGREE -> "已同意"
+            else -> "状态异常"
         }
     }
 
@@ -67,7 +68,7 @@ class RecyclerViewAdapterGroupApplication(
 
     interface OnClickListener {
         fun agree(gid: Long, uid: Long)
-        fun viewPersonalDetail(user: User)
+        fun viewPersonalDetail(uid: Long, gid: Long)
         fun viewGroupDetail(group: Group)
     }
 

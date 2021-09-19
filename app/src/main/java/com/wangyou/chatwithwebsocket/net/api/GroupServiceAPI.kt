@@ -22,6 +22,6 @@ interface GroupServiceAPI {
     @GET("/group/searchGroups")
     fun searchGroups(@Query("searchKey") searchKey: String): Observable<ResponseData<MutableList<Group>>>
 
-    @GET("/group/findGroupListByIds")
+    @POST("/group/findGroupListByIds")
     fun findGroupListByIds(@Body gids: MutableList<Long>): Observable<ResponseData<MutableList<Group>>>
 }

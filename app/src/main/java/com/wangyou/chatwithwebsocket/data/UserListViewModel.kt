@@ -20,19 +20,14 @@ class UserListViewModel @Inject constructor(
     var userServiceAPI: UserServiceAPI,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
 ) : ViewModel() {
-    private var userList: MutableLiveData<MutableList<User>>? = null
-    private var userMap: MutableLiveData<MutableMap<Long, User>>? = null
-
-    init {
-        userList = MutableLiveData(mutableListOf<User>())
-        userMap = MutableLiveData(mutableMapOf())
-    }
+    private var userList: MutableLiveData<MutableList<User>> = MutableLiveData(mutableListOf<User>())
+    private var userMap: MutableLiveData<MutableMap<Long, User>> = MutableLiveData(mutableMapOf())
 
     fun searchUserList(searchKey: String) {
         userServiceAPI.findUserListBySearchKey(searchKey)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                userList?.value = it
+                userList.value = it
                 associate()
             }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
@@ -49,7 +44,7 @@ class UserListViewModel @Inject constructor(
         userServiceAPI.findUserListByIds(list)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                this.userList?.value = it
+                this.userList.value = it
                 associate()
             }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
@@ -62,7 +57,7 @@ class UserListViewModel @Inject constructor(
         userServiceAPI.findFriends()
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                this.userList?.value = it
+                this.userList.value = it
                 associate()
             }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
@@ -73,19 +68,19 @@ class UserListViewModel @Inject constructor(
     }
 
     fun getUserMap(): MutableLiveData<MutableMap<Long, User>> {
-        return userMap!!
+        return userMap
     }
 
     fun getUserList(): MutableLiveData<MutableList<User>> {
-        return userList!!
+        return userList
     }
 
     fun addUser(user: User) {
-        userList!!.value!!.add(user)
-        userList!!.value = userList!!.value
+        userList.value!!.add(user)
+        userList.value = userList.value
     }
 
-    fun associate() {
-        userList!!.value?.let { it -> userMap!!.value?.putAll(it.associateBy { it.uid!! }) }
+    private fun associate() {
+        userList.value?.let { it -> userMap.value?.putAll(it.associateBy { it.uid!! }) }
     }
 }

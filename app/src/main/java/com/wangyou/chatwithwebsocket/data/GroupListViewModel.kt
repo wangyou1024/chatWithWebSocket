@@ -21,6 +21,7 @@ class GroupListViewModel @Inject constructor(
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
 ) : ViewModel() {
     private var groupList: MutableLiveData<MutableList<Group>> = MutableLiveData(mutableListOf<Group>())
+    private var groupMap: MutableLiveData<MutableMap<Long, Group>> = MutableLiveData(mutableMapOf())
 
     fun searchGroupList(searchKey : String) {
         groupServiceAPI.searchGroups(searchKey)
@@ -49,6 +50,30 @@ class GroupListViewModel @Inject constructor(
                     toast.show()
                 }
             })
+    }
+
+    fun loadGroupListByIds(ids: MutableSet<Long>){
+        val list = mutableListOf<Long>(-1)
+        list.addAll(ids)
+        groupServiceAPI.findGroupListByIds(list)
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                Log.i(Const.TAG, "加载群列表 -> ${it.size}")
+                this.groupList.value = it
+                associate()
+            }, object : ErrorConsumer() {
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, "加载群列表 -> ${ex.errorMsg}")
+                }
+            })
+    }
+
+    private fun associate() {
+        groupList.value?.let { it -> groupMap.value?.putAll(it.associateBy { it.gid!! }) }
+    }
+
+    fun getGroupMap(): MutableLiveData<MutableMap<Long, Group>>{
+        return groupMap
     }
 
     fun getGroupList(): MutableLiveData<MutableList<Group>> {

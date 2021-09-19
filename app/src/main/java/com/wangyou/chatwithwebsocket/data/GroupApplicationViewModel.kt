@@ -1,72 +1,44 @@
 package com.wangyou.chatwithwebsocket.data
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.GroupRelation
 import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.entity.UserRelation
+import com.wangyou.chatwithwebsocket.net.api.GroupRelationServiceAPI
+import com.wangyou.chatwithwebsocket.net.exception.APIException
+import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
+import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
+import com.wangyou.chatwithwebsocket.net.response.ResponseTransformer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class GroupApplicationViewModel @Inject constructor(): ViewModel() {
-    private var userMap: MutableLiveData<MutableMap<Long, User>>? = null
-    private var groupMap: MutableLiveData<MutableMap<Long, Group>>? = null
-    private var groupRelationList: MutableLiveData<MutableList<GroupRelation>>? = null
+class GroupApplicationViewModel @Inject constructor(
+    val groupRelationServiceAPI: GroupRelationServiceAPI,
+    var compositeDisposableLifecycle: CompositeDisposableLifecycle
+): ViewModel() {
+    private var groupRelationList: MutableLiveData<MutableList<GroupRelation>> =
+        MutableLiveData(mutableListOf())
 
-    init {
-        userMap = MutableLiveData(mutableMapOf())
-        for (i in 1L..6L) {
-            val str = "${i}something"
-            userMap!!.value!![i.toLong()] = User(
-                i,
-                str,
-                str,
-                str,
-                str,
-                str,
-                i.toInt(),
-                str,
-                str,
-                i.toInt(),
-                str,
-                i.toInt(),
-                i.toInt(),
-                i.toInt()
-            )
-        }
-        groupMap = MutableLiveData(mutableMapOf())
-        for (i in 1L..6L) {
-            val str = "${i}something"
-            groupMap!!.value!![i.toLong()] = Group(
-                i,
-                str,
-                str,
-                str,
-                str,
-                i.toInt(),
-                1
-            )
-        }
-        groupRelationList = MutableLiveData(mutableListOf())
-        groupRelationList!!.value!!.add(GroupRelation(1, 1, 2, 1, 1, 0))
-        groupRelationList!!.value!!.add(GroupRelation(2, 1, 3, 1, 1, 1))
-        groupRelationList!!.value!!.add(GroupRelation(3, 1, 4, 1, 1, 2))
-        groupRelationList!!.value!!.add(GroupRelation(4, 2, 1, 1, 1, 0))
-        groupRelationList!!.value!!.add(GroupRelation(5, 3, 1, 1, 1, 1))
-        groupRelationList!!.value!!.add(GroupRelation(6, 4, 1, 1, 1, 2))
-    }
+    fun loadGroupRelationList(){
+        groupRelationServiceAPI.findRelationList()
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                Log.i(Const.TAG, "获取关系 -> ${it.size}")
+                groupRelationList.value = it
+            }, object : ErrorConsumer(){
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, "获取关系 -> ${ex.errorMsg}")
+                }
 
-    fun getUserMap(): MutableLiveData<MutableMap<Long, User>> {
-        return userMap!!
-    }
-
-    fun getGroupMap(): MutableLiveData<MutableMap<Long, Group>> {
-        return groupMap!!
+            })
     }
 
     fun getGroupRelationList(): MutableLiveData<MutableList<GroupRelation>>{
-        return groupRelationList!!
+        return groupRelationList
     }
 }

@@ -8,6 +8,12 @@
             name="groupApplicationViewModel"
             type="com.wangyou.chatwithwebsocket.data.GroupApplicationViewModel" />
         <variable
+            name="userListViewModel"
+            type="com.wangyou.chatwithwebsocket.data.UserListViewModel" />
+        <variable
+            name="groupListViewModel"
+            type="com.wangyou.chatwithwebsocket.data.GroupListViewModel" />
+        <variable
             name="oneself"
             type="com.wangyou.chatwithwebsocket.entity.User" />
         <variable
@@ -60,8 +66,8 @@
             android:id="@+id/rvGroupApplications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:groupApplicationUserMap="@{groupApplicationViewModel.userMap}"
-            app:groupApplicationGroupMap="@{groupApplicationViewModel.groupMap}"
+            app:groupApplicationUserMap="@{userListViewModel.userMap}"
+            app:groupApplicationGroupMap="@{groupListViewModel.groupMap}"
             app:groupRelationList="@{groupApplicationViewModel.groupRelationList}"
             app:groupApplicationLogin="@{oneself}"
             app:groupApplicationListener="@{listener}"
