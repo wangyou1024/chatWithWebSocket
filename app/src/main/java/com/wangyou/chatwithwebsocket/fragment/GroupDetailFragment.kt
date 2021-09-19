@@ -11,8 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
+import com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterUserList
 import com.wangyou.chatwithwebsocket.data.GroupDetailViewModel
 import com.wangyou.chatwithwebsocket.databinding.FragmentGroupDetailBinding
+import com.wangyou.chatwithwebsocket.entity.User
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,6 +23,18 @@ class GroupDetailFragment : BaseFragment() {
     private var binding: FragmentGroupDetailBinding? = null
     private var navController: NavController? = null
     private val groupDetailViewModel: GroupDetailViewModel by activityViewModels<GroupDetailViewModel>()
+    private val memberListener: RecyclerViewAdapterUserList.OnClickListener = object : RecyclerViewAdapterUserList.OnClickListener{
+        override fun viewDetailPerson(user: User) {
+            navController?.navigate(
+                R.id.personalDetailFragment, PersonalDetailFragmentArgs.Builder()
+                    .setUid(groupDetailViewModel.getGroupLeader().value!!.uid.toString())
+                    .setGid(groupDetailViewModel.getGroup().value?.gid.toString())
+                    .build()
+                    .toBundle()
+            )
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +55,9 @@ class GroupDetailFragment : BaseFragment() {
     override fun onActivityResume() {
         super.onActivityResume()
         val bundle = GroupDetailFragmentArgs.fromBundle(requireArguments())
-        groupDetailViewModel.getGroup().value!!.groupName = bundle.gid
+        if (bundle.gid != "unknown"){
+            groupDetailViewModel.loadGroup(bundle.gid.toLong())
+        }
         binding!!.popBack.setOnClickListener {
             navController!!.popBackStack()
         }
@@ -54,7 +70,8 @@ class GroupDetailFragment : BaseFragment() {
         binding!!.groupLeader.setOnClickListener {
             navController!!.navigate(
                 R.id.personalDetailFragment, PersonalDetailFragmentArgs.Builder()
-                    .setUid(groupDetailViewModel.getGroupLeader().value!!.uid.toString()).build()
+                    .setUid(groupDetailViewModel.getGroupLeader().value!!.uid.toString())
+                    .build()
                     .toBundle()
             )
         }

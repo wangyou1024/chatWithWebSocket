@@ -16,8 +16,11 @@
             name="searchContentViewModel"
             type="com.wangyou.chatwithwebsocket.data.SearchContentViewModel" />
         <variable
-            name="onClickListener"
+            name="userListListener"
             type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterUserList.OnClickListener" />
+        <variable
+            name="joinedGroupListener"
+            type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterGroupList.OnClickListener" />
     </data>
 
     <LinearLayout
@@ -93,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/gray_50"
                     android:paddingHorizontal="@dimen/content_padding"
-                    app:userListOnClick="@{onClickListener}"
+                    app:userListOnClick="@{userListListener}"
                     app:userList="@{userListViewModel.userList}" />
 
                 <View
@@ -116,6 +119,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/gray_50"
                     android:paddingHorizontal="@dimen/content_padding"
+                    app:joinedGroupListener="@{joinedGroupListener}"
                     app:groupList="@{groupListViewModel.groupList}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

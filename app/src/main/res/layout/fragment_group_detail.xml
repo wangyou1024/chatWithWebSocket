@@ -8,6 +8,9 @@
         <variable
             name="groupDetailViewModel"
             type="com.wangyou.chatwithwebsocket.data.GroupDetailViewModel" />
+        <variable
+            name="memberListener"
+            type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterUserList.OnClickListener" />
         <import type="com.wangyou.chatwithwebsocket.R" />
         <import type="android.view.View"/>
     </data>
@@ -151,10 +154,12 @@
                     android:textSize="@dimen/font_note" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvGroupMember"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/gray_50"
                     android:paddingHorizontal="@dimen/content_padding"
+                    app:userListOnClick="@{memberListener}"
                     app:userList="@{groupDetailViewModel.groupMembers}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

@@ -7,6 +7,9 @@
         <variable
             name="groupListViewModel"
             type="com.wangyou.chatwithwebsocket.data.GroupListViewModel" />
+        <variable
+            name="joinedGroupListener"
+            type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterGroupList.OnClickListener" />
     </data>
 
     <FrameLayout
@@ -20,6 +23,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/content_padding"
             app:groupList="@{groupListViewModel.groupList}"
+            app:joinedGroupListener="@{joinedGroupListener}"
             android:background="@color/gray_50"/>
 
     </FrameLayout>

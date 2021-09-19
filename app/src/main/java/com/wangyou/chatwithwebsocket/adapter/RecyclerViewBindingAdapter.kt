@@ -30,7 +30,8 @@ object RecyclerViewBindingAdapter {
                 chats!!.value,
                 talkerMap!!.value!!,
                 groupMap!!.value!!,
-                listener!!)
+                listener!!
+            )
     }
 
     @JvmStatic
@@ -62,32 +63,22 @@ object RecyclerViewBindingAdapter {
                     override fun viewDetailPerson(user: User) {
                         Log.i(Const.TAG, "未实现")
                     }
-
                 })
         // 停止动画，避免闪烁
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 
     @JvmStatic
-    @BindingAdapter(value = ["groupList"])
+    @BindingAdapter(value = ["groupList", "joinedGroupListener"])
     fun bindGroupList(
         recyclerView: RecyclerView?,
-        groupList: MutableLiveData<MutableList<Group>>?
+        groupList: MutableLiveData<MutableList<Group>>?,
+        joinedGroupListener: RecyclerViewAdapterGroupList.OnClickListener
     ) {
         recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
         val groups = if (groupList != null) groupList.value else mutableListOf<Group>()
         recyclerView.adapter =
-            RecyclerViewAdapterGroupList(
-                groups!!,
-                object : RecyclerViewAdapterGroupList.OnClickListener {
-                    override fun enterGroupDetail(group: Group) {
-                        Navigation.findNavController(
-                            recyclerView.context as Activity,
-                            R.id.fragmentAll
-                        ).navigate(R.id.groupDetailFragment)
-                    }
-
-                })
+            RecyclerViewAdapterGroupList(groups!!, joinedGroupListener)
         (recyclerView.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
 

@@ -6,8 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.Group
+import com.wangyou.chatwithwebsocket.entity.GroupRelation
 import com.wangyou.chatwithwebsocket.entity.User
+import com.wangyou.chatwithwebsocket.net.api.GroupRelationServiceAPI
 import com.wangyou.chatwithwebsocket.net.api.GroupServiceAPI
+import com.wangyou.chatwithwebsocket.net.api.UserServiceAPI
 import com.wangyou.chatwithwebsocket.net.exception.APIException
 import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
 import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
@@ -18,57 +21,85 @@ import javax.inject.Inject
 @HiltViewModel
 class GroupDetailViewModel @Inject constructor(
     var toast: Toast,
+    var userServiceAPI: UserServiceAPI,
     var groupServiceAPI: GroupServiceAPI,
+    var groupRelationServiceAPI: GroupRelationServiceAPI,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
-): ViewModel() {
+) : ViewModel() {
 
-    private var group: MutableLiveData<Group>? = MutableLiveData(Group())
-    private var groupLeader: MutableLiveData<User>? = null
-    private var groupMembers: MutableLiveData<MutableList<User>>? = null
+    private var group: MutableLiveData<Group> = MutableLiveData(Group())
+    private var groupLeader: MutableLiveData<User> = MutableLiveData(User())
+    private var groupMembers: MutableLiveData<MutableList<User>> = MutableLiveData(mutableListOf())
+
     // 登录者相对于当前群的角色：0：群主；1：群成员；2：陌生人
-    private var role: MutableLiveData<Int>? = null
+    private var role: MutableLiveData<Int> = MutableLiveData(2)
 
-    init {
-        group = MutableLiveData(Group(1, "群聊", "无名", "something", "测试群", 1, 1))
-        groupLeader = MutableLiveData(User(1L, "群主", "" ,"群主", "kdjks","12434567732", 23, "重庆", "@qq.com", 0, "自称", 1, 1, 1))
-        groupMembers = MutableLiveData(mutableListOf<User>())
-        for (i in 1L..10L) {
-            val str = "${i}something"
-            groupMembers!!.value!!.add(User(
-                i,
-                str,
-                str,
-                str,
-                str,
-                str,
-                i.toInt(),
-                str,
-                str,
-                i.toInt(),
-                str,
-                i.toInt(),
-                i.toInt(),
-                i.toInt()
-            ))
-        }
-        role = MutableLiveData(0)
+    fun loadGroup(gid: Long) {
+        groupServiceAPI.findGroupById(gid)
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                Log.i(Const.TAG, "获取群聊 -> $it")
+                group.value = it
+            }, object : ErrorConsumer() {
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, "获取群聊-> ${ex.errorMsg}")
+                }
+            })
+        userServiceAPI.findLeader(gid)
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                Log.i(Const.TAG, "获取群主 -> $it")
+                groupLeader.value = it
+            }, object : ErrorConsumer() {
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, "获取群主 -> ${ex.errorMsg}")
+                }
+            })
+        userServiceAPI.findMembers(gid)
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                Log.i(Const.TAG, "获取群成员 -> ${it.size}")
+                groupMembers.value = it
+            }, object : ErrorConsumer() {
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, "获取群成员 -> ${ex.errorMsg}")
+                }
+            })
+        groupRelationServiceAPI.findRelation(gid)
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                Log.i(Const.TAG, "获取关系 -> $it")
+                if (it != null) {
+                    when (it.enable) {
+                        GroupRelation.LEADER -> role.value = 0
+                        GroupRelation.AGREE -> role.value = 1
+                        else -> role.value = 2
+                    }
+                } else {
+                    role.value = 2
+                }
+            }, object : ErrorConsumer() {
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, "获取关系 -> ${ex.errorMsg}")
+                }
+            })
     }
 
-    fun createGroup(){
+    fun createGroup() {
         val newGroup = Group(-1, "", "", "", "", 0, 1)
         group?.value = newGroup
         role?.value = 0
     }
 
-    fun saveGroup(){
-        if (group?.value?.gid == -1L){
+    fun saveGroup() {
+        if (group?.value?.gid == -1L) {
             groupServiceAPI.createGroup(group?.value!!)
                 .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
                 .subscribe({
                     group?.value = it
                     toast.setText("创建成功")
                     toast.show()
-                }, object : ErrorConsumer(){
+                }, object : ErrorConsumer() {
                     override fun error(ex: APIException) {
                         toast.setText(ex.errorMsg)
                         toast.show()
@@ -77,19 +108,19 @@ class GroupDetailViewModel @Inject constructor(
         }
     }
 
-    fun getGroup(): MutableLiveData<Group>{
+    fun getGroup(): MutableLiveData<Group> {
         return group!!
     }
 
-    fun getGroupLeader(): MutableLiveData<User>{
+    fun getGroupLeader(): MutableLiveData<User> {
         return groupLeader!!
     }
 
-    fun getGroupMembers(): MutableLiveData<MutableList<User>>{
+    fun getGroupMembers(): MutableLiveData<MutableList<User>> {
         return groupMembers!!
     }
 
-    fun getRole(): MutableLiveData<Int>{
+    fun getRole(): MutableLiveData<Int> {
         return role!!
     }
 }

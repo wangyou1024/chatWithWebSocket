@@ -17,12 +17,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
+import com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterGroupList
 import com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterUserList
 import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.data.GroupListViewModel
 import com.wangyou.chatwithwebsocket.data.SearchContentViewModel
 import com.wangyou.chatwithwebsocket.data.UserListViewModel
 import com.wangyou.chatwithwebsocket.databinding.FragmentSearchBinding
+import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,13 +37,27 @@ class SearchFragment : BaseFragment() {
     private val userListViewModel by activityViewModels<UserListViewModel>()
     private val groupListViewModel by activityViewModels<GroupListViewModel>()
     private val searchContentViewModel by activityViewModels<SearchContentViewModel>()
-    private val userClick: RecyclerViewAdapterUserList.OnClickListener =
+    private val userListener: RecyclerViewAdapterUserList.OnClickListener =
         object : RecyclerViewAdapterUserList.OnClickListener {
             override fun viewDetailPerson(user: User) {
                 val bundle =
                     PersonalDetailFragmentArgs.Builder().setUid(user.uid.toString()).build()
                         .toBundle()
                 navController?.navigate(R.id.personalDetailFragment, bundle)
+            }
+
+        }
+    private val groupListener: RecyclerViewAdapterGroupList.OnClickListener =
+        object : RecyclerViewAdapterGroupList.OnClickListener {
+            override fun enterGroupDetail(group: Group) {
+                Navigation.findNavController(
+                    requireActivity(),
+                    R.id.fragmentAll
+                ).navigate(
+                    R.id.groupDetailFragment,
+                    GroupDetailFragmentArgs.Builder().setGid(group.gid.toString()).build()
+                        .toBundle()
+                )
             }
 
         }
@@ -60,7 +76,8 @@ class SearchFragment : BaseFragment() {
         binding?.userListViewModel = userListViewModel
         binding?.groupListViewModel = groupListViewModel
         binding?.searchContentViewModel = searchContentViewModel
-        binding?.onClickListener = userClick
+        binding?.userListListener = userListener
+        binding?.joinedGroupListener = groupListener
         navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
         return binding!!.root
     }
