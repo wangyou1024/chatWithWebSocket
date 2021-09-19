@@ -55,6 +55,36 @@ class GroupDetailViewModel @Inject constructor(
         stompClient.send(Const.groupApplication, Gson().toJson(groupRelation)).subscribe()
     }
 
+    fun exitGroup(){
+        if (!stompClient.isConnected){
+            stompClientLifecycle.connect()
+        }
+        val groupRelation = GroupRelation(
+            0,
+            group.value?.gid,
+            null,
+            DateTimeUtil.getTimeNow().toInt(),
+            DateTimeUtil.getTimeNow().toInt(),
+            GroupRelation.DELETE
+        )
+        stompClient.send(Const.groupApplication, Gson().toJson(groupRelation)).subscribe()
+    }
+
+    fun dismiss(){
+        if (!stompClient.isConnected){
+            stompClientLifecycle.connect()
+        }
+        val groupRelation = GroupRelation(
+            0,
+            group.value?.gid,
+            null,
+            DateTimeUtil.getTimeNow().toInt(),
+            DateTimeUtil.getTimeNow().toInt(),
+            GroupRelation.DISMISS
+        )
+        stompClient.send(Const.groupApplication, Gson().toJson(groupRelation)).subscribe()
+    }
+
     fun loadGroup(gid: Long) {
         groupServiceAPI.findGroupById(gid)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))

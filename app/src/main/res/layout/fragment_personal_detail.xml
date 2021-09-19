@@ -83,6 +83,7 @@
                 android:layout_marginHorizontal="5dp"
                 android:layout_weight="1"
                 android:text="@string/kick_out_group"
+                android:onClick="@{()->personalViewModel.deleteGroupMember()}"
                 android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
                 android:visibility="@{personalViewModel.gid == 0?View.GONE:View.VISIBLE}"/>

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.wangyou.chatwithwebsocket.conf.Const
+import com.wangyou.chatwithwebsocket.entity.GroupRelation
 import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.entity.UserRelation
 import com.wangyou.chatwithwebsocket.net.api.UserRelationServiceAPI
@@ -42,30 +43,30 @@ class PersonalViewModel @Inject constructor(
     var userRelationServiceAPI: UserRelationServiceAPI,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
 ) : ViewModel() {
-    private var personal: MutableLiveData<User>? = MutableLiveData(User())
-    private var self: MutableLiveData<User>? = MutableLiveData(User())
+    private var personal: MutableLiveData<User> = MutableLiveData(User())
+    private var self: MutableLiveData<User> = MutableLiveData(User())
 
     // 当前登录者与展示对象的关系：0：自己；1：陌生人；2：好友
-    private var relation: MutableLiveData<Int>? = MutableLiveData(0)
+    private var relation: MutableLiveData<Int> = MutableLiveData(0)
     // 当前页面是否从群聊内进入
-    private var gid: MutableLiveData<Long>? = MutableLiveData(0)
+    private var gid: MutableLiveData<Long> = MutableLiveData(0)
 
-    var username: MutableLiveData<String>? = MutableLiveData("")
-    var realName: MutableLiveData<String>? = MutableLiveData("")
-    var imageUrl: MutableLiveData<String>? = MutableLiveData("")
-    var phone: MutableLiveData<String>? = MutableLiveData("")
-    var age: MutableLiveData<String>? = MutableLiveData("")
-    var address: MutableLiveData<String>? = MutableLiveData("")
-    var email: MutableLiveData<String>? = MutableLiveData("")
-    private var gender: MutableLiveData<Int>? = MutableLiveData(0)
-    var introduce: MutableLiveData<String>? = MutableLiveData("")
+    var username: MutableLiveData<String> = MutableLiveData("")
+    var realName: MutableLiveData<String> = MutableLiveData("")
+    var imageUrl: MutableLiveData<String> = MutableLiveData("")
+    var phone: MutableLiveData<String> = MutableLiveData("")
+    var age: MutableLiveData<String> = MutableLiveData("")
+    var address: MutableLiveData<String> = MutableLiveData("")
+    var email: MutableLiveData<String> = MutableLiveData("")
+    private var gender: MutableLiveData<Int> = MutableLiveData(0)
+    var introduce: MutableLiveData<String> = MutableLiveData("")
     var loadSelfError: MutableLiveData<Boolean> = MutableLiveData(false)
 
     fun loadUser(username: String) {
         userServiceAPI.findUserByUsername(username)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                this.personal?.value = it
+                this.personal.value = it
                 synchronizedInfo()
                 Log.i(Const.TAG, it.username!!)
             }, object : ErrorConsumer() {
@@ -80,7 +81,7 @@ class PersonalViewModel @Inject constructor(
         userServiceAPI.findUserById(uid)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                this.personal?.value =  it
+                this.personal.value =  it
                 synchronizedInfo()
             }, object : ErrorConsumer(){
                 override fun error(ex: APIException) {
@@ -93,17 +94,17 @@ class PersonalViewModel @Inject constructor(
 
     private fun loadUserRelation(uid: Long){
         // 当前进入的是登录者
-        if (uid == self?.value?.uid){
-            relation?.value = 0
+        if (uid == self.value?.uid){
+            relation.value = 0
             return
         }
         userRelationServiceAPI.findUserRelation(uid)
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
                 if (it.enable == null || it.enable == UserRelation.NO_DEAL || it.enable == UserRelation.REFUSE || it.enable == UserRelation.DELETE){
-                    relation?.value = 1
+                    relation.value = 1
                 } else {
-                    relation?.value = 2
+                    relation.value = 2
                 }
             }, object : ErrorConsumer(){
                 override fun error(ex: APIException) {
@@ -118,14 +119,14 @@ class PersonalViewModel @Inject constructor(
         userServiceAPI.findUserByPrincipal()
             .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
             .subscribe({
-                this.personal!!.value = it
-                this.self!!.value = it
+                this.personal.value = it
+                this.self.value = it
                 synchronizedInfo()
                 // 将登录者信息加载到stompClient中，订阅信息才能正确响应
-                stompClientLifecycle.setSelf(self!!)
+                stompClientLifecycle.setSelf(self)
                 loadSelfError.value = false
                 // 标记当前展示角色为自己
-                relation?.value = 0
+                relation.value = 0
             }, object : ErrorConsumer() {
                 override fun error(ex: APIException) {
                     loadSelfError.value = true
@@ -142,8 +143,8 @@ class PersonalViewModel @Inject constructor(
         }
         val userRelation = UserRelation(
             0,
-            self?.value?.uid,
-            personal?.value?.uid,
+            self.value?.uid,
+            personal.value?.uid,
             DateTimeUtil.getTimeNow().toInt(),
             DateTimeUtil.getTimeNow().toInt(),
             UserRelation.NO_DEAL
@@ -157,8 +158,8 @@ class PersonalViewModel @Inject constructor(
         }
         val userRelation = UserRelation(
             0,
-            self?.value?.uid,
-            personal?.value?.uid,
+            self.value?.uid,
+            personal.value?.uid,
             DateTimeUtil.getTimeNow().toInt(),
             DateTimeUtil.getTimeNow().toInt(),
             UserRelation.DELETE
@@ -166,21 +167,36 @@ class PersonalViewModel @Inject constructor(
         stompClient.send(Const.friendApplication, Gson().toJson(userRelation)).subscribe()
     }
 
+    fun deleteGroupMember(){
+        if (!stompClient.isConnected){
+            stompClientLifecycle.connect()
+        }
+        val groupRelation = GroupRelation(
+            0,
+            gid.value,
+            personal.value?.uid,
+            DateTimeUtil.getTimeNow().toInt(),
+            DateTimeUtil.getTimeNow().toInt(),
+            GroupRelation.DELETE
+        )
+        stompClient.send(Const.groupApplication, Gson().toJson(groupRelation)).subscribe()
+    }
+
 
     private fun synchronizedInfo() {
-        username?.value = personal?.value?.username?:""
-        realName?.value = personal?.value?.realName?:""
-        imageUrl?.value = personal?.value?.imageUrl?:""
-        phone?.value = personal?.value?.phone?:""
-        age?.value = personal?.value?.age?.toString()?:"0"
-        address?.value = personal?.value?.address?:""
-        email?.value = personal?.value?.email?:""
-        gender?.value = personal?.value?.gender?:0
-        introduce?.value = personal?.value?.introduce?:""
+        username.value = personal.value?.username?:""
+        realName.value = personal.value?.realName?:""
+        imageUrl.value = personal.value?.imageUrl?:""
+        phone.value = personal.value?.phone?:""
+        age.value = personal.value?.age?.toString()?:"0"
+        address.value = personal.value?.address?:""
+        email.value = personal.value?.email?:""
+        gender.value = personal.value?.gender?:0
+        introduce.value = personal.value?.introduce?:""
     }
 
     fun getPersonal(): MutableLiveData<User> {
-        return personal!!
+        return personal
     }
 
     fun setPersonal(user: MutableLiveData<User>) {
@@ -196,19 +212,19 @@ class PersonalViewModel @Inject constructor(
     }
 
     fun getRelation(): MutableLiveData<Int> {
-        return relation!!
+        return relation
     }
 
     fun setGid(gid: Long){
-        this.gid?.value = gid
+        this.gid.value = gid
     }
 
     fun getGid(): MutableLiveData<Long>{
-        return this.gid!!
+        return this.gid
     }
 
     fun getSelf(): MutableLiveData<User>{
-        return self!!
+        return self
     }
 
 }

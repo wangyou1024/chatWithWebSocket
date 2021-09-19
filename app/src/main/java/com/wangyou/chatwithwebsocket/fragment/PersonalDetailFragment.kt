@@ -56,7 +56,7 @@ class PersonalDetailFragment : BaseFragment() {
             personalViewModel.loadSelf()
         }
         if (bundle.gid != "unknown") {
-            personalViewModel.setGid(bundle.uid.toLong())
+            personalViewModel.setGid(bundle.gid.toLong())
         } else {
             personalViewModel.setGid(0)
         }

@@ -8,11 +8,14 @@
         <variable
             name="groupDetailViewModel"
             type="com.wangyou.chatwithwebsocket.data.GroupDetailViewModel" />
+
         <variable
             name="memberListener"
             type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterUserList.OnClickListener" />
+
         <import type="com.wangyou.chatwithwebsocket.R" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
     </data>
 
     <LinearLayout
@@ -159,14 +162,16 @@
                     android:layout_height="wrap_content"
                     android:background="@color/gray_50"
                     android:paddingHorizontal="@dimen/content_padding"
-                    app:userListOnClick="@{memberListener}"
-                    app:userList="@{groupDetailViewModel.groupMembers}" />
+                    app:userList="@{groupDetailViewModel.groupMembers}"
+                    app:userListOnClick="@{memberListener}" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/basic_padding"
-            android:background="@color/gray_200"/>
+            android:background="@color/gray_200" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/nav_main"
@@ -174,6 +179,7 @@
             android:gravity="clip_horizontal"
             android:orientation="horizontal"
             android:paddingVertical="@dimen/basic_padding">
+
             <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -181,19 +187,23 @@
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:text="@string/dismiss_group"
+                android:onClick="@{()->groupDetailViewModel.dismiss()}"
                 android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
                 android:visibility="@{groupDetailViewModel.role == 0?View.VISIBLE:View.GONE}" />
+
             <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/content_padding"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1"
+                android:onClick="@{()->groupDetailViewModel.exitGroup()}"
                 android:text="@string/quit_group"
                 android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
                 android:visibility="@{groupDetailViewModel.role == 1?View.VISIBLE:View.GONE}" />
+
             <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -203,17 +213,18 @@
                 android:text="@string/send_message"
                 android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_content"
-                android:visibility="@{groupDetailViewModel.role != 2?View.VISIBLE:View.GONE}"/>
+                android:visibility="@{groupDetailViewModel.role != 2?View.VISIBLE:View.GONE}" />
+
             <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/content_padding"
                 android:layout_weight="1"
+                android:onClick="@{()->groupDetailViewModel.sendGroupApplication()}"
                 android:text="@string/join_group"
                 android:textColor="@color/gray_50"
-                android:onClick="@{()->groupDetailViewModel.sendGroupApplication()}"
                 android:textSize="@dimen/font_content"
-                android:visibility="@{groupDetailViewModel.role == 2?View.VISIBLE:View.GONE}"/>
+                android:visibility="@{groupDetailViewModel.role == 2?View.VISIBLE:View.GONE}" />
         </LinearLayout>
     </LinearLayout>
 </layout>

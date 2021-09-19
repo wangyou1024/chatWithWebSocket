@@ -115,7 +115,9 @@ class StompClientLifecycle constructor(
                         newList.add(i)
                     }
                 }
-                groupRelationList.value = newList
+                groupRelationList.value?.clear()
+                groupRelationList.value?.addAll(newList)
+                groupRelationList.value = groupRelationList.value
                 if (self?.value?.uid != null) {
                     if (self?.value?.uid == groupRelation.uid) {
                         // 申请者
@@ -123,7 +125,7 @@ class StompClientLifecycle constructor(
                             GroupRelation.NO_DEAL -> toast.setText("请求成功")
                             GroupRelation.REFUSE -> toast.setText("申请被拒")
                             GroupRelation.AGREE -> toast.setText("申请通过")
-                            GroupRelation.DELETE -> toast.setText("您被删除")
+                            GroupRelation.DELETE -> toast.setText("退出群聊")
                             GroupRelation.DISMISS -> toast.setText("群聊解散")
                             else -> toast.setText("申请出错")
                         }
@@ -133,7 +135,7 @@ class StompClientLifecycle constructor(
                             GroupRelation.NO_DEAL -> toast.setText("有新的申请")
                             GroupRelation.REFUSE -> toast.setText("拒绝成功")
                             GroupRelation.AGREE -> toast.setText("已同意")
-                            GroupRelation.DELETE -> toast.setText("已删除")
+                            GroupRelation.DELETE -> toast.setText("群成员退出")
                             GroupRelation.DISMISS -> toast.setText("群聊解散")
                             else -> toast.setText("申请出错")
                         }

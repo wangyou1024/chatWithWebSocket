@@ -27,7 +27,7 @@ class GroupDetailFragment : BaseFragment() {
         override fun viewDetailPerson(user: User) {
             navController?.navigate(
                 R.id.personalDetailFragment, PersonalDetailFragmentArgs.Builder()
-                    .setUid(groupDetailViewModel.getGroupLeader().value!!.uid.toString())
+                    .setUid(user.uid.toString())
                     .setGid(groupDetailViewModel.getGroup().value?.gid.toString())
                     .build()
                     .toBundle()
@@ -48,6 +48,7 @@ class GroupDetailFragment : BaseFragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_group_detail, container, false)
         binding!!.lifecycleOwner = this
         binding!!.groupDetailViewModel = groupDetailViewModel
+        binding!!.memberListener = memberListener
         navController = Navigation.findNavController(requireActivity(), R.id.fragmentAll)
         return binding!!.root
     }

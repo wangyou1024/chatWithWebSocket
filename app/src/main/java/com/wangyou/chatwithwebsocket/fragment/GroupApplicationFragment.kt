@@ -37,7 +37,8 @@ class GroupApplicationFragment : BaseFragment() {
     private val personalViewModel: PersonalViewModel by activityViewModels<PersonalViewModel>()
     private val listener: RecyclerViewAdapterGroupApplication.OnClickListener = object : RecyclerViewAdapterGroupApplication.OnClickListener{
         override fun agree(gid: Long, uid: Long) {
-            Log.i("agree", "${uid}申请加入${gid}")
+            Log.i("agree", "${uid}加入${gid}")
+            groupApplicationViewModel.agreeGroupApplication(gid, uid)
         }
 
         override fun viewPersonalDetail(uid: Long, gid: Long) {

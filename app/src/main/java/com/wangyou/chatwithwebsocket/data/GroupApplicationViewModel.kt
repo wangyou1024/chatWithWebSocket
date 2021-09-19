@@ -3,6 +3,7 @@ package com.wangyou.chatwithwebsocket.data
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.gson.Gson
 import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.GroupRelation
@@ -14,11 +15,14 @@ import com.wangyou.chatwithwebsocket.net.exception.APIException
 import com.wangyou.chatwithwebsocket.net.exception.ErrorConsumer
 import com.wangyou.chatwithwebsocket.net.response.CompositeDisposableLifecycle
 import com.wangyou.chatwithwebsocket.net.response.ResponseTransformer
+import com.wangyou.chatwithwebsocket.util.DateTimeUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ua.naiksoftware.stomp.StompClient
 import javax.inject.Inject
 
 @HiltViewModel
 class GroupApplicationViewModel @Inject constructor(
+    var stompClient: StompClient,
     var stompClientLifecycle: StompClientLifecycle,
     val groupRelationServiceAPI: GroupRelationServiceAPI,
     var compositeDisposableLifecycle: CompositeDisposableLifecycle
@@ -41,6 +45,21 @@ class GroupApplicationViewModel @Inject constructor(
                 }
 
             })
+    }
+
+    fun agreeGroupApplication(gid: Long, uid: Long){
+        if (!stompClient.isConnected){
+            stompClientLifecycle.connect()
+        }
+        var groupRelation = GroupRelation(
+            0,
+            gid,
+            uid,
+            DateTimeUtil.getTimeNow().toInt(),
+            DateTimeUtil.getTimeNow().toInt(),
+            GroupRelation.AGREE
+        )
+        stompClient.send(Const.groupApplication, Gson().toJson(groupRelation)).subscribe()
     }
 
     fun getGroupRelationList(): MutableLiveData<MutableList<GroupRelation>> {
