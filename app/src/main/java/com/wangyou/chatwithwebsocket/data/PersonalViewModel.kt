@@ -136,6 +136,25 @@ class PersonalViewModel @Inject constructor(
             })
     }
 
+    fun updateUser(){
+        synchronizedPersonal()
+        userServiceAPI.updateUser(personal.value!!)
+            .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+            .subscribe({
+                personal.value = it
+                self.value = personal.value
+                toast.setText("修改成功")
+                toast.show()
+            }, object : ErrorConsumer(){
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, "修改个人信息 -> ${ex.errorMsg}")
+                    toast.setText("修改失败")
+                    toast.show()
+                }
+
+            })
+    }
+
 
     fun sendFriendApplication() {
         if (!stompClient.isConnected){
@@ -193,6 +212,17 @@ class PersonalViewModel @Inject constructor(
         email.value = personal.value?.email?:""
         gender.value = personal.value?.gender?:0
         introduce.value = personal.value?.introduce?:""
+    }
+
+    private fun synchronizedPersonal(){
+        personal.value?.username = username.value
+        personal.value?.realName = realName.value
+        personal.value?.phone = phone.value
+        personal.value?.age = age.value?.toInt()
+        personal.value?.address = address.value
+        personal.value?.email = email.value
+        personal.value?.gender = gender.value
+        personal.value?.introduce = introduce.value
     }
 
     fun getPersonal(): MutableLiveData<User> {

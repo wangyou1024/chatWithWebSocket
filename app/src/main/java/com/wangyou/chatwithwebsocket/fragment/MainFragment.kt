@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -28,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : BaseFragment(), LifecycleObserver {
 
     private var binding: FragmentMainBinding? = null
-    private val mainUIViewModel by viewModels<MainUIViewModel>()
+    private val mainUIViewModel by activityViewModels<MainUIViewModel>()
     private var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +48,7 @@ class MainFragment : BaseFragment(), LifecycleObserver {
         )
         binding!!.lifecycleOwner = this
         setClearIcon(-1)
-        when (mainUIViewModel!!.getPage()) {
+        when (mainUIViewModel.getPage()) {
             0 -> binding!!.session.setImageResource(R.mipmap.session_selected)
             1 -> binding!!.address.setImageResource(R.mipmap.address_selected)
             else -> binding!!.personal.setImageResource(R.mipmap.personal_selected)

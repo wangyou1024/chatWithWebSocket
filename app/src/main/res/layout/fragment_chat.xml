@@ -44,6 +44,7 @@
                 android:textColor="@color/gray_200"
                 android:textSize="@dimen/font_navigation"/>
             <TextView
+                android:id="@+id/tvMoreAction"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
@@ -52,15 +53,21 @@
                 android:textColor="@color/gray_200"
                 android:textSize="@dimen/font_more" />
         </FrameLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvChat"
+        <LinearLayout
+            android:id="@+id/nsChat"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingBottom="@dimen/content_padding"
-            app:chats="@{chatViewModel.chats}"
-            app:personal="@{personalViewModel.personal}"
-            app:speakers="@{chatViewModel.users}"/>
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/content_padding"
+                app:chats="@{chatViewModel.chats}"
+                app:personal="@{personalViewModel.self}"
+                app:speakers="@{chatViewModel.users}"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,7 +104,7 @@
                     android:layout_height="36dp"
                     android:background="?colorPrimary"
                     android:gravity="center"
-                    android:onClick="@{()->chatViewModel.send(personalViewModel.personal)}"
+                    android:onClick="@{()->chatViewModel.send(personalViewModel.self)}"
                     android:text="@string/send"
                     android:textColor="@color/gray_200"/>
             </androidx.cardview.widget.CardView>

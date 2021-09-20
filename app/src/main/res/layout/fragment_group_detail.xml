@@ -205,6 +205,7 @@
                 android:visibility="@{groupDetailViewModel.role == 1?View.VISIBLE:View.GONE}" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btSendMessage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="5dp"

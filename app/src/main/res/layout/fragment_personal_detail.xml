@@ -52,6 +52,7 @@
                 android:layout_gravity="end"
                 android:gravity="center"
                 android:text="@string/save"
+                android:onClick="@{()->personalViewModel.updateUser()}"
                 android:textColor="@color/gray_200"
                 android:textSize="@dimen/font_navigation"
                 android:visibility="@{personalViewModel.relation == 0?View.VISIBLE:View.GONE}" />
@@ -108,6 +109,7 @@
                 android:textSize="@dimen/font_content"
                 android:visibility="@{personalViewModel.relation == 2?View.VISIBLE:View.GONE}"/>
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btSendMessage"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="5dp"

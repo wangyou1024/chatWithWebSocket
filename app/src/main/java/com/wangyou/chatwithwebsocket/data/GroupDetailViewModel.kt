@@ -170,6 +170,21 @@ class GroupDetailViewModel @Inject constructor(
                         toast.show()
                     }
                 })
+        } else {
+            groupServiceAPI.updateGroup(group.value!!)
+                .compose(ResponseTransformer.option(compositeDisposableLifecycle.compositeDisposable))
+                .subscribe({
+                    group.value = it
+                    toast.setText("修改成功")
+                    toast.show()
+                }, object : ErrorConsumer(){
+                    override fun error(ex: APIException) {
+                        Log.i(Const.TAG, "修改群信息 -> ${ex.errorMsg}")
+                        toast.setText("修改失败")
+                        toast.show()
+                    }
+
+                })
         }
     }
 

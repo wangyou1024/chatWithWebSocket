@@ -63,5 +63,13 @@ class PersonalDetailFragment : BaseFragment() {
         binding!!.popBack.setOnClickListener {
             navController!!.popBackStack()
         }
+
+        binding!!.btSendMessage.setOnClickListener {
+            val bundle = ChatFragmentArgs.Builder()
+                .setUid(personalViewModel.getPersonal().value?.uid.toString()).build().toBundle()
+            if (!navController!!.popBackStack(R.id.chatFragment, false)){
+                navController!!.navigate(R.id.chatFragment, bundle)
+            }
+        }
     }
 }

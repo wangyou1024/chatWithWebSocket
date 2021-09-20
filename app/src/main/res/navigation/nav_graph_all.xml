@@ -40,9 +40,18 @@
         android:name="com.wangyou.chatwithwebsocket.fragment.ChatFragment"
         android:label="fragment_chat"
         tools:layout="@layout/fragment_chat" >
-        <argument android:name="cid"
+        <argument
+            android:name="cid"
             app:argType="string"
-            android:defaultValue='"unknown"'/>
+            android:defaultValue='unknown'/>
+        <argument
+            android:name="gid"
+            app:argType="string"
+            android:defaultValue="unknown"/>
+        <argument
+            android:name="uid"
+            app:argType="string"
+            android:defaultValue="unknown"/>
         <action
             android:id="@+id/action_chatFragment_to_mainFragment"
             app:destination="@id/mainFragment" />

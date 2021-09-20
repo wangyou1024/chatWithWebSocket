@@ -76,6 +76,13 @@ class GroupDetailFragment : BaseFragment() {
                     .toBundle()
             )
         }
+        binding!!.btSendMessage.setOnClickListener {
+            val bundle = ChatFragmentArgs.Builder()
+                .setGid(groupDetailViewModel.getGroup().value?.gid.toString()).build().toBundle()
+            if (!navController!!.popBackStack(R.id.chatFragment, false)){
+                navController!!.navigate(R.id.chatFragment, bundle)
+            }
+        }
     }
 
 }

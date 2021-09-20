@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.google.gson.Gson
 import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.data.PersonalViewModel
+import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.GroupRelation
 import com.wangyou.chatwithwebsocket.entity.User
 import com.wangyou.chatwithwebsocket.entity.UserRelation
@@ -27,11 +28,16 @@ class StompClientLifecycle constructor(
     var toast: Toast
 ) : LifecycleObserver {
 
-    private var self: MutableLiveData<User>? = MutableLiveData(User())
+    private var self: MutableLiveData<User> = MutableLiveData(User())
     private var userRelationList: MutableLiveData<MutableList<UserRelation>> =
         MutableLiveData(mutableListOf())
     private var groupRelationList: MutableLiveData<MutableList<GroupRelation>> =
         MutableLiveData(mutableListOf())
+
+    // 当前聊天状态
+    private var chatList: MutableLiveData<MutableList<Chat>> = MutableLiveData(mutableListOf())
+    private var type: MutableLiveData<Int> = MutableLiveData(Chat.PRIVATE_CHAT)
+    private var id: MutableLiveData<Long> = MutableLiveData(-1L)
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun connect() {
@@ -41,6 +47,7 @@ class StompClientLifecycle constructor(
                 stompClient.connect()
                 topicFriendApplication()
                 topicGroupApplication()
+                topicChat()
             }
         }
         Thread(task).start()
@@ -52,12 +59,46 @@ class StompClientLifecycle constructor(
         stompClient.disconnect()
     }
 
+    fun topicChat() {
+        val subscribe = stompClient.topic(Const.chatResponse)
+            .compose(WebSocketTransformer.option())
+            .subscribe({
+                val chat = Gson().fromJson(it, Chat::class.java)
+                if (type.value == Chat.PRIVATE_CHAT
+                    && chat.enable == Chat.PRIVATE_CHAT
+                    && ((chat.sender == id.value
+                            && chat.recipient == self.value?.uid)
+                            || (chat.sender == self.value?.uid
+                            && chat.recipient == id.value))
+                ) {
+                    // 收到当前私聊会话的消息
+                    chatList.value?.add(chat)
+                    chatList.value = chatList.value
+                } else if (type.value == Chat.GROUP_CHAT && chat.enable == Chat.GROUP_CHAT && id.value == chat.gid) {
+                    // 收到当前群聊会话的消息
+                    chatList.value?.add(chat)
+                    chatList.value = chatList.value
+                } else {
+                    toast.setText("你有新的消息")
+                    toast.show()
+                }
+            }, object : ErrorConsumer2() {
+                override fun error(ex: APIException) {
+                    Log.i(Const.TAG, "Stomp 消息获取失败${ex.errorMsg}")
+                    toast.setText("消息获取失败")
+                    toast.show()
+                }
+            });
+        compositeDisposableLifecycle.addDisposable(subscribe)
+    }
+
+
     fun topicFriendApplication() {
         val subscribe = stompClient.topic(Const.friendApplicationResponse)
             .compose(WebSocketTransformer.option())
             .subscribe({
                 val userRelation = Gson().fromJson(it, UserRelation::class.java)
-                self?.value = self?.value
+                self.value = self.value
                 val newList = mutableListOf<UserRelation>()
                 for (i in userRelationList.value!!) {
                     if (i.urid?.equals(userRelation.urid) == true) {
@@ -67,8 +108,8 @@ class StompClientLifecycle constructor(
                     }
                 }
                 userRelationList.value = newList
-                if (self?.value?.uid != null) {
-                    if (self?.value?.uid == userRelation.uidFormer) {
+                if (self.value?.uid != null) {
+                    if (self.value?.uid == userRelation.uidFormer) {
                         // 申请者
                         when (userRelation.enable) {
                             UserRelation.NO_DEAL -> toast.setText("请求成功")
@@ -106,7 +147,7 @@ class StompClientLifecycle constructor(
             .compose(WebSocketTransformer.option())
             .subscribe({
                 val groupRelation = Gson().fromJson(it, GroupRelation::class.java)
-                self?.value = self?.value
+                self.value = self.value
                 val newList = mutableListOf<GroupRelation>()
                 for (i in groupRelationList.value!!) {
                     if (i.grid?.equals(groupRelation.grid) == true) {
@@ -118,8 +159,8 @@ class StompClientLifecycle constructor(
                 groupRelationList.value?.clear()
                 groupRelationList.value?.addAll(newList)
                 groupRelationList.value = groupRelationList.value
-                if (self?.value?.uid != null) {
-                    if (self?.value?.uid == groupRelation.uid) {
+                if (self.value?.uid != null) {
+                    if (self.value?.uid == groupRelation.uid) {
                         // 申请者
                         when (groupRelation.enable) {
                             GroupRelation.NO_DEAL -> toast.setText("请求成功")
@@ -162,8 +203,20 @@ class StompClientLifecycle constructor(
         this.userRelationList = userRelationList
     }
 
-    fun setGroupRelationList(groupRelationList: MutableLiveData<MutableList<GroupRelation>>){
+    fun setGroupRelationList(groupRelationList: MutableLiveData<MutableList<GroupRelation>>) {
         this.groupRelationList = groupRelationList
+    }
+
+    fun setChatList(chatList: MutableLiveData<MutableList<Chat>>) {
+        this.chatList = chatList
+    }
+
+    fun setType(type: MutableLiveData<Int>) {
+        this.type = type
+    }
+
+    fun setId(id: MutableLiveData<Long>) {
+        this.id = id
     }
 
 }

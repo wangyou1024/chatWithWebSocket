@@ -131,6 +131,11 @@ object NetWorkModule {
         return retrofit.create(GroupRelationServiceAPI::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideChatServiceAPI(retrofit: Retrofit): ChatServiceAPI {
+        return retrofit.create(ChatServiceAPI::class.java)
+    }
 
     @Provides
     @Singleton

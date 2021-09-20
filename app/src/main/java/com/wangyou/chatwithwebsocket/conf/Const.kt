@@ -11,6 +11,8 @@ object Const {
     const val webSocket = "ws://$IP:$PORT/chat/websocket"
     const val broadcast = "/app/hello"
     const val broadcastResponse = "/topic/greetings"
+
+    // 聊天
     const val chat = "/app/chat"
     const val chatResponse = "/user/queue/chat"
 
@@ -18,6 +20,7 @@ object Const {
     const val friendApplication = "/app/friendApplication"
     const val friendApplicationResponse = "/user/queue/friendApplication"
 
+    // 群申请
     const val groupApplication = "/app/groupApplication"
     const val groupApplicationResponse = "/user/queue/groupApplication"
 }

@@ -14,20 +14,21 @@ import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.User
 
 class RecyclerViewAdapterChat(
-    var users: MutableMap<Long, User>?, var chats: MutableList<Chat>?,
-    var personal: User?
+    var users: MutableMap<Long, User>,
+    var chats: MutableList<Chat>,
+    var personal: User
 ) : RecyclerView.Adapter<RecyclerViewAdapterChat.TalkHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         // 是否是本人/发送时间间隔是否超过1分钟
-        return if(chats!![position].sender == personal!!.uid){
-            if (position > 0 && chats!![position].updateTime!! - chats!![position-1].updateTime!! < 60L){
+        return if (chats[position].sender == personal.uid) {
+            if (position > 0 && chats[position].updateTime!! - chats[position - 1].updateTime!! < 60L) {
                 SELF_LAST
             } else {
                 SELF_NEW
             }
         } else {
-            if (position > 0 && chats!![position].updateTime!! - chats!![position-1].updateTime!! < 60L){
+            if (position > 0 && chats[position].updateTime!! - chats[position - 1].updateTime!! < 60L) {
                 OTHER_LAST
             } else {
                 OTHER_NEW
@@ -80,19 +81,23 @@ class RecyclerViewAdapterChat(
     }
 
     override fun onBindViewHolder(holder: TalkHolder, position: Int) {
-        val chat = chats!![position]
+        val chat = chats[position]
         holder.binding!!.chat = chat
-        holder.binding!!.user = users!![chat.sender]
+        if (chat.sender == personal.uid) {
+            holder.binding!!.user = personal
+        } else {
+            holder.binding!!.user = users[chat.sender]
+        }
     }
 
     override fun getItemCount(): Int {
-        return chats!!.size
+        return chats.size
     }
 
     class TalkHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var binding: ItemChatBinding? = null
 
-        constructor(binding: ItemChatBinding?) : this(binding!!.root){
+        constructor(binding: ItemChatBinding?) : this(binding!!.root) {
             this.binding = binding
         }
 

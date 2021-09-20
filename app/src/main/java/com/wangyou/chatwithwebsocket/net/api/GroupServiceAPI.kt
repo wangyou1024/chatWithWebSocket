@@ -24,4 +24,7 @@ interface GroupServiceAPI {
 
     @POST("/group/findGroupListByIds")
     fun findGroupListByIds(@Body gids: MutableList<Long>): Observable<ResponseData<MutableList<Group>>>
+
+    @POST("/group/updateGroup")
+    fun updateGroup(@Body group: Group): Observable<ResponseData<Group>>
 }

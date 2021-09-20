@@ -16,13 +16,14 @@ import com.wangyou.chatwithwebsocket.entity.*
 object RecyclerViewBindingAdapter {
 
     @JvmStatic
-    @BindingAdapter(value = ["bindSession", "talkerMap", "groupMap", "sessionListener"])
+    @BindingAdapter(value = ["bindSession", "talkerMap", "groupMap", "sessionListener", "sessionSelf"])
     fun bindChat(
         recyclerView: RecyclerView?,
         chats: MutableLiveData<MutableList<Chat>>?,
         talkerMap: MutableLiveData<MutableMap<Long, User>>?,
         groupMap: MutableLiveData<MutableMap<Long, Group>>?,
-        listener: RecyclerViewAdapterSession.SessionListener?
+        listener: RecyclerViewAdapterSession.SessionListener?,
+        sessionSelf: MutableLiveData<User>
     ) {
         recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
         recyclerView.adapter =
@@ -30,6 +31,7 @@ object RecyclerViewBindingAdapter {
                 chats!!.value,
                 talkerMap!!.value!!,
                 groupMap!!.value!!,
+                sessionSelf.value!!,
                 listener!!
             )
     }
@@ -37,14 +39,17 @@ object RecyclerViewBindingAdapter {
     @JvmStatic
     @BindingAdapter(value = ["chats", "speakers", "personal"], requireAll = false)
     fun bindTalk(
-        recyclerView: RecyclerView?,
-        chats: MutableLiveData<MutableList<Chat>>?,
-        speakers: MutableLiveData<MutableMap<Long, User>>?,
-        personal: MutableLiveData<User>?
+        recyclerView: RecyclerView,
+        chats: MutableLiveData<MutableList<Chat>>,
+        speakers: MutableLiveData<MutableMap<Long, User>>,
+        personal: MutableLiveData<User>
     ) {
-        recyclerView!!.layoutManager = LinearLayoutManager(recyclerView.context)
+        val linearLayoutManager = LinearLayoutManager(recyclerView.context)
+        linearLayoutManager.stackFromEnd = true
+        linearLayoutManager.scrollToPositionWithOffset(chats.value?.size!!-1, Int.MIN_VALUE)
+        recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter =
-            RecyclerViewAdapterChat(speakers!!.value, chats!!.value, personal!!.value)
+            RecyclerViewAdapterChat(speakers.value!!, chats.value!!, personal.value!!)
     }
 
     @JvmStatic

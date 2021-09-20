@@ -21,4 +21,10 @@ class Chat constructor() :Serializable {
         this.enable = enable
     }
 
+    companion object {
+        const val PRIVATE_CHAT = 1
+        const val GROUP_CHAT = 2
+        const val DISABLE = 0
+    }
+
 }

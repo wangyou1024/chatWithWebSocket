@@ -8,6 +8,15 @@
             name="sessionViewModel"
             type="com.wangyou.chatwithwebsocket.data.SessionViewModel" />
         <variable
+            name="userListViewModel"
+            type="com.wangyou.chatwithwebsocket.data.UserListViewModel" />
+        <variable
+            name="groupListViewModel"
+            type="com.wangyou.chatwithwebsocket.data.GroupListViewModel" />
+        <variable
+            name="personalViewModel"
+            type="com.wangyou.chatwithwebsocket.data.PersonalViewModel" />
+        <variable
             name="listener"
             type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterSession.SessionListener" />
     </data>
@@ -41,9 +50,10 @@
                     android:layout_height="match_parent"
                     android:background="@color/gray_50"
                     app:bindSession="@{sessionViewModel.chatList}"
-                    app:talkerMap="@{sessionViewModel.userMap}"
-                    app:groupMap="@{sessionViewModel.groupMap}"
+                    app:talkerMap="@{userListViewModel.userMap}"
+                    app:groupMap="@{groupListViewModel.groupMap}"
                     app:sessionListener="@{listener}"
+                    app:sessionSelf="@{personalViewModel.self}"
                     />
                 <View
                     android:layout_width="match_parent"

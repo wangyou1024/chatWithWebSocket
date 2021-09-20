@@ -15,6 +15,7 @@ class RecyclerViewAdapterSession(
     var chats: MutableList<Chat>?,
     var userMap: MutableMap<Long, User>,
     var groupMap: MutableMap<Long, Group>,
+    var self: User,
     var listener: SessionListener
 ) : RecyclerView.Adapter<RecyclerViewAdapterSession.SessionHolder>() {
 
@@ -38,7 +39,7 @@ class RecyclerViewAdapterSession(
         holder.binding!!.chat = chat
         holder.binding!!.group = groupMap[chat.gid]
         // 如果是私聊，由于登录者不存在于userMap中，所以找到的即是对话的另一方
-        if (userMap[chat.sender] != null){
+        if (chat.sender != self.uid){
             holder.binding!!.user = userMap[chat.sender]
         }else{
             holder.binding!!.user = userMap[chat.recipient]

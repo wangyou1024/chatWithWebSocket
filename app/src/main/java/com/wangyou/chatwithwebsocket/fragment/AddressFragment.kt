@@ -8,15 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.wangyou.chatwithwebsocket.R
+import com.wangyou.chatwithwebsocket.data.MainUIViewModel
 import com.wangyou.chatwithwebsocket.databinding.FragmentAddressBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class AddressFragment : Fragment() {
+@AndroidEntryPoint
+class AddressFragment : BaseFragment() {
 
     private var binding: FragmentAddressBinding? = null
     private var navController: NavController? = null
+    private val mainUIViewModel: MainUIViewModel by activityViewModels<MainUIViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,17 +37,21 @@ class AddressFragment : Fragment() {
         return binding!!.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onActivityResume() {
+        super.onActivityResume()
+        // 初始化选项
+        changeStatusSelected()
         binding!!.friendList.setOnClickListener {
             if (!navController!!.popBackStack(R.id.userListFragment, false)) {
-                changeStatusSelected(binding!!.friendList, binding!!.groupList)
+                mainUIViewModel.setAddress(0)
+                changeStatusSelected()
                 navController!!.navigate(R.id.userListFragment)
             }
         }
         binding!!.groupList.setOnClickListener {
             if (!navController!!.popBackStack(R.id.groupListFragment, false)) {
-                changeStatusSelected(binding!!.groupList, binding!!.friendList)
+                mainUIViewModel.setAddress(1)
+                changeStatusSelected()
                 navController!!.navigate(R.id.groupListFragment)
             }
         }
@@ -55,12 +64,21 @@ class AddressFragment : Fragment() {
         binding!!.groupApplication.setOnClickListener {
             Navigation.findNavController(requireActivity(), R.id.fragmentAll).navigate(R.id.groupApplicationFragment)
         }
-
     }
-    private fun changeStatusSelected(selected: TextView?, unselected: TextView?){
-        selected!!.setTextColor(resources.getColor(R.color.gray_800, null))
+
+    private fun changeStatusSelected(){
+        var selected : TextView? = null
+        var unselected : TextView? = null
+        if (mainUIViewModel.getAddress() == 0){
+            selected = binding!!.friendList
+            unselected = binding!!.groupList
+        } else {
+            selected = binding!!.groupList
+            unselected = binding!!.friendList
+        }
+        selected.setTextColor(resources.getColor(R.color.gray_800, null))
         selected.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.font_title))
-        unselected!!.setTextColor(resources.getColor(R.color.gray_500, null))
+        unselected.setTextColor(resources.getColor(R.color.gray_500, null))
         unselected.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.font_content))
     }
 

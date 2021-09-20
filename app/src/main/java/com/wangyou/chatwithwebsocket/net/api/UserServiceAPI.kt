@@ -33,4 +33,7 @@ interface UserServiceAPI {
 
     @GET("/user/findMembers")
     fun findMembers(@Query("gid") gid: Long): Observable<ResponseData<MutableList<User>>>
+
+    @POST("/user/updateUser")
+    fun updateUser(@Body user: User): Observable<ResponseData<User>>
 }
