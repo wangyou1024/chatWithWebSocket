@@ -98,7 +98,6 @@ class StompClientLifecycle constructor(
             .compose(WebSocketTransformer.option())
             .subscribe({
                 val userRelation = Gson().fromJson(it, UserRelation::class.java)
-                self.value = self.value
                 val newList = mutableListOf<UserRelation>()
                 for (i in userRelationList.value!!) {
                     if (i.urid?.equals(userRelation.urid) == true) {
@@ -147,7 +146,6 @@ class StompClientLifecycle constructor(
             .compose(WebSocketTransformer.option())
             .subscribe({
                 val groupRelation = Gson().fromJson(it, GroupRelation::class.java)
-                self.value = self.value
                 val newList = mutableListOf<GroupRelation>()
                 for (i in groupRelationList.value!!) {
                     if (i.grid?.equals(groupRelation.grid) == true) {

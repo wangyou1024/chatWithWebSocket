@@ -62,10 +62,12 @@
             android:paddingVertical="@dimen/content_padding">
 
             <ImageView
+                android:id="@+id/groupHeader"
                 android:layout_width="98dp"
                 android:layout_height="98dp"
                 android:layout_marginHorizontal="@dimen/content_padding"
-                app:image="@{groupDetailViewModel.group.groupImage}"
+                android:onClick="checkPermissionForUpload"
+                app:image='@{"/1/" + groupDetailViewModel.group.gid}'
                 app:placeholder="@{R.mipmap.header}"
                 tools:src="@mipmap/header" />
 

@@ -139,6 +139,12 @@ object NetWorkModule {
 
     @Provides
     @Singleton
+    fun provideFileServiceAPI(retrofit: Retrofit): FileServiceAPI {
+        return retrofit.create(FileServiceAPI::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideCompositeToast(application: Application): Toast {
         return Toast.makeText(application, "", Toast.LENGTH_LONG)
     }

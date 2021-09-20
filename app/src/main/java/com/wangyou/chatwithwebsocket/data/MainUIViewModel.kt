@@ -9,8 +9,12 @@ import javax.inject.Inject
 class MainUIViewModel @Inject constructor(): ViewModel() {
     // 0代表聊天页面，1代表联系人，2代表个人中心
     private var page : MutableLiveData<Int> = MutableLiveData(0)
+
     // 0代表好友，1代表群聊
     private var address: MutableLiveData<Int> = MutableLiveData(0)
+
+    // 头像上传的类型：0代表个人，1代表群聊
+    private var headerType: MutableLiveData<Int> = MutableLiveData(0)
 
     fun getAddress(): Int {
         return address.value!!
@@ -26,5 +30,13 @@ class MainUIViewModel @Inject constructor(): ViewModel() {
 
     fun setPage(page: Int){
         this.page.value = page
+    }
+
+    fun getHeaderType(): Int{
+        return headerType.value!!
+    }
+
+    fun setHeaderType(headerType: Int) {
+        this.headerType.value = headerType
     }
 }

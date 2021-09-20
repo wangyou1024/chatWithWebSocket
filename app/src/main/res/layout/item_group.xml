@@ -20,7 +20,7 @@
             android:id="@+id/headerSelf"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:image="@{group.groupImage}"
+            app:image='@{"/1/" + group.gid}'
             app:placeholder="@{R.mipmap.header}"
             tools:src="@mipmap/header" />
 
@@ -47,7 +47,7 @@
                 android:ellipsize="end"
                 android:paddingBottom="@dimen/basic_padding"
                 android:singleLine="true"
-                android:text="@{group.introduce}"
+                android:text='@{group.introduce == null || group.introduce == ""?"无介绍":group.introduce}'
                 android:textColor="@color/gray_600"
                 android:textSize="@dimen/font_content"
                 tools:text="@string/test_str" />

@@ -30,7 +30,7 @@
             android:layout_width="@dimen/message_header"
             android:layout_height="54dp"
             android:paddingVertical="@dimen/basic_padding"
-            app:image="@{chat.enable == Chat.GROUP_CHAT? group.groupImage: user.imageUrl}"
+            app:image='@{chat.enable == Chat.GROUP_CHAT? "/1/" + group.gid: "/0/" + user.uid}'
             app:placeholder="@{R.mipmap.header}"
             tools:src="@mipmap/header"/>
         <LinearLayout

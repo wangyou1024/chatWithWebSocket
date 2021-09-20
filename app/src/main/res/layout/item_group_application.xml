@@ -32,7 +32,7 @@
             android:id="@+id/headerSelf"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:image="@{user.imageUrl}"
+            app:image='@{"/0/" + user.uid}'
             app:placeholder="@{R.mipmap.header}"
             tools:src="@mipmap/header" />
 

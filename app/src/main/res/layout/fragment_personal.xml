@@ -36,7 +36,7 @@
                 android:layout_width="98dp"
                 android:layout_height="98dp"
                 android:layout_marginHorizontal="@dimen/content_padding"
-                app:image="@{personalViewModel.personal.imageUrl}"
+                app:image='@{"/0/" + personalViewModel.personal.uid}'
                 app:placeholder="@{R.mipmap.header}"
                 tools:src="@mipmap/header" />
 
