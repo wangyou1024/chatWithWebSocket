@@ -41,20 +41,8 @@ class AddressFragment : BaseFragment() {
         super.onActivityResume()
         // 初始化选项
         changeStatusSelected()
-        binding!!.friendList.setOnClickListener {
-            if (!navController!!.popBackStack(R.id.userListFragment, false)) {
-                mainUIViewModel.setAddress(0)
-                changeStatusSelected()
-                navController!!.navigate(R.id.userListFragment)
-            }
-        }
-        binding!!.groupList.setOnClickListener {
-            if (!navController!!.popBackStack(R.id.groupListFragment, false)) {
-                mainUIViewModel.setAddress(1)
-                changeStatusSelected()
-                navController!!.navigate(R.id.groupListFragment)
-            }
-        }
+        binding!!.friendList.setOnClickListener { enterFriendList() }
+        binding!!.groupList.setOnClickListener { enterGroupList() }
         binding!!.searchButton.setOnClickListener {
             Navigation.findNavController(requireActivity(), R.id.fragmentAll).navigate(R.id.searchFragment)
         }
@@ -66,15 +54,31 @@ class AddressFragment : BaseFragment() {
         }
     }
 
+    private fun enterFriendList(){
+        if (!navController!!.popBackStack(R.id.userListFragment, false)) {
+            mainUIViewModel.setAddress(0)
+            changeStatusSelected()
+        }
+    }
+
+    private fun enterGroupList(){
+        if (!navController!!.popBackStack(R.id.groupListFragment, false)) {
+            mainUIViewModel.setAddress(1)
+            changeStatusSelected()
+        }
+    }
+
     private fun changeStatusSelected(){
         var selected : TextView? = null
         var unselected : TextView? = null
         if (mainUIViewModel.getAddress() == 0){
             selected = binding!!.friendList
             unselected = binding!!.groupList
+            navController!!.navigate(R.id.userListFragment)
         } else {
             selected = binding!!.groupList
             unselected = binding!!.friendList
+            navController!!.navigate(R.id.groupListFragment)
         }
         selected.setTextColor(resources.getColor(R.color.gray_800, null))
         selected.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.font_title))

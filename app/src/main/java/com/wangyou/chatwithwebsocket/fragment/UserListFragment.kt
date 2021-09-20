@@ -1,5 +1,6 @@
 package com.wangyou.chatwithwebsocket.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -55,8 +56,12 @@ class UserListFragment : BaseFragment() {
         return binding!!.root
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onActivityResume() {
         super.onActivityResume()
+        userListViewModel.getUserList().observe(requireActivity(), {
+            binding!!.rvFriends.adapter?.notifyDataSetChanged()
+        })
         userListViewModel.findFriends()
     }
 

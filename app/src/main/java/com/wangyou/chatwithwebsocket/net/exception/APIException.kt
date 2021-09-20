@@ -24,7 +24,6 @@ class APIException(
         @JvmStatic
         fun handleException(e: Throwable): APIException {
             var ex: APIException = APIException(UNKNOWN_ERROR.toString(), e.message?:"未知异常")
-            Log.i(Const.TAG, e.message!!)
             if (e is JsonParseException || e is JSONException || e is ParseException) {
                 ex = APIException(PARSE_ERROR.toString(), "数据解析异常")
             } else if (e is ConnectException || e is UnknownHostException || e is SocketTimeoutException) {

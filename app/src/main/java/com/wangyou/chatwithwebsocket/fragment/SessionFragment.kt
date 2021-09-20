@@ -3,6 +3,9 @@ package com.wangyou.chatwithwebsocket.fragment
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +14,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.wangyou.chatwithwebsocket.R
 import com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterSession
+import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.data.GroupListViewModel
 import com.wangyou.chatwithwebsocket.data.PersonalViewModel
 import com.wangyou.chatwithwebsocket.data.SessionViewModel
@@ -33,13 +39,13 @@ class SessionFragment : BaseFragment() {
         object : RecyclerViewAdapterSession.SessionListener {
             override fun onClickListener(chat: Chat) {
                 val builder = ChatFragmentArgs.Builder()
-                if (chat.enable == Chat.PRIVATE_CHAT){
-                    if (personalViewModel.getSelf().value?.uid == chat.sender){
+                if (chat.enable == Chat.PRIVATE_CHAT) {
+                    if (personalViewModel.getSelf().value?.uid == chat.sender) {
                         builder.setUid(chat.recipient.toString())
-                    }else{
+                    } else {
                         builder.setUid(chat.sender.toString())
                     }
-                }else{
+                } else {
                     builder.setGid(chat.gid.toString())
                 }
                 val bundle = builder.build().toBundle()
@@ -87,6 +93,13 @@ class SessionFragment : BaseFragment() {
         groupListViewModel.getGroupList().observe(requireActivity(), {
             binding!!.rvSession.adapter?.notifyDataSetChanged()
         })
+        binding!!.rfSession.setColorSchemeResources(R.color.blue_400)
+        binding!!.rfSession.setOnRefreshListener {
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding!!.rfSession.isRefreshing = false
+            }, 500)
+            sessionViewModel.loadSessionList()
+        }
         sessionViewModel.loadSessionList()
     }
 

@@ -76,13 +76,13 @@ class FriendApplicationFragment : BaseFragment() {
         super.onActivityResume()
         friendApplicationViewModel.getUserRelationList().observe(requireActivity(), { list ->
             Log.i(Const.TAG, "userRelation更新")
-            binding?.rvRelation?.adapter?.notifyDataSetChanged()
             val ids = mutableSetOf<Long>()
             list.forEach {
                 ids.add(it.uidFormer!!)
                 ids.add(it.uidLatter!!)
             }
             userListViewModel.loadUserByIds(ids)
+             binding?.rvRelation?.adapter?.notifyDataSetChanged()
         })
         userListViewModel.getUserList().observe(requireActivity(), {
             binding?.rvRelation?.adapter?.notifyDataSetChanged()

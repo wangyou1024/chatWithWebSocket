@@ -100,7 +100,6 @@ class GroupApplicationFragment : BaseFragment() {
         }
         groupApplicationViewModel.getGroupRelationList().observe(requireActivity(), { list ->
             Log.i(Const.TAG, "群聊关系更新${list.size}")
-            binding!!.rvGroupApplications.adapter?.notifyDataSetChanged()
             val uids = mutableSetOf<Long>()
             val gids = mutableSetOf<Long>()
             list.forEach {
@@ -109,6 +108,7 @@ class GroupApplicationFragment : BaseFragment() {
             }
             userListViewModel.loadUserByIds(uids)
             groupListViewModel.loadGroupListByIds(gids)
+            binding!!.rvGroupApplications.adapter?.notifyDataSetChanged()
         })
         userListViewModel.getUserList().observe(requireActivity(), {
             Log.i(Const.TAG, "更新了用户")

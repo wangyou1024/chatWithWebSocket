@@ -10,30 +10,6 @@
         android:name="com.wangyou.chatwithwebsocket.fragment.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
-        <action
-            android:id="@+id/action_mainFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_friendApplicationFragment"
-            app:destination="@id/friendApplicationFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_groupApplicationFragment"
-            app:destination="@id/groupApplicationFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_groupDetailFragment"
-            app:destination="@id/groupDetailFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_groupDetailFragment2"
-            app:destination="@id/groupDetailFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_personalDetailFragment"
-            app:destination="@id/personalDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
@@ -52,62 +28,29 @@
             android:name="uid"
             app:argType="string"
             android:defaultValue="unknown"/>
-        <action
-            android:id="@+id/action_chatFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
-        <action
-            android:id="@+id/action_chatFragment_to_groupDetailFragment"
-            app:destination="@id/groupDetailFragment" />
-        <action
-            android:id="@+id/action_chatFragment_to_personalDetailFragment"
-            app:destination="@id/personalDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.wangyou.chatwithwebsocket.fragment.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.wangyou.chatwithwebsocket.fragment.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_searchFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_groupDetailFragment"
-            app:destination="@id/groupDetailFragment" />
-        <action
-            android:id="@+id/action_searchFragment_to_personalDetailFragment"
-            app:destination="@id/personalDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/friendApplicationFragment"
         android:name="com.wangyou.chatwithwebsocket.fragment.FriendApplicationFragment"
         android:label="fragment_friend_application"
         tools:layout="@layout/fragment_friend_application" >
-        <action
-            android:id="@+id/action_friendApplicationFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
-        <action
-            android:id="@+id/action_friendApplicationFragment_to_personalDetailFragment"
-            app:destination="@id/personalDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupApplicationFragment"
         android:name="com.wangyou.chatwithwebsocket.fragment.GroupApplicationFragment"
         android:label="GroupApplicationFragment" >
-        <action
-            android:id="@+id/action_groupApplicationFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
-        <action
-            android:id="@+id/action_groupApplicationFragment_to_groupDetailFragment"
-            app:destination="@id/groupDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupDetailFragment"
@@ -117,12 +60,6 @@
             android:name="gid"
             app:argType="string"
             android:defaultValue='unknown'/>
-        <action
-            android:id="@+id/action_groupDetailFragment_to_groupEditFragment"
-            app:destination="@id/groupEditFragment" />
-        <action
-            android:id="@+id/action_groupDetailFragment_to_personalDetailFragment"
-            app:destination="@id/personalDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupEditFragment"
@@ -136,7 +73,7 @@
     <fragment
         android:id="@+id/personalDetailFragment"
         android:name="com.wangyou.chatwithwebsocket.fragment.PersonalDetailFragment"
-        android:label="PersonalDetailFragment" >
+        android:label="PersonalDetailFragment">
         <argument
             android:name="uid"
             app:argType="string"

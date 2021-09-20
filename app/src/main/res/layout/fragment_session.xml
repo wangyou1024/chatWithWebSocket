@@ -35,30 +35,22 @@
             android:text="@string/message"
             android:textColor="@color/gray_50"
             android:textSize="@dimen/font_navigation"/>
-        <androidx.core.widget.NestedScrollView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/rfSession"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@color/gray_200">
-            <LinearLayout
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSession"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvSession"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/gray_50"
-                    app:bindSession="@{sessionViewModel.chatList}"
-                    app:talkerMap="@{userListViewModel.userMap}"
-                    app:groupMap="@{groupListViewModel.groupMap}"
-                    app:sessionListener="@{listener}"
-                    app:sessionSelf="@{personalViewModel.self}"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/nav_main"/>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                android:background="@color/gray_200"
+                android:paddingBottom="@dimen/nav_main"
+                app:bindSession="@{sessionViewModel.chatList}"
+                app:talkerMap="@{userListViewModel.userMap}"
+                app:groupMap="@{groupListViewModel.groupMap}"
+                app:sessionListener="@{listener}"
+                app:sessionSelf="@{personalViewModel.self}"
+                />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>
