@@ -1,4 +1,4 @@
-package com.wangyou.chatwithwebsocket.adapter
+package com.wangyou.chatwithwebsocket.bindingAdapter
 
 import android.util.Log
 import android.widget.ImageView
@@ -17,7 +17,7 @@ object ImageViewBindingAdapter {
     fun setImage(imageView: ImageView?, url: String?, placeholder: Int) {
         Glide.with(imageView!!.context)
             .load("${Const.imageUrl}${url}")
-             .skipMemoryCache(true)
+            // .skipMemoryCache(true)
              .diskCacheStrategy(DiskCacheStrategy.NONE)
             // 默认变形为圆需要单独处理
             .thumbnail(

@@ -1,15 +1,13 @@
-package com.wangyou.chatwithwebsocket.adapter
+package com.wangyou.chatwithwebsocket.bindingAdapter
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.util.Log
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.wangyou.chatwithwebsocket.R
+import com.wangyou.chatwithwebsocket.adapter.*
 import com.wangyou.chatwithwebsocket.conf.Const
 import com.wangyou.chatwithwebsocket.entity.*
 
