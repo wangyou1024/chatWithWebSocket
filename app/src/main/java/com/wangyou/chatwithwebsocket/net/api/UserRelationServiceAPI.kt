@@ -8,9 +8,9 @@ import retrofit2.http.Query
 
 interface UserRelationServiceAPI {
 
-    @GET("/userRelation/findUserRelation")
+    @GET("userRelation/findUserRelation")
     fun findUserRelation(@Query("uid") uid: Long): Observable<ResponseData<UserRelation>>
 
-    @GET("/userRelation/findUserRelationList")
+    @GET("userRelation/findUserRelationList")
     fun findUserRelationList(): Observable<ResponseData<List<UserRelation>>>
 }

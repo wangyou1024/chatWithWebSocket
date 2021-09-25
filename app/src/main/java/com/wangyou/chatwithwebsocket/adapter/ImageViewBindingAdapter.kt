@@ -17,8 +17,8 @@ object ImageViewBindingAdapter {
     fun setImage(imageView: ImageView?, url: String?, placeholder: Int) {
         Glide.with(imageView!!.context)
             .load("${Const.imageUrl}${url}")
-            // .skipMemoryCache(true)
-            // .diskCacheStrategy(DiskCacheStrategy.NONE)
+             .skipMemoryCache(true)
+             .diskCacheStrategy(DiskCacheStrategy.NONE)
             // 默认变形为圆需要单独处理
             .thumbnail(
                 Glide.with(imageView.context)

@@ -8,9 +8,9 @@ import retrofit2.http.Query
 
 interface ChatServiceAPI {
 
-    @GET("/chat/findSessionList")
+    @GET("chat/findSessionList")
     fun findSessionList(): Observable<ResponseData<MutableList<Chat>>>
 
-    @GET("/chat/findChatList")
+    @GET("chat/findChatList")
     fun findChatList(@Query("type") type: Int, @Query("id") id: Long): Observable<ResponseData<MutableList<Chat>>>
 }

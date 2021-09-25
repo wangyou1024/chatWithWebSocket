@@ -8,10 +8,10 @@ import retrofit2.http.Query
 
 interface GroupRelationServiceAPI {
 
-    @GET("/groupRelation/findRelation")
+    @GET("groupRelation/findRelation")
     fun findRelation(@Query("gid") gid: Long): Observable<ResponseData<GroupRelation>>
 
-    @GET("/groupRelation/findRelationList")
+    @GET("groupRelation/findRelationList")
     fun findRelationList(): Observable<ResponseData<MutableList<GroupRelation>>>
 
 }

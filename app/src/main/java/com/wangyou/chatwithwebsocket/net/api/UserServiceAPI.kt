@@ -10,30 +10,30 @@ import retrofit2.http.Query
 
 interface UserServiceAPI {
 
-    @GET("/user/findUserById")
+    @GET("user/findUserById")
     fun findUserById(@Query("uid") uid: Long): Observable<ResponseData<User>>
 
-    @GET("/user/findUserByUsername")
+    @GET("user/findUserByUsername")
     fun findUserByUsername(@Query("username") username: String): Observable<ResponseData<User>>
 
-    @GET("/user/findUserByPrincipal")
+    @GET("user/findUserByPrincipal")
     fun findUserByPrincipal(): Observable<ResponseData<User>>
 
-    @GET("/user/searchUser")
+    @GET("user/searchUser")
     fun findUserListBySearchKey(@Query("searchKey") searchKey: String): Observable<ResponseData<MutableList<User>>>
 
-    @POST("/user/findUserListByIds")
+    @POST("user/findUserListByIds")
     fun findUserListByIds(@Body ids: MutableList<Long>): Observable<ResponseData<MutableList<User>>>
 
-    @GET("/user/findFriends")
+    @GET("user/findFriends")
     fun findFriends(): Observable<ResponseData<MutableList<User>>>
 
-    @GET("/user/findLeader")
+    @GET("user/findLeader")
     fun findLeader(@Query("gid") gid: Long): Observable<ResponseData<User>>
 
-    @GET("/user/findMembers")
+    @GET("user/findMembers")
     fun findMembers(@Query("gid") gid: Long): Observable<ResponseData<MutableList<User>>>
 
-    @POST("/user/updateUser")
+    @POST("user/updateUser")
     fun updateUser(@Body user: User): Observable<ResponseData<User>>
 }

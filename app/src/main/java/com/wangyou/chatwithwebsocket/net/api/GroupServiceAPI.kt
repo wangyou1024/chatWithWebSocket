@@ -10,21 +10,21 @@ import retrofit2.http.Query
 
 interface GroupServiceAPI {
 
-    @POST("/group/createGroup")
+    @POST("group/createGroup")
     fun createGroup(@Body group: Group): Observable<ResponseData<Group>>
 
-    @GET("/group/findGroupById")
+    @GET("group/findGroupById")
     fun findGroupById(@Query("gid") gid: Long): Observable<ResponseData<Group>>
 
-    @GET("/group/findJoinedGroups")
+    @GET("group/findJoinedGroups")
     fun findJoinedGroups(): Observable<ResponseData<MutableList<Group>>>
 
-    @GET("/group/searchGroups")
+    @GET("group/searchGroups")
     fun searchGroups(@Query("searchKey") searchKey: String): Observable<ResponseData<MutableList<Group>>>
 
-    @POST("/group/findGroupListByIds")
+    @POST("group/findGroupListByIds")
     fun findGroupListByIds(@Body gids: MutableList<Long>): Observable<ResponseData<MutableList<Group>>>
 
-    @POST("/group/updateGroup")
+    @POST("group/updateGroup")
     fun updateGroup(@Body group: Group): Observable<ResponseData<Group>>
 }

@@ -11,6 +11,6 @@ import retrofit2.http.Query
 interface FileServiceAPI {
 
     @Multipart
-    @POST("/file/uploadImage")
+    @POST("file/uploadImage")
     fun uploadImage(@Part part: MultipartBody.Part, @Query("type") type: Int, @Query("id") id: Long): Observable<ResponseData<String>>
 }
