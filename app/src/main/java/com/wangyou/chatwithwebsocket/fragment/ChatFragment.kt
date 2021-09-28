@@ -70,7 +70,7 @@ class ChatFragment : BaseFragment() {
         // 设置聊天顶部名称
         chatViewModel.getUsers().observe(requireActivity(), {
             if (chatViewModel.type.value == Chat.PRIVATE_CHAT){
-                binding!!.chatUser.text = chatViewModel.getUsers().value?.get(args.uid.toLong())?.username
+                binding!!.chatUser.text = chatViewModel.getUsers().value?.get(args.uid.toLong())?.realName
             }
             binding!!.rvChat.adapter?.notifyDataSetChanged()
         })

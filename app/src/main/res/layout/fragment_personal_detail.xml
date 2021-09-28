@@ -32,7 +32,7 @@
                 android:layout_height="50dp"
                 android:background="?colorPrimary"
                 android:gravity="center"
-                android:text="@string/personal"
+                android:text="@string/personal_infomation"
                 android:textColor="@color/gray_50"
                 android:textSize="@dimen/font_navigation" />
 

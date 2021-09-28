@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.wangyou.chatwithwebsocket.R
-import com.wangyou.chatwithwebsocket.databinding.ItemMessageBinding
+import com.wangyou.chatwithwebsocket.databinding.ItemSessionBinding
 import com.wangyou.chatwithwebsocket.entity.Chat
 import com.wangyou.chatwithwebsocket.entity.Group
 import com.wangyou.chatwithwebsocket.entity.User
@@ -21,9 +21,9 @@ class RecyclerViewAdapterSession(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionHolder {
-        val binding = DataBindingUtil.inflate<ItemMessageBinding>(
+        val binding = DataBindingUtil.inflate<ItemSessionBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.item_message,
+            R.layout.item_session,
             parent,
             false
         )
@@ -54,9 +54,9 @@ class RecyclerViewAdapterSession(
     }
 
     class SessionHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var binding: ItemMessageBinding? = null
+        var binding: ItemSessionBinding? = null
 
-        constructor(binding: ItemMessageBinding?) : this(binding!!.root) {
+        constructor(binding: ItemSessionBinding?) : this(binding!!.root) {
             this.binding = binding
         }
     }

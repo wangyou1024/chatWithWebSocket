@@ -52,7 +52,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@{chat.enable == Chat.GROUP_CHAT? group.groupName:user.username}"
+                    android:text="@{chat.enable == Chat.GROUP_CHAT? group.groupName:user.realName}"
                     android:textColor="@color/gray_800"
                     android:textSize="@dimen/font_title"
                     tools:ignore="NestedWeights"

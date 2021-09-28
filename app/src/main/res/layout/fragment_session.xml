@@ -4,18 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="sessionViewModel"
             type="com.wangyou.chatwithwebsocket.data.SessionViewModel" />
+
         <variable
             name="userListViewModel"
             type="com.wangyou.chatwithwebsocket.data.UserListViewModel" />
+
         <variable
             name="groupListViewModel"
             type="com.wangyou.chatwithwebsocket.data.GroupListViewModel" />
+
         <variable
             name="personalViewModel"
             type="com.wangyou.chatwithwebsocket.data.PersonalViewModel" />
+
         <variable
             name="listener"
             type="com.wangyou.chatwithwebsocket.adapter.RecyclerViewAdapterSession.SessionListener" />
@@ -27,6 +32,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".fragment.SessionFragment">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -34,23 +40,30 @@
             android:gravity="center"
             android:text="@string/message"
             android:textColor="@color/gray_50"
-            android:textSize="@dimen/font_navigation"/>
+            android:textSize="@dimen/font_navigation" />
+
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/rfSession"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvSession"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_200">
+
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/gray_200"
-                android:paddingBottom="@dimen/nav_main"
-                app:bindSession="@{sessionViewModel.chatList}"
-                app:talkerMap="@{userListViewModel.userMap}"
-                app:groupMap="@{groupListViewModel.groupMap}"
-                app:sessionListener="@{listener}"
-                app:sessionSelf="@{personalViewModel.self}"
-                />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvSession"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/nav_main"
+                    app:bindSession="@{sessionViewModel.chatList}"
+                    app:groupMap="@{groupListViewModel.groupMap}"
+                    app:sessionListener="@{listener}"
+                    app:sessionSelf="@{personalViewModel.self}"
+                    app:talkerMap="@{userListViewModel.userMap}" />
+            </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>

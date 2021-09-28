@@ -5,6 +5,7 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 
+@Deprecated("手动设置会导致状态栏变化有延时,直接采用Material主题")
 object SetStatusBar {
     fun setStatusColor(color: Int, window: Window) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
